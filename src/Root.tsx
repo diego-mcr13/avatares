@@ -1,3 +1,5 @@
+import { EquipoComposition } from "./Equipo";
+import { PruebaAldrinComposition } from "./PruebaAldrin";
 import { PruebaDiegoBambinoComposition } from "./PruebaDiegoBambino";
 import { PruebaPersonajeComposition } from "./PruebaPersonaje";
 import { PruebaYaekoComposition } from "./PruebaYaeko";
@@ -9,6 +11,8 @@ export const RemotionRoot: React.FC = () => {
       <PruebaPersonajeComposition />
       <PruebaYaekoComposition />
       <PruebaDiegoBambinoComposition />
+      <PruebaAldrinComposition />
+      <EquipoComposition />
     </>
   );
 };
