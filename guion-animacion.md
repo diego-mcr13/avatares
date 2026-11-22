@@ -396,6 +396,7 @@ BoliviaSabe: los vecinos de Bolivia comparten precios del barrio y responden pre
 App: https://boliviasabe.vercel.app
 Código: https://github.com/codebambinos/boliviasabe
 El pago del video en Stellar: https://stellar.expert/explorer/testnet/tx/b80fecb1727ce232c0ed889563c54cd7d833ee4a152c4a8846e5af54aa80eca3
+Música: «Let Me Know» de Infraction (Infraction No Copyright Music)
 ```
 
 - Abrir el enlace en una ventana de incógnito; pasarlo a Atlas (campo Video) y al README; después, el segundo análisis de la IA.
@@ -414,7 +415,7 @@ El pago del video en Stellar: https://stellar.expert/explorer/testnet/tx/b80fecb
 | Memo codificado en stellar.expert | Se traduce en pantalla (escena 8) | Cerrado |
 | XLM y saldo de Ana visibles | Recorte del explorador; pastilla sobre el saldo en la escena 6 | Cerrado |
 | «Destacado» no existe en la app | Marcado «próximo» e «hipótesis» (escena 9) | Cerrado |
-| Música | Sin música | Cerrado |
+| Música | «Let Me Know» de Infraction, baja y más baja bajo las voces (`VideoFinal`, `volumenMusica`); crédito en la descripción de YouTube | Cerrado |
 | Volver a grabar la app | Se hizo una toma nítida nueva (capturas a 3×, `tomas/`, pago `ayuda:56`) | Cerrado |
 | Encuesta simulada en 2-4 | Reemplazada por la encuesta real (22 nov), con la voz nueva de Yaeko | Cerrado |
 | Mapa de Cochabamba poco claro | Captura de OpenStreetMap con pines y atribución, o quitar el mapa | Abierto |

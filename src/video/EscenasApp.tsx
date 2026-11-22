@@ -358,7 +358,7 @@ export const Escena7: React.FC = () => (
       escena={av7}
       quien="diego"
       t0={6.6}
-      t1={9.6}
+      t1={10.05}
       solo
       junto={
         <>

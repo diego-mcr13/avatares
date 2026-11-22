@@ -1,9 +1,10 @@
 // Video final de BoliviaSabe (contrato §8): cada escena es su composición (V1 … V9) y «BoliviaSabe» las encadena.
 import React from "react";
-import { AbsoluteFill, Composition, Sequence, Series, Still } from "remotion";
+import { Audio } from "@remotion/media";
+import { AbsoluteFill, Composition, Sequence, Series, Still, staticFile } from "remotion";
 import { Escena3, Escena4, Escena5, Escena6, Escena7, Escena8 } from "./EscenasApp";
-import { Escena1, Escena2, Escena9 } from "./EscenasHistoria";
-import { ESCENAS_VIDEO, type IdEscena } from "./datos";
+import { CORTE, Escena1, Escena2, Escena9, PUENTE } from "./EscenasHistoria";
+import { ESCENAS_VIDEO, VOCES, finHabla, type IdEscena } from "./datos";
 import { C, FPS, LETRA_TITULO } from "./estilo";
 
 const COMPONENTE: Record<IdEscena, React.FC> = {
@@ -18,8 +19,40 @@ const COMPONENTE: Record<IdEscena, React.FC> = {
   "9": Escena9,
 };
 
+// Cuándo habla alguien en el video completo (para bajar la música debajo de las voces)
+const HABLA: [number, number][] = (() => {
+  const out: [number, number][] = [];
+  let inicio = 0;
+  for (const e of ESCENAS_VIDEO) {
+    for (const f of e.frases) {
+      // En la escena 9, lo que va después del corte se corre lo que dura el tramo del canje
+      const corre = e.id === "9" && f.t >= CORTE ? PUENTE : 0;
+      out.push([inicio + f.t + corre, inicio + finHabla(f) + corre]);
+    }
+    if (e.id === "9") out.push([inicio + CORTE + 0.35, inicio + CORTE + 0.35 + (VOCES["9-5"].hasta - VOCES["9-5"].desde)]);
+    inicio += e.dur;
+  }
+  return out;
+})();
+
+// Música de fondo: baja siempre, más baja mientras alguien habla, con subidas y bajadas suaves
+const VOL_LIBRE = 0.14;
+const VOL_VOZ = 0.06;
+const volumenMusica = (frame: number) => {
+  const t = frame / FPS;
+  // Distancia (en s) a la voz más cercana: 0 si alguien habla
+  let d = Infinity;
+  for (const [a, b] of HABLA) d = Math.min(d, t < a ? a - t : t > b ? t - b : 0);
+  const sube = Math.min(1, Math.max(0, (d - 0.15) / 0.5));
+  const v = VOL_VOZ + (VOL_LIBRE - VOL_VOZ) * sube;
+  const entra = Math.min(1, t / 1.5);
+  const sale = Math.min(1, Math.max(0, (168.5 - t) / 2.5));
+  return v * entra * sale;
+};
+
 const Completo: React.FC = () => (
   <AbsoluteFill style={{ background: C.fondo }}>
+    <Audio src={staticFile("video/musica/fondo.mp3")} volume={volumenMusica} />
     <Series>
       {ESCENAS_VIDEO.map((e) => {
         const Comp = COMPONENTE[e.id];

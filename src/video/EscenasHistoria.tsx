@@ -795,8 +795,8 @@ const Escena9Base: React.FC<{ fijo?: boolean }> = ({ fijo = false }) => {
 
 // Escena 9 con un tramo nuevo en medio: después de «Bs 20 al mes», Yaeko cuenta el canje (frase 9-5).
 // La escena se corta en CORTE, queda quieta PUENTE segundos con Yaeko hablando y sigue igual que antes.
-const CORTE = 16.85;
-const PUENTE = 4.0;
+export const CORTE = 16.85;
+export const PUENTE = 4.0;
 const f9 = (t: number) => Math.round(t * FPS);
 
 const avPuente = (() => {
