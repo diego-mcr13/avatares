@@ -178,8 +178,9 @@ const LupaDibujo: React.FC<{ tramos: Tramo[]; miras: Mira[]; cx: number; escala:
   const izq = cx - (CEL.ancho * escala) / 2;
   const tope = CEL.tope + (CEL.alto * (1 - escala)) / 2;
   // Centro de la lupa sobre el punto mirado (en px del lienzo)
-  const px = izq + l.u * CEL.ancho * escala;
-  const py = tope + l.v * CEL.alto * escala;
+  // Siempre entera dentro del cuadro y sobre la franja de subtítulos: si el punto está muy arriba o muy abajo, la lupa se corre (adentro sigue mostrando ese punto)
+  const px = Math.min(1920 - D_LUPA / 2 - 24, Math.max(D_LUPA / 2 + 24, izq + l.u * CEL.ancho * escala));
+  const py = Math.min(958 - D_LUPA / 2 - 12, Math.max(D_LUPA / 2 + 24, tope + l.v * CEL.alto * escala));
   const m = l.m * escala;
   const e = l.e;
   return (

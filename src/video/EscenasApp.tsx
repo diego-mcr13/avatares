@@ -493,7 +493,9 @@ export const Escena8: React.FC = () => {
         toques={[{ t: 4.5, x: 136, y: 166 }]}
         encima={<TapaComision desde={4.8} />}
       />
-      <Rotulo texto="Ana · cuenta de ejemplo" x={96} y={70} t={0.2} tam={24} color={C.apagado} />
+      <Rotulo texto="Ana · cuenta de ejemplo" x={96} y={70} t={0.2} hasta={6.5} tam={24} color={C.apagado} />
+      {/* Cuando el celular se corre a la izquierda, el rótulo pasa junto a la tarjeta del explorador (antes quedaba encima del celular) */}
+      <Rotulo texto="Ana · cuenta de ejemplo" x={880} y={130} t={7.0} tam={24} color={C.apagado} />
       <SaleDelCel
         t0={1.4}
         t1={4.5}
