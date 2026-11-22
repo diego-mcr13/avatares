@@ -41,7 +41,7 @@ export const VOCES: Record<string, Voz> = Object.fromEntries(
     v("4-2", "aldrin", 0.95, 5.98, "Y al terminar ya tienes tu cuenta en Stellar y cinco yapitas de bienvenida."),
     v("5-1", "yaeko", 0.0, 4.7, "Ahora preguntamos: ¿quién arregla una tubería hoy en Queru Queru?"),
     v("5-2", "aldrin", 0.84, 6.86, "La marcamos Urgente: cuesta cinco yapitas y sale primero por 24 horas."),
-    v("6-1", "diego", 0.0, 5.37, "En otra cuenta, Ana, que vive en Queru Queru, ve el aviso de la urgente y responde."),
+    v("6-1", "diego", 0.0, 5.12, "En otra cuenta, Ana, que vive en Queru Queru, ve el aviso de la urgente y responde."),
     v("6-2", "yaeko", 0.0, 4.61, "Y quien preguntó ve la respuesta aparecer sola, sin recargar."),
     v("7-1", "aldrin", 0.56, 6.37, "Solo quien preguntó puede marcar Me sirvió, y la pregunta queda Solucionada."),
     v("7-2", "diego", 0.0, 2.75, "Y Ana gana cinco yapitas por ayudar."),
@@ -74,7 +74,7 @@ export const ESCENAS_VIDEO: { id: IdEscena; titulo: string; dur: number; frases:
   {
     id: "1",
     titulo: "Somos CodeBambinos",
-    dur: 22.5,
+    dur: 23.5,
     frases: [
       { codigo: "diego", t: 0.15 },
       { codigo: "yaeko", t: 4.4 },

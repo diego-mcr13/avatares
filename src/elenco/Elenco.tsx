@@ -147,7 +147,7 @@ const Avatar: React.FC<{ quien: Quien; escena: Escena; frame: number }> = ({ qui
         const q = (T - ultimo.t) / 0.55;
         if (q >= 1) return null;
         dy += 16 * Math.sin(Math.min(1, q * 1.6) * Math.PI) - 360 * Math.max(0, q - 0.35) * Math.max(0, q - 0.35);
-      } else if (T > ultimo.t + 0.5) return null;
+      } else if (ultimo.tipo === "corte" || T > ultimo.t + 0.5) return null;
     }
   }
   const estadoFinal = r.caida || evs.length ? { ...estado, escala: [estado.escala[0] * (2 - aplastar), estado.escala[1] * aplastar, estado.escala[2]] as [number, number, number] } : estado;

@@ -44,7 +44,7 @@ export type Recorrido = {
   // Ratos en que sostiene un celular (con el gesto «escribir»)
   celular?: [number, number][];
   // Entradas y salidas en orden (puede salir y volver a entrar)
-  eventos?: { t: number; tipo: "salto" | "puf"; entra: boolean }[];
+  eventos?: { t: number; tipo: "salto" | "puf" | "corte"; entra: boolean }[];
   tramos: Tramo[];
   claves: Clave[];
 };
@@ -77,7 +77,7 @@ export class Guion {
   private aparece: Partial<Record<Quien, number>> = {};
   private caidas: Partial<Record<Quien, { t: number; lado: -1 | 1 }>> = {};
   private ratosCelular: Record<Quien, [number, number][]> = { diego: [], yaeko: [], aldrin: [] };
-  private eventos: Record<Quien, { t: number; tipo: "salto" | "puf"; entra: boolean }[]> = { diego: [], yaeko: [], aldrin: [] };
+  private eventos: Record<Quien, { t: number; tipo: "salto" | "puf" | "corte"; entra: boolean }[]> = { diego: [], yaeko: [], aldrin: [] };
   private n = 0;
 
   constructor(
@@ -128,7 +128,7 @@ export class Guion {
   }
 
   // Entra a las `t` en `pos`: de un salto desde abajo del cuadro o con un «puf» (sin caminar desde afuera)
-  entra(quien: Quien, t: number, pos: Punto, tipo: "salto" | "puf" = "salto", pose: PoseNombre = "esperar", expr?: Partial<Expresion>) {
+  entra(quien: Quien, t: number, pos: Punto, tipo: "salto" | "puf" | "corte" = "salto", pose: PoseNombre = "esperar", expr?: Partial<Expresion>) {
     const primera = !this.eventos[quien].some((e) => e.entra);
     this.eventos[quien].push({ t, tipo, entra: true });
     if (primera) {
@@ -149,7 +149,7 @@ export class Guion {
   }
 
   // Sale a las `t`: salta hacia abajo del cuadro o se va con un «puf»
-  sale(quien: Quien, t: number, tipo: "salto" | "puf" = "salto") {
+  sale(quien: Quien, t: number, tipo: "salto" | "puf" | "corte" = "salto") {
     this.eventos[quien].push({ t, tipo, entra: false });
   }
 

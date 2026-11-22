@@ -128,7 +128,7 @@ export const Escena4: React.FC = () => (
         ]}
         miras={[
           { t0: 4.5, t1: 6.4, u: 0.22, v: 0.52, m: 1.8 },
-          { t0: 8.2, t1: 10.1, u: 0.88, v: 0.045, m: 2.4 },
+          { t0: 8.2, t1: 9.6, u: 0.88, v: 0.045, m: 2.4 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
@@ -187,7 +187,7 @@ export const Escena5: React.FC = () => (
         miras={[
           { t0: 5.6, t1: 7.5, u: 0.28, v: 0.7, m: 1.9 },
           { t0: 7.8, t1: 8.6, u: 0.5, v: 0.955, m: 1.6 },
-          { t0: 9.6, t1: 13.5, u: 0.15, v: 0.385, m: 2.2 },
+          { t0: 9.4, t1: 11.5, u: 0.15, v: 0.385, m: 2.2 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
@@ -319,7 +319,7 @@ const av7 = armarAvatares("7", (g) => {
   g.va("aldrin", 1.8, null, "tocar", CARA.atento);
   g.va("aldrin", 3.9, null, "celebrar", CARA.feliz);
   g.va("aldrin", 5.4, null, "aplaudir", CARA.feliz);
-  g.entra("diego", 6.6, junto("der", 0.55), "salto", "celebrar", CARA.feliz);
+  g.entra("diego", 6.6, junto("der", 0.55), "corte", "celebrar", CARA.feliz); // aparece ya parado: el primer plano empieza justo ahí
 });
 
 export const Escena7: React.FC = () => (

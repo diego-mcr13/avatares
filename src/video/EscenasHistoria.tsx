@@ -78,12 +78,16 @@ const Tarjeta: React.FC<{ quien: Quien; cx: number; rol: string; hablaDesde: num
   const pequeno = k > 2;
   const PASOS = [3, 6, 10, 15, 22, 30, 40];
   const paso = PASOS.reduce((m, p) => (k >= p ? p : m), 3);
-  const contenido = habla ? (
-    <Sequence from={t2f(hablaDesde - voz.desde)} layout="none">
-      <Video src={staticFile(voz.archivo)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-    </Sequence>
-  ) : (
-    <Img src={staticFile(`video/img/p-${quien}${T >= hablaDesde ? "-fin" : ""}.png`)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+  // La foto siempre debajo: si el video todavía no empezó (Aldrin habla desde el cuadro 0), no se ve negro
+  const contenido = (
+    <>
+      <Img src={staticFile(`video/img/p-${quien}${T >= hablaDesde ? "-fin" : ""}.png`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+      {habla ? (
+        <Sequence from={t2f(hablaDesde - voz.desde)} layout="none">
+          <Video src={staticFile(voz.archivo)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+        </Sequence>
+      ) : null}
+    </>
   );
   return (
     <div
@@ -266,6 +270,7 @@ export const Escena1: React.FC = () => {
           ...CAIDAS.map((c) => ["golpe", c.t + 0.45] as ["golpe", number]),
           ["pop", T_CAE + 1.4],
           ["titulo", 18.4],
+          ["yei", 21.85],
         ]}
       />
     </>
@@ -538,7 +543,8 @@ const av9 = armarAvatares("9", (g) => {
   g.sale("diego", 16.2, "puf");
   g.entra("aldrin", 17.0, [1000, 930], "salto", "senalarIzq", CARA.orgullo);
   g.va("aldrin", 25.0, null, "triunfo", CARA.orgullo);
-  g.sale("aldrin", 25.6, "puf");
+  // Sale con un corte cuando termina su primer plano (un «puf» se vería dentro del plano)
+  g.sale("aldrin", 26.05, "corte");
   // Cierre: los tres de un salto, juntos
   g.entra("yaeko", 26.0, [960, 930], "salto", "hablar", CARA.feliz);
   g.entra("diego", 26.1, [740, 930], "salto", "aplaudir", CARA.feliz);
@@ -742,8 +748,7 @@ const Escena9Base: React.FC<{ fijo?: boolean }> = ({ fijo = false }) => {
               <Img src={staticFile("video/img/qr.svg")} style={{ width: 400, height: 400, display: "block" }} />
             </div>
           ) : null}
-          <Cifra texto="Hoy una ciudad," x={150} y={680} t={23.3} tam={44} alinear="izq" />
-          <Cifra texto={<span>mañana <span style={{ color: C.naranja }}>toda Bolivia</span></span>} x={150} y={745} t={24.4} tam={52} alinear="izq" />
+          {/* «Hoy una ciudad, mañana toda Bolivia» va solo en el primer plano de Aldrin (aquí tapaba el QR) */}
         </div>
       ) : null}
       <Cierre />
@@ -753,7 +758,7 @@ const Escena9Base: React.FC<{ fijo?: boolean }> = ({ fijo = false }) => {
         escena={av9}
         quien="aldrin"
         t0={23.3}
-        t1={25.7}
+        t1={26.05}
         junto={
           <>
             <Cifra texto="Hoy una ciudad," x={1300} y={360} t={23.4} tam={60} />
