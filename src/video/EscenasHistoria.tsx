@@ -2,7 +2,7 @@
 import { Video } from "@remotion/media";
 import React from "react";
 import { AbsoluteFill, Img, Sequence, interpolate, random, spring, staticFile, useCurrentFrame } from "remotion";
-import { Avatares, Camara, Cifra, Fondo, Rotulo, Sonidos, Subtitulos, Telefono, Voces, armarAvatares, entrar, tramo } from "./comunes";
+import { Avatares, Camara, Cifra, Fondo, PrimerPlano, Rotulo, Sonidos, Subtitulos, Telefono, Voces, armarAvatares, entrar, tramo } from "./comunes";
 import { CARA } from "./caras";
 import { VOCES, escenaVideo } from "./datos";
 import { AGUAYO, C, COLOR_PERSONA, FPS, LETRA, LETRA_TITULO } from "./estilo";
@@ -188,7 +188,8 @@ const CAIDAS: { quien: Quien; x: number; lado: -1 | 1; t: number }[] = [
 const av1 = armarAvatares("1", (g) => {
   for (const c of CAIDAS) {
     g.cae(c.quien, c.t, [c.x, 930], c.lado);
-    g.va(c.quien, c.t, null, "sorpresa", CARA.sorpresa);
+    // Cae agitando los brazos
+    g.va(c.quien, c.t, null, "desesperar", CARA.sorpresa);
     g.va(c.quien, c.t + 0.5, null, "esperar", CARA.mareado);
     g.va(c.quien, c.t + 1.3, null, "esperar", CARA.sorpresa);
     g.va(c.quien, c.t + 1.75, null, "saludar", CARA.feliz);
@@ -201,12 +202,51 @@ const av1 = armarAvatares("1", (g) => {
   g.va("yaeko", 20.8, null, "triunfo", CARA.orgullo);
 });
 
+// Polvillo de voxels donde cae cada uno
+const Polvo: React.FC = () => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  const piezas: React.ReactNode[] = [];
+  CAIDAS.forEach((c, n) => {
+    const t = c.t + 0.45;
+    const d = T - t;
+    if (d < 0 || d > 0.6) return;
+    const q = d / 0.6;
+    for (let i = 0; i < 14; i++) {
+      const ang = Math.PI * (0.05 + 0.9 * random(`pa${n}${i}`));
+      const vel = 90 + random(`pv${n}${i}`) * 140;
+      const x = c.x + Math.cos(ang) * vel * q * (i % 2 ? 1 : -1);
+      const y = 925 - Math.sin(ang) * vel * 0.6 * q + q * q * 60;
+      const lado = 8 + random(`ps${n}${i}`) * 10;
+      piezas.push(<div key={`${n}-${i}`} style={{ position: "absolute", left: x, top: y, width: lado, height: lado, background: i % 3 ? "#8a7f77" : "#b0a59c", opacity: 1 - q }} />);
+    }
+  });
+  return <AbsoluteFill>{piezas}</AbsoluteFill>;
+};
+
+// Temblor corto de la cámara en cada golpe contra el piso
+const temblor = (T: number) => {
+  let dx = 0;
+  let dy = 0;
+  for (const c of CAIDAS) {
+    const d = T - (c.t + 0.45);
+    if (d >= 0 && d < 0.25) {
+      const a = 9 * (1 - d / 0.25);
+      dx += Math.sin(d * 90) * a;
+      dy += Math.cos(d * 110) * a * 0.7;
+    }
+  }
+  return { dx, dy };
+};
+
 export const Escena1: React.FC = () => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
+  const { dx, dy } = temblor(T);
   return (
     <>
       <Fondo />
+      <AbsoluteFill style={{ transform: `translate(${dx}px, ${dy}px)` }}>
       {TARJETAS.map((x) => (
         <Tarjeta key={x.quien} {...x} />
       ))}
@@ -214,6 +254,8 @@ export const Escena1: React.FC = () => {
       <Destello t={T_PIXEL + 0.7} />
       {T >= 18.3 ? <Logo x={960} y={170} tam={210} t={18.4} sub="por CodeBambinos" /> : null}
       <Avatares escena={av1} />
+      <Polvo />
+      </AbsoluteFill>
       <Subtitulos id="1" />
       <Voces id="1" />
       <Sonidos
@@ -233,12 +275,14 @@ export const Escena1: React.FC = () => {
 const av2 = armarAvatares("2", (g) => {
   g.entra("yaeko", 0.2, [250, 930], "salto", "senalar", CARA.atento);
   g.sale("yaeko", 5.1, "salto");
-  g.entra("diego", 5.4, [1680, 930], "puf", "senalarIzq", CARA.preocupado);
-  g.va("diego", 6.6, null, "desesperar", CARA.preocupado);
+  g.entra("diego", 5.0, [1680, 930], "puf", "esperar", CARA.atento);
+  g.usaCelular("diego", 5.3, 8.9, CARA.preocupado);
+  g.va("diego", 9.1, null, "desesperar", CARA.preocupado);
   g.va("diego", 10.4, null, "encoger", CARA.preocupado);
   g.sale("diego", 11.7, "puf");
-  g.entra("aldrin", 11.6, [250, 930], "salto", "pensar", CARA.pensativo);
-  g.va("aldrin", 13.5, null, "encoger", CARA.preocupado);
+  g.entra("aldrin", 11.6, [250, 930], "salto", "esperar", CARA.atento);
+  g.usaCelular("aldrin", 11.9, 13.2, CARA.atento);
+  g.va("aldrin", 13.4, null, "encoger", CARA.preocupado);
   g.sale("aldrin", 15.9, "salto");
   g.entra("yaeko", 16.2, [250, 930], "puf", "apuntar", CARA.atento);
   g.va("yaeko", 20.8, null, "senalar", CARA.atento);
@@ -290,7 +334,7 @@ const Burbujas: React.FC = () => {
   const sale = tramo(T, 15.8, 16.3);
   // Como un chat: cada mensaje nuevo entra abajo y empuja los anteriores hacia arriba.
   // La pregunta amarilla es el primero; los demás la tapan y se va perdiendo arriba.
-  const items = [{ texto: "¿Alguien sabe quién arregla tuberías?", t: 5.8, amarilla: true }].concat(
+  const items = [{ texto: "¿Alguien sabe quién arregla tuberías?", t: 6.25, amarilla: true }].concat(
     Array.from({ length: 16 }).map((_, i) => ({ texto: MENSAJES[i % MENSAJES.length], t: 6.5 + i * 0.3, amarilla: false })),
   );
   const PASO = 64;
@@ -388,6 +432,21 @@ const Burbujas: React.FC = () => {
   );
 };
 
+// La pregunta de Diego sale de su celular y vuela al chat
+const PreguntaVuela: React.FC = () => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  if (T < 5.6 || T > 6.35) return null;
+  const q = tramo(T, 5.6, 6.3);
+  const x = interpolate(q, [0, 1], [1560, 640]);
+  const y = interpolate(q, [0, 1], [720, 760]) - Math.sin(q * Math.PI) * 160;
+  return (
+    <div style={{ position: "absolute", left: x, top: y, transform: `scale(${0.5 + 0.5 * q})`, background: C.amarillo, color: "#1f1a17", fontFamily: LETRA, fontWeight: 700, fontSize: 30, padding: "12px 22px", borderRadius: 20, whiteSpace: "nowrap", opacity: 1 - tramo(T, 6.2, 6.35) }}>
+      ¿Alguien sabe quién arregla tuberías?
+    </div>
+  );
+};
+
 const Figuritas: React.FC = () => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
@@ -426,6 +485,33 @@ export const Escena2: React.FC = () => (
     <Figuritas />
     <Avatares escena={av2} />
     </Camara>
+    <PreguntaVuela />
+    <PrimerPlano
+      escena={av2}
+      quien="diego"
+      t0={8.6}
+      t1={11.4}
+      lado="der"
+      junto={
+        <>
+          <Cifra texto={<span style={{ color: C.amarillo }}>¿Alguien sabe quién arregla tuberías?</span>} x={640} y={380} t={8.7} tam={40} />
+          <Cifra texto={<span style={{ color: C.coral }}>¿sigue vigente?</span>} x={640} y={470} t={9.6} tam={52} />
+          <Cifra texto="¿y la respuesta?" x={640} y={560} t={10.3} tam={40} color={C.apagado} />
+        </>
+      }
+    />
+    <PrimerPlano
+      escena={av2}
+      quien="aldrin"
+      t0={13.3}
+      t1={15.9}
+      junto={
+        <>
+          <Cifra texto={<span style={{ color: "#8a7f77" }}>+0</span>} x={1300} y={330} t={13.4} tam={180} />
+          <Cifra texto="por ayudar" x={1300} y={560} t={13.8} tam={44} color={C.apagado} />
+        </>
+      }
+    />
     <Subtitulos id="2" />
     <Voces id="2" />
     <Sonidos lista={[["pop", 0.3], ["ding", 3.2], ["pop", 6.0], ["pop", 9.7], ["pop", 12.4], ["ding_roto", 13.4], ["pop", 16.5], ["ding", 20.6]]} />
@@ -653,6 +739,18 @@ export const Escena9: React.FC = () => {
       <Cierre />
       <Avatares escena={av9} />
       </Camara>
+      <PrimerPlano
+        escena={av9}
+        quien="aldrin"
+        t0={23.3}
+        t1={25.7}
+        junto={
+          <>
+            <Cifra texto="Hoy una ciudad," x={1300} y={360} t={23.4} tam={60} />
+            <Cifra texto={<span>mañana <span style={{ color: C.naranja }}>toda Bolivia</span></span>} x={1300} y={460} t={24.3} tam={72} />
+          </>
+        }
+      />
       <Subtitulos id="9" />
       <Voces id="9" />
       <Sonidos

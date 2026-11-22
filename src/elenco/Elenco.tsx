@@ -34,7 +34,7 @@ const PASO_CORRER = 8;
 
 type Marcha = { pos: Punto; w: number; dir: -1 | 1; fase: number; correr: boolean };
 
-const marcha = (r: Recorrido, T: number): Marcha => {
+export const marcha = (r: Recorrido, T: number): Marcha => {
   let pos = r.inicio;
   let dir: -1 | 1 = 1;
   for (const m of r.tramos) {
@@ -150,17 +150,20 @@ const Avatar: React.FC<{ quien: Quien; escena: Escena; frame: number }> = ({ qui
     <group>
       {Math.abs(dy) < 25 ? <SueloSombra position={[wx, wy, 0]} ancho={46} fondo={36} /> : null}
       <group position={[wx, wy + dy, 0]} rotation={[0, 0, rot]}>
-        <Voxel estado={estadoFinal} position={[0, 0, 0]} />
+        <Voxel estado={estadoFinal} position={[0, 0, 0]} celular={(r.celular ?? []).some(([a, b]) => T >= a - 0.1 && T <= b + 0.6)} />
       </group>
     </group>
   );
 };
 
-const Mirar: React.FC = () => {
+const Mirar: React.FC<{ mira?: [number, number, number] }> = ({ mira = [0, 0, 0] }) => {
   const camera = useThree((st) => st.camera);
-  camera.lookAt(0, 0, 0);
+  camera.lookAt(...mira);
   return null;
 };
+
+// Cámara propia para un primer plano (más cerca de un personaje)
+export type CamaraPlano = { position: [number, number, number]; mira: [number, number, number]; fov?: number };
 
 // ---------- Vista previa: marcos de celular, nombres y subtítulos (no va en el render final) ----------
 
@@ -268,11 +271,18 @@ const Subtitulo: React.FC<{ escena: Escena; T: number }> = ({ escena, T }) => {
 // ---------- La escena ----------
 
 // Los tres avatares sobre fondo transparente (se usa también en las escenas de ejemplo)
-export const CapaAvatares: React.FC<{ escena: Escena; frame: number }> = ({ escena, frame }) => {
+export const CapaAvatares: React.FC<{ escena: Escena; frame: number; camara?: CamaraPlano }> = ({ escena, frame, camara }) => {
   const { width, height } = useVideoConfig();
   return (
-    <ThreeCanvas width={width} height={height} camera={CAM} shadows flat>
-      <Mirar />
+    <ThreeCanvas
+      key={camara ? "plano" : "general"}
+      width={width}
+      height={height}
+      camera={camara ? { ...CAM, fov: camara.fov ?? CAM.fov, position: camara.position } : CAM}
+      shadows
+      flat
+    >
+      <Mirar mira={camara?.mira} />
       <Escenario>
         {QUIENES.map((q) => (
           <Avatar key={q} quien={q} escena={escena} frame={frame} />

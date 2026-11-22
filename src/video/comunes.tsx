@@ -12,7 +12,8 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { CapaAvatares } from "../elenco/Elenco";
+import { CapaAvatares, marcha } from "../elenco/Elenco";
+import { aMundo } from "../elenco/layout";
 import { Guion, type Punto, type Quien } from "../elenco/escenas";
 import { AGUAYO, C, FPS, LETRA, LETRA_TITULO } from "./estilo";
 import { VOCES, durArchivo, envDe, escenaVideo, finHabla, inicioArchivo, type IdEscena } from "./datos";
@@ -103,7 +104,7 @@ const Pantalla: React.FC<{ tramos: Tramo[] }> = ({ tramos }) => (
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
-          <Fundido>
+          <Fundido sin={tr.t0 === 0}>
             <Img src={staticFile(tr.img.startsWith("tomas/") ? `video/${tr.img}` : `video/img/${tr.img}`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
           </Fundido>
         )}
@@ -113,9 +114,9 @@ const Pantalla: React.FC<{ tramos: Tramo[] }> = ({ tramos }) => (
 );
 
 // Cada captura entra con un fundido corto sobre la anterior
-const Fundido: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Fundido: React.FC<{ children: React.ReactNode; sin?: boolean }> = ({ children, sin }) => {
   const f = useCurrentFrame();
-  return <AbsoluteFill style={{ opacity: Math.min(1, f / 5) }}>{children}</AbsoluteFill>;
+  return <AbsoluteFill style={{ opacity: sin ? 1 : Math.min(1, f / 5) }}>{children}</AbsoluteFill>;
 };
 
 // Toque: un círculo amarillo que se expande donde se toca (x, y en px de la pantalla de 360 × 800)
@@ -588,4 +589,38 @@ export const useT = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   return frame / fps;
+};
+
+// ---------- Primer plano: corte a un personaje de cerca (cámara 3D propia, nítido) ----------
+// Entre t0 y t1 tapa toda la escena: fondo, el personaje de cerca (a la izquierda o a la derecha del cuadro)
+// y lo que se ponga en `junto` (un celular grande, una burbuja, un texto) en la otra mitad.
+export const PrimerPlano: React.FC<{
+  escena: ReturnType<typeof armarAvatares>;
+  quien: Quien;
+  t0: number;
+  t1: number;
+  lado?: "izq" | "der";
+  cerca?: number;
+  junto?: React.ReactNode;
+}> = ({ escena, quien, t0, t1, lado = "izq", cerca = 170, junto }) => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  if (T < t0 || T >= t1) return null;
+  const m = marcha(escena.personajes[quien], T);
+  const [wx, wy] = aMundo(m.pos[0], m.pos[1]);
+  // Empuje lento durante el plano
+  const q = (T - t0) / Math.max(0.1, t1 - t0);
+  const z = cerca * (1 - 0.06 * q);
+  const corre = (lado === "izq" ? 1 : -1) * z * 0.15;
+  return (
+    <AbsoluteFill>
+      <Fondo brillo={[lado === "izq" ? 560 : 1360, 520]} />
+      <CapaAvatares
+        escena={escena}
+        frame={frame}
+        camara={{ position: [wx + corre, wy + 22, z], mira: [wx + corre, wy + 17, 0], fov: 18 }}
+      />
+      {junto ? <AbsoluteFill>{junto}</AbsoluteFill> : null}
+    </AbsoluteFill>
+  );
 };

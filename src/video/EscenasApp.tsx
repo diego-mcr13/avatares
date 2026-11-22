@@ -8,6 +8,7 @@ import {
   CEL,
   Camara,
   Fondo,
+  PrimerPlano,
   Rotulo,
   Sonidos,
   Subtitulos,
@@ -75,11 +76,9 @@ export const Escena3: React.FC = () => (
 
 // ---------- Escena 4 · Crear la cuenta y +5 ----------
 const av4 = armarAvatares("4", (g) => {
-  g.entra("diego", 0.0, junto("izq", 0.8), "salto", "tocar", CARA.atento);
-  g.va("diego", 2.0, null, "hablar", CARA.atento);
-  g.va("diego", 5.0, null, "senalar", CARA.atento);
-  g.va("diego", 7.6, [330, 930], "esperar", CARA.atento);
-  g.va("diego", 10.3, null, "aplaudir", CARA.feliz);
+  g.entra("diego", 0.0, junto("izq", 0.8), "salto", "esperar", CARA.atento);
+  g.usaCelular("diego", 0.6, 9.9, CARA.atento);
+  g.va("diego", 10.1, null, "celebrar", CARA.feliz);
   g.entra("aldrin", 7.3, junto("der", 0.1), "puf", "senalarArriba", CARA.feliz);
   g.va("aldrin", 10.3, null, "aplaudir", CARA.feliz);
   g.va("aldrin", 12.6, null, "celebrar", CARA.feliz);
@@ -116,6 +115,18 @@ export const Escena4: React.FC = () => (
       <Burbuja texto="+5 yapitas · bienvenida" x={DER_CEL + 290} y={250} t={10.3} dur={2.6} />
       <Avatares escena={av4} />
     </Camara>
+    <PrimerPlano
+      escena={av4}
+      quien="diego"
+      t0={10.2}
+      t1={12.8}
+      junto={
+        <>
+          <Burbuja texto="+5 yapitas de bienvenida" x={1300} y={470} t={10.35} dur={2.4} tam={52} />
+          <Rotulo texto="Su cuenta en Stellar, lista" x={1300} y={640} t={10.6} alinear="centro" tam={34} />
+        </>
+      }
+    />
     <Subtitulos id="4" />
     <Voces id="4" />
     <Sonidos lista={[["blip", 0.5], ["blip", 1.75], ["blip", 5.5], ["blip", 6.7], ["pop", 7.3], ["pop", 9.2], ["campanitas", 10.3]]} />
@@ -124,10 +135,9 @@ export const Escena4: React.FC = () => (
 
 // ---------- Escena 5 · Preguntar urgente ----------
 const av5 = armarAvatares("5", (g) => {
-  g.entra("yaeko", 0.0, junto("izq", 0.95), "salto", "senalarAbajo", CARA.preocupado);
-  g.va("yaeko", 1.3, null, "tocar", CARA.preocupado);
-  g.va("yaeko", 2.2, null, "escribir", CARA.preocupado);
-  g.va("yaeko", 5.2, null, "esperar", CARA.atento);
+  g.entra("yaeko", 0.0, junto("izq", 0.95), "salto", "esperar", CARA.preocupado);
+  g.usaCelular("yaeko", 0.5, 8.7, CARA.preocupado);
+  g.va("yaeko", 9.0, null, "esperar", CARA.atento);
   g.entra("aldrin", 4.9, junto("der", 0.69), "salto", "senalarIzq", CARA.atento);
   g.va("aldrin", 7.7, null, "tocar", CARA.atento);
   g.va("aldrin", 8.3, null, "celebrar", CARA.feliz);
@@ -177,8 +187,10 @@ const av6 = armarAvatares("6", (g) => {
   g.va("diego", 1.8, null, "senalar", CARA.atento);
   g.va("diego", 3.9, null, "hablar", CARA.atento);
   g.va("diego", 7.3, null, "aplaudir", CARA.feliz);
-  g.entra("yaeko", 6.4, [1630, 930], "puf", "sorpresa", CARA.sorpresa);
-  g.va("yaeko", 8.7, null, "senalarIzq", CARA.feliz);
+  g.entra("yaeko", 5.6, [1630, 930], "puf", "esperar", CARA.atento);
+  g.usaCelular("yaeko", 5.9, 9.4, CARA.atento);
+  g.va("yaeko", 7.1, null, "escribir", CARA.sorpresa);
+  g.va("yaeko", 9.6, null, "senalarIzq", CARA.feliz);
   g.va("yaeko", 11.0, null, "celebrar", CARA.feliz);
 });
 
@@ -222,6 +234,19 @@ export const Escena6: React.FC = () => (
     <Rotulo texto="Sin recargar · 0,7 s" x={B + CEL.ancho / 2 + 24} y={440} t={7.1} tam={26} color={C.verde} />
     <Avatares escena={av6} />
     </Camara>
+    <PrimerPlano
+      escena={av6}
+      quien="yaeko"
+      t0={7.3}
+      t1={9.6}
+      lado="der"
+      junto={
+        <div style={{ position: "absolute", left: 200, top: 250, width: 560, height: 415, borderRadius: 28, overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,0.5), 0 0 0 4px " + C.verde }}>
+          <Img src={staticFile("video/tomas/c12-llega-respuesta.png")} style={{ position: "absolute", width: 560, top: -1560 * (560 / 1080), left: 0 }} />
+          <Rotulo texto="Llegó sola · sin recargar" x={280} y={350} t={7.5} alinear="centro" tam={28} color={C.verde} />
+        </div>
+      }
+    />
     <Subtitulos id="6" />
     <Voces id="6" />
     <Sonidos lista={[["blip", 0.5], ["blip", 2.1], ["pop", 1.4], ["ding", 7.0], ["pop", 7.1]]} />
@@ -259,6 +284,19 @@ export const Escena7: React.FC = () => (
       <Burbuja texto="+5 yapitas para Ana" x={DER_CEL + 220} y={560} t={7.5} dur={2.4} />
       <Avatares escena={av7} />
     </Camara>
+    <PrimerPlano
+      escena={av7}
+      quien="diego"
+      t0={6.8}
+      t1={9.6}
+      lado="der"
+      junto={
+        <>
+          <Burbuja texto="+5 yapitas para Ana" x={620} y={470} t={7.0} dur={2.6} tam={56} />
+          <Rotulo texto="por ayudar a una vecina" x={620} y={640} t={7.3} alinear="centro" tam={34} />
+        </>
+      }
+    />
     <Subtitulos id="7" />
     <Voces id="7" />
     <Sonidos lista={[["blip", 1.9], ["ding", 3.75], ["pop", 3.8], ["pop", 6.2], ["campanitas", 7.5]]} />

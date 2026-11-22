@@ -17,6 +17,7 @@ import {
   torso,
 } from "./modelo";
 import { Destello, Laptop } from "./efectos";
+import { Celular } from "../bambinos/Celular";
 import { crearPieza, crearVariantes } from "./piezas";
 import type { Estado, Rot } from "./poses";
 
@@ -45,6 +46,8 @@ const usePiezas = () =>
 const r = (rot: Rot): [number, number, number] => [rot[0], rot[1], rot[2]];
 
 type Props = {
+  // Muestra un celular en vez de la laptop (gesto «escribir»)
+  celular?: boolean;
   estado: Estado;
   position?: [number, number, number];
   escala?: number;
@@ -53,7 +56,7 @@ type Props = {
 };
 
 // Diego con el outfit de CodeBambinos: canguro negro con el logo del equipo, jeans negros y tenis blancos
-export const DiegoVoxel: React.FC<Props> = ({ estado, position = [0, 0, 0], escala = 1, explotado = false }) => {
+export const DiegoVoxel: React.FC<Props> = ({ estado, position = [0, 0, 0], escala = 1, celular = false, explotado = false }) => {
   const p = usePiezas();
   const { pose } = estado;
   const k = estado.aplastar;
@@ -67,7 +70,7 @@ export const DiegoVoxel: React.FC<Props> = ({ estado, position = [0, 0, 0], esca
       <group scale={estado.escala} visible={visible}>
       <group scale={[1 + 0.03 * k, 1 - 0.045 * k, 1 + 0.03 * k]}>
         <group position={[0, E.cadera + pose.altura, 0]}>
-          <Laptop tam={estado.laptop} position={[0, 2.6, 3.4]} />
+          {celular ? <Celular tam={estado.laptop} position={[0, 4.2, 4.6]} /> : <Laptop tam={estado.laptop} position={[0, 2.6, 3.4]} />}
           <group rotation={r(pose.torso)}>
             <primitive object={p.torso} />
             <group position={[0, E.cuello, 0]} rotation={r(pose.cabeza)}>

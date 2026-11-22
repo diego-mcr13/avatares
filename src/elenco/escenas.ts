@@ -41,6 +41,8 @@ export type Recorrido = {
   // Cae desde arriba a las `t` y se cae hacia `lado` (-1 izquierda, 1 derecha) antes de levantarse
   caida?: { t: number; lado: -1 | 1 };
   // Entra (salto desde abajo o «puf») y sale (salto hacia abajo o «puf»): no se ve antes de entrar ni después de salir
+  // Ratos en que sostiene un celular (con el gesto «escribir»)
+  celular?: [number, number][];
   // Entradas y salidas en orden (puede salir y volver a entrar)
   eventos?: { t: number; tipo: "salto" | "puf"; entra: boolean }[];
   tramos: Tramo[];
@@ -74,6 +76,7 @@ export class Guion {
   private poseInicial: Record<Quien, PoseNombre> = { diego: "esperar", yaeko: "esperar", aldrin: "esperar" };
   private aparece: Partial<Record<Quien, number>> = {};
   private caidas: Partial<Record<Quien, { t: number; lado: -1 | 1 }>> = {};
+  private ratosCelular: Record<Quien, [number, number][]> = { diego: [], yaeko: [], aldrin: [] };
   private eventos: Record<Quien, { t: number; tipo: "salto" | "puf"; entra: boolean }[]> = { diego: [], yaeko: [], aldrin: [] };
   private n = 0;
 
@@ -136,6 +139,13 @@ export class Guion {
       // Vuelve a entrar en otro lugar: aparece ahí sin caminar
       this.paradas[quien].push({ t, pos, pose, expr, salto: true });
     }
+  }
+
+  // Saca el celular a las `t0` y lo guarda a las `t1` (mientras, mira la pantalla con la cara `expr`)
+  usaCelular(quien: Quien, t0: number, t1: number, expr?: Partial<Expresion>, despues: PoseNombre = "esperar") {
+    this.ratosCelular[quien].push([t0, t1]);
+    this.va(quien, t0, null, "escribir", expr);
+    this.va(quien, t1, null, despues, expr);
   }
 
   // Sale a las `t`: salta hacia abajo del cuadro o se va con un «puf»
@@ -207,6 +217,7 @@ export class Guion {
         apareceEn: this.aparece[q] ?? null,
         caida: this.caidas[q],
         eventos: [...this.eventos[q]].sort((a, b) => a.t - b.t),
+        celular: this.ratosCelular[q],
         tramos,
         claves: limpias,
       };
