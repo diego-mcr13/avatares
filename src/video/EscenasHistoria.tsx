@@ -287,20 +287,20 @@ const av2 = armarAvatares("2", (g) => {
   g.sale("aldrin", 15.9, "salto");
   g.entra("yaeko", 16.2, [250, 930], "puf", "apuntar", CARA.atento);
   g.va("yaeko", 20.8, null, "senalar", CARA.atento);
-  g.va("yaeko", 23.0, null, "senalarArriba", CARA.feliz);
-  g.va("yaeko", 26.4, null, "celebrar", CARA.feliz);
+  g.va("yaeko", 26.4, null, "senalarArriba", CARA.feliz);
+  g.va("yaeko", 29.8, null, "celebrar", CARA.feliz);
 });
 
 // «Por eso hicimos BoliviaSabe»: el logo y lo que resuelve
 const Solucion: React.FC = () => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
-  if (T < 22.9) return null;
+  if (T < 26.3) return null;
   return (
     <AbsoluteFill>
-      <Logo x={960} y={180} tam={150} t={23.0} />
-      <Cifra texto={<span>Lo que pasa hoy en tu barrio, <span style={{ color: C.naranja }}>ordenado</span></span>} x={1060} y={520} t={25.0} tam={56} />
-      <Cifra texto={<span>y vecinos que <span style={{ color: C.fucsiaTexto }}>responden</span></span>} x={1060} y={620} t={26.9} tam={56} />
+      <Logo x={960} y={180} tam={150} t={26.4} />
+      <Cifra texto={<span>Lo que pasa hoy en tu barrio, <span style={{ color: C.naranja }}>ordenado</span></span>} x={1060} y={520} t={28.4} tam={56} />
+      <Cifra texto={<span>y vecinos que <span style={{ color: C.fucsiaTexto }}>responden</span></span>} x={1060} y={620} t={30.3} tam={56} />
     </AbsoluteFill>
   );
 };
@@ -467,17 +467,19 @@ const PreguntaVuela: React.FC = () => {
 const Figuritas: React.FC = () => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
-  if (T < 16.3 || T > 23.0) return null;
-  const e = entrar(frame, 16.4, 0.5) * (1 - tramo(T, 22.6, 23.0));
+  if (T < 16.3 || T > 26.4) return null;
+  const e = entrar(frame, 16.4, 0.5) * (1 - tramo(T, 26.0, 26.4));
   const figs: React.ReactNode[] = [];
-  for (let i = 0; i < 24; i++) {
-    const col = i % 8;
-    const fila = Math.floor(i / 8);
-    const prendida = i < 14 && T >= 19.25 + i * 0.09;
-    const p = prendida ? spring({ frame: frame - t2f(19.25 + i * 0.09), fps: FPS, config: { damping: 12 } }) : 0;
-    const color = prendida ? C.fucsia : "#4a403b";
+  // Encuesta real (22 nov, 18 personas): las 18 preguntaron en un grupo el último mes; a 9 les molesta que tarden
+  for (let i = 0; i < 18; i++) {
+    const col = i % 6;
+    const fila = Math.floor(i / 6);
+    const prendida = T >= 19.5 + i * 0.07;
+    const p = prendida ? spring({ frame: frame - t2f(19.5 + i * 0.07), fps: FPS, config: { damping: 12 } }) : 0;
+    const tarda = i < 9 && T >= 23.7;
+    const color = tarda ? C.naranja : prendida ? C.fucsia : "#4a403b";
     figs.push(
-      <div key={i} style={{ position: "absolute", left: 640 + col * 96, top: 160 + fila * 150, transform: `scale(${1 + 0.15 * p})`, opacity: e }}>
+      <div key={i} style={{ position: "absolute", left: 700 + col * 96, top: 160 + fila * 150, transform: `scale(${1 + 0.15 * p})`, opacity: e }}>
         <div style={{ width: 44, height: 44, borderRadius: 22, background: color, margin: "0 auto" }} />
         <div style={{ width: 64, height: 60, borderRadius: "30px 30px 10px 10px", background: color, marginTop: 6 }} />
       </div>,
@@ -486,8 +488,9 @@ const Figuritas: React.FC = () => {
   return (
     <AbsoluteFill>
       {figs}
-      <Cifra texto={<span><span style={{ color: C.fucsiaTexto }}>14</span> de 24</span>} x={1020} y={640} t={19.3} tam={110} />
-      <Cifra texto="les molesta que la pregunta se pierda" x={1020} y={780} t={20.5} tam={40} color={C.apagado} />
+      <Cifra texto={<span><span style={{ color: C.fucsiaTexto }}>18</span> de 18 preguntaron en un grupo este mes</span>} x={1000} y={640} t={19.6} tam={56} />
+      <Cifra texto={<span><span style={{ color: C.naranja }}>9</span> de 18: «tardan en responder»</span>} x={1000} y={730} t={23.7} tam={56} />
+      <Cifra texto="Encuesta anónima · 18 vecinos y 10 negocios · 22 nov 2026" x={1000} y={820} t={16.8} tam={26} color={C.apagado} />
     </AbsoluteFill>
   );
 };
@@ -520,7 +523,7 @@ export const Escena2: React.FC = () => (
     />
     <Subtitulos id="2" />
     <Voces id="2" />
-    <Sonidos lista={[["pop", 0.3], ["ding", 3.2], ["pop", 6.0], ["pop", 9.7], ["pop", 12.4], ["ding_roto", 13.4], ["pop", 16.5], ["ding", 20.6], ["titulo", 23.0], ["pop", 25.0], ["pop", 26.9]]} />
+    <Sonidos lista={[["pop", 0.3], ["ding", 3.2], ["pop", 6.0], ["pop", 9.7], ["pop", 12.4], ["ding_roto", 13.4], ["pop", 16.5], ["pop", 19.6], ["ding", 23.7], ["titulo", 26.4], ["pop", 28.4], ["pop", 30.3]]} />
   </>
 );
 
@@ -534,8 +537,17 @@ const av9 = armarAvatares("9", (g) => {
   g.va("diego", 15.5, null, "esperar", CARA.feliz);
   g.sale("diego", 16.2, "puf");
   g.entra("aldrin", 17.0, [1000, 930], "salto", "senalarIzq", CARA.orgullo);
+  // Diego y Yaeko acompañan a Aldrin: Diego señala el QR y Yaeko el celular
+  g.entra("diego", 18.3, [560, 930], "salto", "senalarIzq", CARA.feliz);
+  g.va("diego", 20.6, null, "esperar", CARA.feliz);
+  g.entra("yaeko", 19.2, [1790, 930], "puf", "senalarIzq", CARA.atento);
+  g.va("yaeko", 21.4, null, "esperar", CARA.feliz);
+  g.va("diego", 24.4, null, "aplaudir", CARA.feliz);
+  g.va("yaeko", 24.4, null, "celebrar", CARA.feliz);
   g.va("aldrin", 25.0, null, "triunfo", CARA.orgullo);
   g.sale("aldrin", 25.6, "puf");
+  g.sale("diego", 25.6, "puf");
+  g.sale("yaeko", 25.6, "puf");
   // Cierre: los tres de un salto, juntos
   g.entra("yaeko", 26.0, [960, 930], "salto", "hablar", CARA.feliz);
   g.entra("diego", 26.1, [740, 930], "salto", "aplaudir", CARA.feliz);
@@ -587,44 +599,30 @@ const Plan: React.FC = () => {
   return (
     <AbsoluteFill style={{ opacity: 1 - sale }}>
       <Cifra texto="Plan de 30 días" x={500} y={70} t={0.3} tam={64} alinear="izq" />
-      {/* Mapa de Cochabamba: calles, el río Rocha, la laguna Alalay y dos pines */}
-      <div style={{ position: "absolute", left: 500, top: 190, width: 620, height: 540, borderRadius: 28, overflow: "hidden", opacity: mapa, background: "#1f2a2c", border: `1.5px solid ${C.linea}`, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}>
-        <svg width={620} height={540} viewBox="0 0 620 540">
-          {/* Manzanas: cuadrícula de calles */}
-          {Array.from({ length: 14 }).map((_, i) => (
-            <line key={`v${i}`} x1={i * 46 + 10} y1={0} x2={i * 46 - 20} y2={540} stroke="rgba(243,237,232,0.07)" strokeWidth={2} />
-          ))}
-          {Array.from({ length: 12 }).map((_, i) => (
-            <line key={`h${i}`} x1={0} y1={i * 46 + 18} x2={620} y2={i * 46 + 30} stroke="rgba(243,237,232,0.07)" strokeWidth={2} />
-          ))}
-          {/* Avenidas */}
-          <path d="M0 330 L620 300" stroke="rgba(243,237,232,0.22)" strokeWidth={7} />
-          <path d="M300 0 L330 540" stroke="rgba(243,237,232,0.22)" strokeWidth={7} />
-          <path d="M40 60 C 200 150, 380 140, 600 90" stroke="rgba(243,237,232,0.16)" strokeWidth={5} fill="none" />
-          {/* Río Rocha */}
-          <path d="M0 200 C 120 180, 220 230, 340 205 C 450 182, 540 215, 620 195" stroke="#3b78c4" strokeWidth={9} fill="none" opacity={0.85} />
-          <text x={560} y={180} fill="#8fb4e0" fontSize={19} textAnchor="middle" fontFamily={LETRA}>río Rocha</text>
-          {/* Laguna Alalay */}
-          <ellipse cx={470} cy={445} rx={74} ry={40} fill="#3b78c4" opacity={0.7} />
-          <text x={470} y={510} fill="#8fb4e0" fontSize={19} textAnchor="middle" fontFamily={LETRA}>laguna Alalay</text>
-        </svg>
-        <div style={{ position: "absolute", left: 22, top: 18, background: "rgba(21,17,16,0.85)", borderRadius: 999, padding: "8px 18px", fontFamily: LETRA, fontWeight: 600, fontSize: 24, color: C.tinta }}>
+      {/* Mapa real de Cochabamba (public/video/img/mapa-cochabamba.png, 2000×1235) con dos pines.
+          Se muestra el recorte x 0–1700, y 12–1195 de la imagen (sin la barra de arriba ni la miniatura de abajo). */}
+      <div style={{ position: "absolute", left: 500, top: 200, width: 620, height: 431, borderRadius: 28, overflow: "hidden", opacity: mapa, background: "#f3f1ee", border: `1.5px solid ${C.linea}`, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}>
+        <Img src={staticFile("video/img/mapa-cochabamba.png")} style={{ position: "absolute", left: 0, top: -4, width: 729, height: 450 }} />
+        <div style={{ position: "absolute", right: 18, top: 16, background: "rgba(21,17,16,0.85)", borderRadius: 999, padding: "8px 18px", fontFamily: LETRA, fontWeight: 600, fontSize: 24, color: C.tinta }}>
           Cochabamba
         </div>
         {[
-          { x: 175, y: 290, nombre: "Sarco", e: sarco },
-          { x: 335, y: 360, nombre: "Centro", e: centro },
+          // Sarco queda en el borde de arriba: su nombre va a la derecha del pin para no cortarse
+          { x: 40, y: 56, nombre: "Sarco", e: sarco, lado: "der" },
+          // Centro: la Plaza Principal 14 de Septiembre
+          { x: 327, y: 200, nombre: "Centro", e: centro, lado: "arriba" },
         ].map((p) => (
-          <div key={p.nombre} style={{ position: "absolute", left: p.x, top: p.y, opacity: Math.min(1, p.e * 1.5), transform: `translate(-50%, -100%) scale(${0.5 + 0.5 * p.e})`, transformOrigin: "50% 100%", textAlign: "center" }}>
-            <div style={{ fontFamily: LETRA, fontWeight: 700, fontSize: 30, color: C.tinta, background: "rgba(21,17,16,0.85)", borderRadius: 12, padding: "4px 14px", marginBottom: 6 }}>{p.nombre}</div>
-            <svg width={44} height={58} viewBox="0 0 44 58">
+          <div key={p.nombre} style={{ position: "absolute", left: p.x, top: p.y, opacity: Math.min(1, p.e * 1.5), transform: `translate(-22px, -100%) scale(${0.5 + 0.5 * p.e})`, transformOrigin: "22px 100%", display: "flex", flexDirection: p.lado === "der" ? "row" : "column-reverse", alignItems: p.lado === "der" ? "center" : "flex-start" }}>
+            <svg width={44} height={58} viewBox="0 0 44 58" style={{ flexShrink: 0 }}>
               <path d="M22 56 C 22 56, 2 32, 2 21 A 20 20 0 0 1 42 21 C 42 32, 22 56, 22 56 Z" fill={C.fucsia} stroke="#fff" strokeWidth={2.5} />
               <circle cx={22} cy={21} r={7} fill="#fff" />
             </svg>
+            <div style={{ fontFamily: LETRA, fontWeight: 700, fontSize: 30, color: C.tinta, background: "rgba(21,17,16,0.85)", borderRadius: 12, padding: "4px 14px", whiteSpace: "nowrap", ...(p.lado === "der" ? { marginLeft: 6 } : { marginBottom: 6, transform: "translateX(calc(-50% + 22px))" }) }}>{p.nombre}</div>
           </div>
         ))}
+        <div style={{ position: "absolute", right: 10, bottom: 6, fontFamily: LETRA, fontSize: 13, color: "rgba(31,26,23,0.7)" }}>Mapa © Google</div>
       </div>
-      <Rotulo texto="cerca de las universidades" x={810} y={760} t={4.2} alinear="centro" tam={28} color={C.fucsiaTexto} />
+      <Rotulo texto="cerca de las universidades" x={810} y={670} t={4.2} alinear="centro" tam={28} color={C.fucsiaTexto} />
       <Rotulo texto="estudiantes" x={1180} y={200} t={2.1} tam={28} />
       <Rotulo texto="negocios de barrio" x={1410} y={200} t={3.1} tam={28} />
       {tarjeta(7.6, "1", "semana", 320)}

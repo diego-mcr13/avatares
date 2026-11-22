@@ -101,15 +101,15 @@ Se convierten a H.264 1080 × 1920 (vertical) con la rotación aplicada; el de Y
 | 2-1 | Yaeko | 0,00–4,92 | En Cochabamba preguntamos todo en grupos: este tiene 209 mil miembros. |
 | 2-2 | Diego | 0,29–6,27 | Pero la pregunta se pierde entre cientos de mensajes, nadie sabe si sigue vigente y a veces tarda. |
 | 2-3 | Aldrin | 0,66–4,80 | Y quien ayuda no gana nada. Por eso muchos callan. |
-| 2-4 | Yaeko | **pendiente** | Encuestamos a 18 personas: las 18 preguntaron en un grupo este mes, y a 9 les molesta que tarden en responder. *(Reemplaza «Le preguntamos a 24 personas…»: esos 24 eran perfiles simulados. Mientras no llegue, el tramo va sin voz y con las cifras en pantalla.)* |
+| 2-4 | Yaeko | 0,00–9,75 | Encuestamos a 18 vecinos y 10 negocios. Los 18 vecinos preguntaron en un grupo este mes, y a 9 les molesta que tarden en responder. *(Reemplaza «Le preguntamos a 24 personas…», que eran perfiles simulados.)* |
 | 2-5 | Yaeko | 0,00–5,54 | Por eso hicimos BoliviaSabe: lo que pasa hoy en tu barrio, ordenado, y vecinos que responden. |
 | 3-1 | Aldrin | 1,02–6,86 | Abres boliviasabe.vercel.app y entras directo a Hoy, sin registrarte. |
 | 3-2 | Yaeko | 0,00–5,99 | Letreros con foto, precio, zona y fecha. Buscas «almuerzo» y ahí está. |
-| 4-1 | Diego | 0,31–5,38 | Para participar, creas tu cuenta con Google o con tu correo y eliges tu barrio. |
+| 4-1 | Diego | 0,00–5,60 (regrabada) | Para participar, creas tu cuenta con Google o con tu correo y eliges tu barrio. |
 | 4-2 | Aldrin | 0,95–5,98 | Y al terminar ya tienes tu cuenta en Stellar y cinco yapitas de bienvenida. |
 | 5-1 | Yaeko | 0,00–4,70 | Ahora preguntamos: ¿quién arregla una tubería hoy en Queru Queru? |
 | 5-2 | Aldrin | 0,84–6,86 | La marcamos Urgente: cuesta cinco yapitas y sale primero por 24 horas. |
-| 6-1 | Diego | 0,37–5,94 | En otra cuenta, Ana, que vive en Queru Queru, ve el aviso de la urgente y responde. |
+| 6-1 | Diego | 0,00–5,37 (regrabada) | En otra cuenta, Ana, que vive en Queru Queru, ve el aviso de la urgente y responde. |
 | 6-2 | Yaeko | 0,00–4,61 | Y quien preguntó ve la respuesta aparecer sola, sin recargar. |
 | 7-1 | Aldrin | 0,56–6,37 | Solo quien preguntó puede marcar Me sirvió, y la pregunta queda Solucionada. |
 | 7-2 | Diego | 0,00–2,75 | Y Ana gana cinco yapitas por ayudar. |
@@ -170,7 +170,7 @@ Tres tarjetas verticales 9:16 (360 × 640; centros x = 520, 960 y 1400) sobre el
 | 16,0–17,8 | **Caen al suelo** (idea de Diego): los tres caen desde arriba uno tras otro, chocan (se aplastan un poco), se caen de lado y quedan tirados con cara **mareado**; después se levantan de un saltito con cara de sorpresa y saludan **felices** | Diego (x 720), Yaeko (960) y Aldrin (1200), en el piso | `golpe` en cada caída, `pop` al levantarse |
 | 18,4–22,0 | Logo de BoliviaSabe y «por CodeBambinos» | Se juntan; Yaeko habla con **orgullo**, Diego y Aldrin celebran; `triunfo` en «¡Esto es BoliviaSabe!» | 1-4 Yaeko + `titulo` |
 
-### Escena 2 · El problema (≈ 29,2 s) · *Problema y usuario*
+### Escena 2 · El problema (≈ 32,4 s) · *Problema y usuario*
 
 **Sin celular.** El gráfico ocupa el área central.
 
@@ -179,8 +179,8 @@ Tres tarjetas verticales 9:16 (360 × 640; centros x = 520, 960 y 1400) sobre el
 | 0,0–4,9 | `e2-grupo-facebook-cabecera.png` en una tarjeta de navegador; acercamiento lento a «209,0 mil miembros», que se resalta con un subrayado amarillo | Yaeko a la izquierda: `senalar` hacia la cifra | 2-1 |
 | 5,3–11,2 | Burbujas grises de chat que suben y se apilan; una amarilla «¿Alguien sabe quién arregla tuberías?» se hunde entre ellas. En «vigente», una etiqueta «¿sigue vigente?» sobre una burbuja vieja | Diego entra por la derecha: `desesperar` en «se pierde», `encoger` al final | 2-2 |
 | 11,6–15,7 | Una burbuja de respuesta con «+0» en gris | Aldrin: `pensar` y `encoger` en «muchos callan» | 2-3 |
-| 16,1–22,9 | 18 figuritas en 3 filas de 6 que se encienden una tras otra; 9 se pintan de naranja. «18 de 18 preguntaron en un grupo este mes», «9 de 18: «tardan en responder»» y, chico, «Encuesta anónima a vecinos, estudiantes y dueños · 22 nov 2026» | Yaeko a la izquierda: `apuntar` y `senalar` | 2-4 (pendiente) |
-| 23,0–29,2 | Logo de BoliviaSabe; «Lo que pasa hoy en tu barrio, **ordenado**» y «y vecinos que **responden**» | Yaeko: `senalarArriba` y `celebrar` | 2-5 |
+| 16,4–26,4 | 18 figuritas en 3 filas de 6 que se encienden una tras otra; 9 se pintan de naranja. «18 de 18 preguntaron en un grupo este mes», «9 de 18: «tardan en responder»» y, chico, «Encuesta anónima a vecinos, estudiantes y dueños · 22 nov 2026» | Yaeko a la izquierda: `apuntar` y `senalar` | 2-4 |
+| 26,4–32,4 | Logo de BoliviaSabe; «Lo que pasa hoy en tu barrio, **ordenado**» y «y vecinos que **responden**» | Yaeko: `senalarArriba` y `celebrar` | 2-5 |
 
 Las burbujas y figuritas se dibujan (no se copian de Facebook). No se ven nombres ni caras.
 
@@ -385,13 +385,13 @@ BoliviaSabe: los vecinos de Bolivia comparten precios del barrio y responden pre
 
 0:00 Quiénes somos (CodeBambinos)
 0:22 El problema: 209 mil personas en un grupo «¿Alguien sabe?»; en nuestra encuesta, las 18 personas preguntaron en un grupo el último mes
-0:51 Abrir la app sin cuenta: Hoy y búsqueda
-1:04 Crear la cuenta y recibir 5 yapitas de bienvenida
-1:19 Preguntar (urgente, 5 yapitas)
-1:31 Otra cuenta responde; la respuesta aparece sin recargar
-1:44 «Me sirvió»: quien ayudó gana 5 yapitas
-1:54 El pago en Stellar con su memo (ayuda:56)
-2:12 Plan de 30 días, canje y cierre
+0:54 Abrir la app sin cuenta: Hoy y búsqueda
+1:07 Crear la cuenta y recibir 5 yapitas de bienvenida
+1:22 Preguntar (urgente, 5 yapitas)
+1:35 Otra cuenta responde; la respuesta aparece sin recargar
+1:48 «Me sirvió»: quien ayudó gana 5 yapitas
+1:58 El pago en Stellar con su memo (ayuda:56)
+2:16 Plan de 30 días, canje y cierre
 
 App: https://boliviasabe.vercel.app
 Código: https://github.com/codebambinos/boliviasabe
@@ -416,6 +416,6 @@ El pago del video en Stellar: https://stellar.expert/explorer/testnet/tx/b80fecb
 | «Destacado» no existe en la app | Marcado «próximo» e «hipótesis» (escena 9) | Cerrado |
 | Música | Sin música | Cerrado |
 | Volver a grabar la app | Se hizo una toma nítida nueva (capturas a 3×, `tomas/`, pago `ayuda:56`) | Cerrado |
-| Encuesta simulada en 2-4 | Reemplazada por la encuesta real (22 nov); falta la voz nueva de Yaeko | Abierto: audio |
+| Encuesta simulada en 2-4 | Reemplazada por la encuesta real (22 nov), con la voz nueva de Yaeko | Cerrado |
 | Mapa de Cochabamba poco claro | Captura de OpenStreetMap con pines y atribución, o quitar el mapa | Abierto |
 | 4-3 (qué son las yapitas) | Opcional; Aldrin la graba si hay tiempo | Abierto |
