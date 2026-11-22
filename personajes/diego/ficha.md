@@ -51,7 +51,7 @@ Diego es el personaje principal de tokensinfinitos: un dev chibi hecho de voxels
 
 Además, sin pedirlo: parpadea, respira, abre la boca según la voz, levanta las cejas cuando la voz sube de golpe y cambia el peso de pie.
 
-Caras extra: pupilas chiquitas (`chicos`, para ansiedad o cara de póker) y dientes apretados (`apretada`, estrés). Con `explotado`, `PersonajeVoxel` le pone el pelo esponjado y chamuscado y hollín en la cara.
+Caras extra: pupilas chiquitas (`chicos`, para ansiedad o cara de póker) y dientes apretados (`apretada`, estrés). Con `explotado`, `DiegoVoxel` le pone el pelo esponjado y chamuscado y hollín en la cara.
 
 ## Entradas y salidas
 
@@ -60,22 +60,22 @@ Caras extra: pupilas chiquitas (`chicos`, para ansiedad o cara de póker) y dien
 
 ## Dónde está el código
 
-- Modelo (pelo, cara, colores): `src/personaje/modelo.ts`
-- Poses y animación: `src/personaje/poses.ts`
-- Componente 3D: `src/personaje/PersonajeVoxel.tsx`
-- Laptop y efectos: `src/personaje/efectos.tsx`
-- Composiciones de prueba: `src/PruebaPersonaje.tsx` (`PruebaPersonaje`, `PersonajePoses` y `PersonajeGiro`)
+- Modelo (pelo, cara, colores): `src/diegoBambino/modelo.ts`
+- Poses y animación: `src/diegoBambino/poses.ts`
+- Componente 3D: `src/diegoBambino/DiegoVoxel.tsx`
+- Laptop y efectos: `src/diegoBambino/efectos.tsx`
+- Composiciones de prueba: `src/PruebaDiegoBambino.tsx` (`PruebaDiego`, `DiegoPoses` y `DiegoGiro`)
 
 Volver a exportar (desde la raíz del repo):
 
 ```bash
-npx remotion render PruebaPersonaje out/prueba-personaje.mp4 --gl=angle
+npx remotion render PruebaDiego out/prueba-personaje.mp4 --gl=angle
 ```
 
 ```bash
-npx remotion still PersonajePoses out/personaje-poses.png --gl=angle
+npx remotion still DiegoPoses out/personaje-poses.png --gl=angle
 ```
 
 ```bash
-npx remotion still PersonajeGiro out/personaje-giro.png --gl=angle
+npx remotion still DiegoGiro out/personaje-giro.png --gl=angle
 ```

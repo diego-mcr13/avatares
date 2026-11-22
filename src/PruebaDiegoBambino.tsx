@@ -316,7 +316,7 @@ const HojaGiro: React.FC<{ vistas: Vista[] }> = ({ vistas }) => {
 export const PruebaDiegoBambinoComposition = () => (
   <>
     <Composition
-      id="PruebaDiegoBambino"
+      id="PruebaDiego"
       component={PruebaDiegoBambinoVideo}
       durationInFrames={DURACION * FPS}
       fps={FPS}
@@ -324,7 +324,7 @@ export const PruebaDiegoBambinoComposition = () => (
       height={1920}
     />
     <Composition
-      id="DiegoBambinoPoses"
+      id="DiegoPoses"
       component={HojaPoses}
       durationInFrames={1}
       fps={FPS}
@@ -332,7 +332,7 @@ export const PruebaDiegoBambinoComposition = () => (
       height={1080}
     />
     <Composition
-      id="DiegoBambinoGiro"
+      id="DiegoGiro"
       component={HojaGiro}
       durationInFrames={1}
       fps={FPS}
@@ -341,7 +341,7 @@ export const PruebaDiegoBambinoComposition = () => (
       defaultProps={{ vistas: GIRO }}
     />
     <Composition
-      id="DiegoBambinoEstres"
+      id="DiegoEstres"
       component={HojaGiro}
       durationInFrames={1}
       fps={FPS}

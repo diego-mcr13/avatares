@@ -13,14 +13,14 @@ Los tres personajes (Diego, Yaeko y Aldrin) comparten el mismo outfit del equipo
 ## Dónde está
 
 - La ropa compartida: `src/bambinos/ropa.ts` (`canguroTorso`, `mangaBrazo`, `mangaAntebrazo`, `jeansPierna`, `faldaNegra`, `piernaConTenis` y `logoBambinos`). Si se cambia el outfit, se cambia ahí y se actualizan los tres.
-- Diego con este outfit: `src/diegoBambino/` (copia de `src/personaje/` con la ropa cambiada; el Diego original con su polera de tokensinfinitos no se tocó).
+- Diego con este outfit: `src/diegoBambino/` (copia de `src/diegoBambino/` con la ropa cambiada; el Diego original con su polera de tokensinfinitos no se tocó).
 - Yaeko: `src/yaeko/`. Su outfit anterior (top fucsia y falda negra) queda en `modelo.ts` como `torsoFucsia`, `brazoFucsia`, `antebrazoFucsia` y `piernaFucsia`.
 - Aldrin: `src/aldrin/`.
 
 ## Imágenes y composiciones
 
 - `equipo.png`: foto del equipo (composición `EquipoCodeBambinos`).
-- Diego con este outfit: `personajes/diego-bambino/` (composiciones `DiegoBambinoPoses`, `DiegoBambinoGiro`, `DiegoBambinoEstres` y `PruebaDiegoBambino`).
+- Diego con este outfit: `personajes/diego-bambino/` (composiciones `DiegoPoses`, `DiegoGiro`, `DiegoEstres` y `PruebaDiego`).
 - Yaeko: `personajes/yaeko/`. Aldrin: `personajes/aldrin/`.
 
 ```bash

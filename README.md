@@ -12,11 +12,11 @@ El repo trae a **Diego** como ejemplo completo. Para crear un personaje nuevo se
 avatares/
 ├── src/
 │   ├── Root.tsx                  # registra las composiciones (aquí agregas las tuyas)
-│   ├── PruebaPersonaje.tsx       # video de prueba, hoja de poses y hoja de giro
-│   ├── personaje/                # TODO el código de Diego (copiar para crear uno nuevo)
+│   ├── PruebaDiegoBambino.tsx       # video de prueba, hoja de poses y hoja de giro
+│   ├── diegoBambino/             # TODO el código de Diego (copiar para crear uno nuevo)
 │   │   ├── modelo.ts             #   cubitos: cuerpo, pelo, cara, ropa, colores (PAL)
 │   │   ├── poses.ts              #   poses, expresiones, animación y sincronía con la voz
-│   │   ├── PersonajeVoxel.tsx    #   componente 3D que une las piezas
+│   │   ├── DiegoVoxel.tsx    #   componente 3D que une las piezas
 │   │   ├── piezas.ts             #   convierte listas de cubitos en mallas 3D
 │   │   └── efectos.tsx           #   laptop, destello al aparecer, etc.
 │   └── data/                     # datos generados a partir de la voz (JSON)
@@ -66,7 +66,7 @@ La primera vez que renderices, Remotion descarga un Chrome headless (unos 100 MB
 ### Comprobar que todo funciona
 
 ```bash
-npx remotion still PersonajePoses out/poses.png --gl=angle
+npx remotion still DiegoPoses out/poses.png --gl=angle
 ```
 
 Debe crear `out/poses.png` con las 12 poses de Diego. (`out/` no se sube a git.)
@@ -81,16 +81,16 @@ Se abre Remotion Studio en el navegador. En la barra lateral están las composic
 
 | Composición | Qué es |
 |---|---|
-| `PruebaPersonaje` | Video vertical de 17 s: entra caminando, cambia de pose según la voz, la boca sigue el audio y sale caminando |
-| `PersonajePoses` | Imagen con las 12 poses principales |
-| `PersonajeGiro` | Frente, tres cuartos, perfil y espalda |
-| `PersonajeEstres` | Poses de estrés y cómo queda después de una explosión |
+| `PruebaDiego` | Video vertical de 17 s: entra caminando, cambia de pose según la voz, la boca sigue el audio y sale caminando |
+| `DiegoPoses` | Imagen con las 12 poses principales |
+| `DiegoGiro` | Frente, tres cuartos, perfil y espalda |
+| `DiegoEstres` | Poses de estrés y cómo queda después de una explosión |
 
 Para exportar:
 
 ```bash
-npx remotion render PruebaPersonaje out/prueba.mp4 --gl=angle
-npx remotion still PersonajeGiro out/giro.png --gl=angle
+npx remotion render PruebaDiego out/prueba.mp4 --gl=angle
+npx remotion still DiegoGiro out/giro.png --gl=angle
 ```
 
 `--gl=angle` hace que el 3D se renderice bien en Chrome headless.
@@ -100,7 +100,7 @@ npx remotion still PersonajeGiro out/giro.png --gl=angle
 Un personaje son **cubitos**. Unidades: 1 = un voxel (Diego mide ~35 voxels).
 
 1. **`modelo.ts`** define cada pieza como una lista de cubitos `{ x, y, z, c }` (posición y color): cabeza, pelo, torso, brazo, antebrazo, pierna, ojos, cejas, boca. Los colores están en el objeto `PAL`.
-2. **`PersonajeVoxel.tsx`** arma el esqueleto: torso, cabeza, dos brazos (brazo + antebrazo) y dos piernas, y los mueve según un `Estado`.
+2. **`DiegoVoxel.tsx`** arma el esqueleto: torso, cabeza, dos brazos (brazo + antebrazo) y dos piernas, y los mueve según un `Estado`.
 3. **`poses.ts`** contiene `POSES`: cada pose es un conjunto de rotaciones `[x, y, z]` en radianes para cada articulación, más una expresión (ojos, cejas, boca).
 4. **`estadoEn(...)`** calcula el estado en un fotograma: mezcla la pose anterior con la siguiente con un resorte (con anticipación y retraso entre torso, brazo y antebrazo), y añade solo parpadeo, respiración, cambio de peso y cejas que suben cuando la voz sube de golpe.
 5. La **boca** abre más o menos según el volumen de la voz en ese fotograma.
@@ -114,11 +114,11 @@ Ejemplo para un personaje llamado `lucia`.
 ### 4.1 Copia la base
 
 ```bash
-cp -R src/personaje src/lucia
+cp -R src/diegoBambino src/lucia
 cp personajes/diego/ficha.md personajes/lucia/ficha.md   # antes: mkdir -p personajes/lucia
 ```
 
-En `src/lucia/` renombra `PersonajeVoxel.tsx` a `LuciaVoxel.tsx` (y el componente exportado) para no chocar con Diego. Puedes dejar `poses.ts` y `piezas.ts` tal cual si el cuerpo tiene la misma estructura (cabeza, torso, 2 brazos, 2 piernas).
+En `src/lucia/` renombra `DiegoVoxel.tsx` a `LuciaVoxel.tsx` (y el componente exportado) para no chocar con Diego. Puedes dejar `poses.ts` y `piezas.ts` tal cual si el cuerpo tiene la misma estructura (cabeza, torso, 2 brazos, 2 piernas).
 
 ### 4.2 Cambia el aspecto en `modelo.ts`
 
@@ -134,21 +134,21 @@ En `src/lucia/` renombra `PersonajeVoxel.tsx` a `LuciaVoxel.tsx` (y el component
   };
   ```
 
-- Mira el resultado en cada cambio con el Studio (`npm run dev`) o con `PersonajePoses` y `PersonajeGiro`.
+- Mira el resultado en cada cambio con el Studio (`npm run dev`) o con `DiegoPoses` y `DiegoGiro`.
 
 Truco: pídele a Claude Code que lo haga a partir de fotos de referencia (ver sección 7).
 
 ### 4.3 Registra una composición
 
-En `src/Root.tsx` agrega una composición para tu personaje. Lo más fácil: copia `src/PruebaPersonaje.tsx` como `src/PruebaLucia.tsx`, cambia el import de `PersonajeVoxel` por tu componente, cambia el `id` de cada `<Composition>` (ids únicos) y agrégala:
+En `src/Root.tsx` agrega una composición para tu personaje. Lo más fácil: copia `src/PruebaDiegoBambino.tsx` como `src/PruebaLucia.tsx`, cambia el import de `DiegoVoxel` por tu componente, cambia el `id` de cada `<Composition>` (ids únicos) y agrégala:
 
 ```tsx
-import { PruebaPersonajeComposition } from "./PruebaPersonaje";
+import { PruebaDiegoBambinoComposition } from "./PruebaDiegoBambino";
 import { PruebaLuciaComposition } from "./PruebaLucia";
 
 export const RemotionRoot: React.FC = () => (
   <>
-    <PruebaPersonajeComposition />
+    <PruebaDiegoBambinoComposition />
     <PruebaLuciaComposition />
   </>
 );
@@ -208,7 +208,7 @@ import { Audio, staticFile } from "remotion";
 python scripts/transcribir.py public/lucia_voz.wav src/data/lucia_palabras.json small
 ```
 
-Usa [faster-whisper](https://github.com/SYSTRAN/faster-whisper) y crea un JSON con cada palabra y sus segundos de inicio y fin. La primera vez descarga el modelo (`small` ≈ 500 MB; `tiny` o `base` son más rápidos y menos precisos). Con esos tiempos decides en qué momento cambia la pose (sección 6) y puedes pintar subtítulos; `PruebaPersonaje.tsx` tiene un ejemplo (`Subtitulo`).
+Usa [faster-whisper](https://github.com/SYSTRAN/faster-whisper) y crea un JSON con cada palabra y sus segundos de inicio y fin. La primera vez descarga el modelo (`small` ≈ 500 MB; `tiny` o `base` son más rápidos y menos precisos). Con esos tiempos decides en qué momento cambia la pose (sección 6) y puedes pintar subtítulos; `PruebaDiegoBambino.tsx` tiene un ejemplo (`Subtitulo`).
 
 Para que Whisper escriba bien nombres propios, agrégalos a `INITIAL_PROMPT` en `scripts/transcribir.py`.
 
@@ -259,9 +259,9 @@ La tabla con el significado de cada una está en `personajes/diego/ficha.md`.
    ```
 
 3. Guía de ejes: en los brazos, `z` los levanta hacia afuera (negativo a la izquierda de la pantalla, positivo a la derecha); `x` negativo los lleva hacia la cámara; en el antebrazo, `x` negativo dobla el codo hacia adelante.
-4. Si quieres verla en la hoja de poses, agrégala al arreglo `HOJA` de `PruebaPersonaje.tsx`.
+4. Si quieres verla en la hoja de poses, agrégala al arreglo `HOJA` de `PruebaDiegoBambino.tsx`.
 
-Se afina mirando `PersonajePoses` o el Studio.
+Se afina mirando `DiegoPoses` o el Studio.
 
 ### 6.3 Expresiones
 
@@ -275,9 +275,9 @@ Cada pose lleva una `expr` con:
 | `reposo` | boca cuando no hay voz: `cerrada`, `sonrisa`, `sonrisaAbierta`, `O`, `apretada`… |
 | `feliz` | cambia las bocas abiertas por sonrisas abiertas |
 
-Para una **expresión nueva**, agrega su dibujo en `OJOS`, `CEJAS` o `BOCAS` (`modelo.ts`) y su nombre al tipo `OjoVar`, `CejaVar` o `BocaVar`. `PersonajeVoxel` crea sola una malla por cada variante.
+Para una **expresión nueva**, agrega su dibujo en `OJOS`, `CEJAS` o `BOCAS` (`modelo.ts`) y su nombre al tipo `OjoVar`, `CejaVar` o `BocaVar`. `DiegoVoxel` crea sola una malla por cada variante.
 
-Gestos automáticos que ya trae: parpadeo, respiración, cambio de peso, cejas arriba cuando la voz sube de golpe. En `PersonajeVoxel` hay un modo `explotado` (pelo chamuscado y hollín en la cara) útil para gags.
+Gestos automáticos que ya trae: parpadeo, respiración, cambio de peso, cejas arriba cuando la voz sube de golpe. En `DiegoVoxel` hay un modo `explotado` (pelo chamuscado y hollín en la cara) útil para gags.
 
 ### 6.4 Entradas y salidas
 
@@ -311,7 +311,7 @@ Si las skills no aparecen, regenera con `npx skills add remotion-dev/skills`.
 ## 8. Flujo de trabajo en equipo
 
 - Cada persona crea su personaje en su propia rama (`git checkout -b personaje/lucia`) y abre un Pull Request.
-- Un personaje nuevo vive en `src/<nombre>/` y `personajes/<nombre>/`; evita tocar `src/personaje/` (Diego) para no generar conflictos.
+- Un personaje nuevo vive en `src/<nombre>/` y `personajes/<nombre>/`; evita tocar `src/diegoBambino/` (Diego) para no generar conflictos.
 - No subas renders pesados: `out/` está ignorado. Los videos/imágenes de prueba que sí valga la pena guardar van en `personajes/<nombre>/`.
 - Archivos de audio: solo muestras cortas en `public/`.
 
@@ -322,6 +322,6 @@ Si las skills no aparecen, regenera con `npx skills add remotion-dev/skills`.
 | `ffmpeg: command not found` | Instala ffmpeg (sección 1) |
 | El primer render falla con *timeout* | Remotion estaba descargando Chrome; vuelve a ejecutar |
 | El 3D se ve negro o no aparece al renderizar | Agrega `--gl=angle` |
-| Rasgos de la cara que parpadean al girar la cabeza | La cámara debe tener `near: 10` (como en `PruebaPersonaje.tsx`), no 0 ni 1 |
+| Rasgos de la cara que parpadean al girar la cabeza | La cámara debe tener `near: 10` (como en `PruebaDiegoBambino.tsx`), no 0 ni 1 |
 | `ModuleNotFoundError: faster_whisper` | Activa el entorno: `source .venv/bin/activate` |
 | `npm install` falla por versión de Node | Usa Node 20.19+, 22.13+ o 24 |
