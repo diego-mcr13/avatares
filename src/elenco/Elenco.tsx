@@ -100,8 +100,8 @@ const Avatar: React.FC<{ quien: Quien; escena: Escena; frame: number }> = ({ qui
       ...(r.eventos ?? [])
         .slice()
         .sort((a, b) => a.t - b.t)
-        // Un «puf» de salida lo deja invisible: si después vuelve de un salto, hay que devolverle el tamaño al instante
-        .filter((e, i, arr) => e.tipo === "puf" || (e.entra && arr.slice(0, i).some((p) => !p.entra && p.tipo === "puf")))
+        // Un «puf» de salida lo deja invisible: toda entrada de un salto le devuelve el tamaño (y la primera marca desde cuándo se ve)
+        .filter((e, _i, arr) => e.tipo === "puf" || (e.entra && arr.some((p) => !p.entra && p.tipo === "puf")))
         .map((e) => ({ tipo: e.entra ? ("aparecer" as const) : ("desaparecer" as const), t: e.t, dur: e.tipo === "puf" ? (e.entra ? 0.7 : 0.45) : 0.01 })),
     ],
     giro: haciaElCentro * (1 - m.w),

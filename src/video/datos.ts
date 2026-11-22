@@ -34,6 +34,7 @@ export const VOCES: Record<string, Voz> = Object.fromEntries(
     v("2-2", "diego", 0.29, 6.27, "Pero la pregunta se pierde entre cientos de mensajes, nadie sabe si sigue vigente y a veces tarda."),
     v("2-3", "aldrin", 0.66, 4.8, "Y quien ayuda no gana nada. Por eso muchos callan."),
     v("2-4", "yaeko", 0.0, 6.22, "Le preguntamos a 24 personas: a 14 les molesta justo que la pregunta se pierda."),
+    v("2-5", "yaeko", 0.0, 5.54, "Por eso hicimos BoliviaSabe: lo que pasa hoy en tu barrio, ordenado, y vecinos que responden."),
     v("3-1", "aldrin", 1.02, 6.86, "Abres boliviasabe.vercel.app y entras directo a Hoy, sin registrarte."),
     v("3-2", "yaeko", 0.0, 5.99, "Letreros con foto, precio, zona y fecha. Buscas «almuerzo» y ahí está."),
     v("4-1", "diego", 0.31, 5.38, "Para participar, creas tu cuenta con Google o con tu correo y eliges tu barrio."),
@@ -49,6 +50,7 @@ export const VOCES: Record<string, Voz> = Object.fromEntries(
     v("8-3", "yaeko", 0.0, 5.21, "Todo corre en la red de pruebas, sin dinero real. Hoy la app custodia las cuentas."),
     v("9-1", "yaeko", 0.0, 10.42, "Empezamos en Cochabamba, con estudiantes y negocios cerca de las universidades, en Sarco y el Centro: una semana, 30 cuentas y 5 negocios."),
     v("9-2", "diego", 0.0, 5.71, "Los negocios de barrio pagarían Bs 20 al mes por aparecer primero en su zona."),
+    v("9-5", "yaeko", 0.0, 3.24, "Y pronto se podrán canjear en negocios del barrio."),
     v("9-3", "aldrin", 0.49, 9.11, "Pruébala hoy en boliviasabe.vercel.app. Hoy una ciudad, mañana toda Bolivia."),
     v("9-4", "yaeko", 0.0, 9.05, "¿Viste algo útil? Súbelo. ¿Necesitas algo ya? Pregunta. En Bolivia, ayudar a tus vecinos tiene premio."),
   ].map((x) => [x.codigo, x as Voz]),
@@ -83,12 +85,13 @@ export const ESCENAS_VIDEO: { id: IdEscena; titulo: string; dur: number; frases:
   {
     id: "2",
     titulo: "El problema",
-    dur: 23,
+    dur: 29.2,
     frases: [
       { codigo: "2-1", t: 0.3 },
       { codigo: "2-2", t: 5.6 },
       { codigo: "2-3", t: 11.9 },
       { codigo: "2-4", t: 16.4 },
+      { codigo: "2-5", t: 23.0 },
     ],
   },
   {
@@ -112,7 +115,7 @@ export const ESCENAS_VIDEO: { id: IdEscena; titulo: string; dur: number; frases:
   {
     id: "5",
     titulo: "Preguntar urgente",
-    dur: 14,
+    dur: 12.2,
     frases: [
       { codigo: "5-1", t: 0.2 },
       { codigo: "5-2", t: 5.4 },
@@ -149,7 +152,7 @@ export const ESCENAS_VIDEO: { id: IdEscena; titulo: string; dur: number; frases:
   {
     id: "9",
     titulo: "Plan y cierre",
-    dur: 37,
+    dur: 41,
     frases: [
       { codigo: "9-1", t: 0.3 },
       { codigo: "9-2", t: 11.1 },

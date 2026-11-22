@@ -65,7 +65,7 @@ export const tramo = (T: number, t0: number, t1: number) =>
 // ---------- Celular ----------
 export type Tramo =
   | { t0: number; t1: number; clip: string; desde: number; vel?: number }
-  | { t0: number; t1: number; img: string };
+  | { t0: number; t1: number; img: string; suave?: number };
 
 // Lupa: en `t` el contenido llega a escala `s` centrado en (u, v) de la pantalla
 export type Lupa = { t: number; s: number; u: number; v: number };
@@ -104,7 +104,7 @@ const Pantalla: React.FC<{ tramos: Tramo[] }> = ({ tramos }) => (
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
-          <Fundido sin={tr.t0 === 0}>
+          <Fundido sin={tr.t0 === 0} dur={tr.suave}>
             <Img src={staticFile(tr.img.startsWith("tomas/") ? `video/${tr.img}` : `video/img/${tr.img}`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
           </Fundido>
         )}
@@ -114,9 +114,9 @@ const Pantalla: React.FC<{ tramos: Tramo[] }> = ({ tramos }) => (
 );
 
 // Cada captura entra con un fundido corto sobre la anterior
-const Fundido: React.FC<{ children: React.ReactNode; sin?: boolean }> = ({ children, sin }) => {
+const Fundido: React.FC<{ children: React.ReactNode; sin?: boolean; dur?: number }> = ({ children, sin, dur }) => {
   const f = useCurrentFrame();
-  return <AbsoluteFill style={{ opacity: sin ? 1 : Math.min(1, f / 5) }}>{children}</AbsoluteFill>;
+  return <AbsoluteFill style={{ opacity: sin ? 1 : Math.min(1, f / (dur ? dur * FPS : 5)) }}>{children}</AbsoluteFill>;
 };
 
 // Toque: un círculo amarillo que se expande donde se toca (x, y en px de la pantalla de 360 × 800)
@@ -266,8 +266,8 @@ export const Telefono: React.FC<{
       >
         <div style={{ position: "absolute", inset: 0, transform: `translate(${x}px, ${y}px) scale(${l.s})`, transformOrigin: "50% 50%" }}>
           <Pantalla tramos={tramos} />
-          <Toques toques={toques} />
           {encima}
+          <Toques toques={toques} />
         </div>
         {arriba}
       </div>

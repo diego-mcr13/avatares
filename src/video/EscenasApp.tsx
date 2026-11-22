@@ -42,11 +42,14 @@ const RotuloCuenta: React.FC<{ texto: string; lado?: "izq" | "der"; cx?: number;
 const Tipeo: React.FC<{ texto: string; t0: number; t1: number; hasta: number }> = ({ texto, t0, t1, hasta }) => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
-  if (T < t0 - 0.1 || T >= hasta) return null;
+  if (T < t0 - 0.3 || T >= hasta + 0.5) return null;
   const n = Math.round(texto.length * tramo(T, t0, t1));
   const cursor = Math.floor(T * 2.4) % 2 === 0;
+  // Se abre con el toque (el borde se enciende y la caja crece un poco) y al final se funde con la captura
+  const abre = tramo(T, t0 - 0.3, t0);
+  const sale = tramo(T, hasta, hasta + 0.5);
   return (
-    <div style={{ position: "absolute", left: 18, top: 182, width: 370, height: 52, borderRadius: 26, border: `2px solid ${C.fucsia}`, background: "#2a2421", display: "flex", alignItems: "center", paddingLeft: 52, fontFamily: LETRA, fontSize: 19, color: C.tinta }}>
+    <div style={{ position: "absolute", left: 18, top: 182, width: 370, height: 52, borderRadius: 26, border: `2px solid rgba(194,24,91,${abre})`, boxShadow: `0 0 ${18 * abre}px rgba(194,24,91,${0.5 * abre})`, transform: `scale(${1 + 0.03 * Math.sin(abre * Math.PI)})`, opacity: 1 - sale, background: "#2a2421", display: "flex", alignItems: "center", paddingLeft: 52, fontFamily: LETRA, fontSize: 19, color: C.tinta }}>
       <svg width={18} height={18} viewBox="0 0 24 24" style={{ position: "absolute", left: 20 }}>
         <circle cx={10} cy={10} r={7} stroke="#B0A59C" strokeWidth={2.4} fill="none" />
         <path d="M15 15 L21 21" stroke="#B0A59C" strokeWidth={2.4} />
@@ -76,9 +79,8 @@ export const Escena3: React.FC = () => (
     <>
       <Telefono
         tramos={[
-          { t0: 0, t1: 10.0, img: "tomas/c01-hoy.png" },
-          { t0: 10.0, t1: 11.4, img: "tomas/c02-busqueda.png" },
-          { t0: 11.4, t1: 13, img: "tomas/c02b-resultados.png" },
+          { t0: 0, t1: 10.6, img: "tomas/c01-hoy.png" },
+          { t0: 10.0, t1: 13, img: "tomas/c02-busqueda.png", suave: 0.6 },
         ]}
         toques={[{ t: 8.3, x: 180, y: 206 }]}
         encima={<Tipeo texto="almuerzo" t0={8.6} t1={9.8} hasta={10.0} />}
@@ -293,7 +295,7 @@ const av7 = armarAvatares("7", (g) => {
   g.va("aldrin", 1.8, null, "tocar", CARA.atento);
   g.va("aldrin", 3.9, null, "celebrar", CARA.feliz);
   g.va("aldrin", 5.4, null, "aplaudir", CARA.feliz);
-  g.entra("diego", 6.2, junto("der", 0.55), "puf", "celebrar", CARA.feliz);
+  g.entra("diego", 6.6, junto("der", 0.55), "salto", "celebrar", CARA.feliz);
 });
 
 export const Escena7: React.FC = () => (
@@ -316,7 +318,7 @@ export const Escena7: React.FC = () => (
       <Rotulo texto="Solucionada" x={DER_CEL} y={140} t={3.8} hasta={6.2} tam={28} color={C.verde} />
       <SaleDelCel
         t0={4.3}
-        t1={6.8}
+        t1={6.6}
         desde={[960, 480]}
         x={1530}
         y={360}
@@ -331,7 +333,7 @@ export const Escena7: React.FC = () => (
     <PrimerPlano
       escena={av7}
       quien="diego"
-      t0={6.8}
+      t0={6.6}
       t1={9.6}
       solo
       junto={
@@ -343,7 +345,7 @@ export const Escena7: React.FC = () => (
     />
     <Subtitulos id="7" />
     <Voces id="7" />
-    <Sonidos lista={[["blip", 1.9], ["ding", 3.75], ["pop", 3.8], ["pop", 6.2], ["campanitas", 7.5]]} />
+    <Sonidos lista={[["blip", 1.9], ["ding", 3.75], ["pop", 3.8], ["campanitas", 7.0]]} />
   </>
 );
 

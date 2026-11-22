@@ -1,12 +1,13 @@
 // Escenas 1, 2 y 9: equipo y transformación, el problema, y el plan con el cierre (contrato §5).
-import { Video } from "@remotion/media";
+import { Audio, Video } from "@remotion/media";
 import React from "react";
-import { AbsoluteFill, Img, Sequence, interpolate, random, spring, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Freeze, Img, Sequence, interpolate, random, spring, staticFile, useCurrentFrame } from "remotion";
 import { Avatares, Cifra, Fondo, PrimerPlano, Rotulo, Sonidos, Subtitulos, Telefono, Voces, armarAvatares, entrar, tramo } from "./comunes";
 import { CARA } from "./caras";
-import { VOCES, escenaVideo } from "./datos";
+import { VOCES, durArchivo, envDe, escenaVideo } from "./datos";
 import { AGUAYO, C, COLOR_PERSONA, FPS, LETRA, LETRA_TITULO } from "./estilo";
-import type { Quien } from "../elenco/escenas";
+import { Guion, type Quien } from "../elenco/escenas";
+import { FUERA } from "./comunes";
 
 const t2f = (t: number) => Math.round(t * FPS);
 
@@ -286,7 +287,23 @@ const av2 = armarAvatares("2", (g) => {
   g.sale("aldrin", 15.9, "salto");
   g.entra("yaeko", 16.2, [250, 930], "puf", "apuntar", CARA.atento);
   g.va("yaeko", 20.8, null, "senalar", CARA.atento);
+  g.va("yaeko", 23.0, null, "senalarArriba", CARA.feliz);
+  g.va("yaeko", 26.4, null, "celebrar", CARA.feliz);
 });
+
+// «Por eso hicimos BoliviaSabe»: el logo y lo que resuelve
+const Solucion: React.FC = () => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  if (T < 22.9) return null;
+  return (
+    <AbsoluteFill>
+      <Logo x={960} y={180} tam={150} t={23.0} />
+      <Cifra texto={<span>Lo que pasa hoy en tu barrio, <span style={{ color: C.naranja }}>ordenado</span></span>} x={1060} y={520} t={25.0} tam={56} />
+      <Cifra texto={<span>y vecinos que <span style={{ color: C.fucsiaTexto }}>responden</span></span>} x={1060} y={620} t={26.9} tam={56} />
+    </AbsoluteFill>
+  );
+};
 
 const GrupoFacebook: React.FC = () => {
   const frame = useCurrentFrame();
@@ -450,8 +467,8 @@ const PreguntaVuela: React.FC = () => {
 const Figuritas: React.FC = () => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
-  if (T < 16.3) return null;
-  const e = entrar(frame, 16.4, 0.5);
+  if (T < 16.3 || T > 23.0) return null;
+  const e = entrar(frame, 16.4, 0.5) * (1 - tramo(T, 22.6, 23.0));
   const figs: React.ReactNode[] = [];
   for (let i = 0; i < 24; i++) {
     const col = i % 8;
@@ -483,6 +500,7 @@ export const Escena2: React.FC = () => (
     {useCurrentFrame() / FPS < 5.4 ? <Cifra texto={<span style={{ color: C.amarillo }}>209 mil miembros</span>} x={960} y={760} t={3.2} tam={84} /> : null}
     <Burbujas />
     <Figuritas />
+    <Solucion />
     <Avatares escena={av2} />
     </>
     <PreguntaVuela />
@@ -502,7 +520,7 @@ export const Escena2: React.FC = () => (
     />
     <Subtitulos id="2" />
     <Voces id="2" />
-    <Sonidos lista={[["pop", 0.3], ["ding", 3.2], ["pop", 6.0], ["pop", 9.7], ["pop", 12.4], ["ding_roto", 13.4], ["pop", 16.5], ["ding", 20.6]]} />
+    <Sonidos lista={[["pop", 0.3], ["ding", 3.2], ["pop", 6.0], ["pop", 9.7], ["pop", 12.4], ["ding_roto", 13.4], ["pop", 16.5], ["ding", 20.6], ["titulo", 23.0], ["pop", 25.0], ["pop", 26.9]]} />
   </>
 );
 
@@ -514,15 +532,21 @@ const av9 = armarAvatares("9", (g) => {
   g.sale("yaeko", 10.8, "puf");
   g.entra("diego", 10.9, [560, 930], "puf", "apuntar", CARA.atento);
   g.va("diego", 15.5, null, "esperar", CARA.feliz);
-  g.sale("diego", 16.6, "salto");
+  g.sale("diego", 16.2, "puf");
   g.entra("aldrin", 17.0, [1000, 930], "salto", "senalarIzq", CARA.orgullo);
   g.va("aldrin", 25.0, null, "triunfo", CARA.orgullo);
   g.sale("aldrin", 25.6, "puf");
   // Cierre: los tres de un salto, juntos
   g.entra("yaeko", 26.0, [960, 930], "salto", "hablar", CARA.feliz);
-  g.entra("diego", 26.1, [740, 930], "salto", "celebrar", CARA.feliz);
-  g.entra("aldrin", 26.2, [1180, 930], "salto", "celebrar", CARA.feliz);
-  for (const q of ["yaeko", "diego", "aldrin"] as Quien[]) g.va(q, 34.4, null, "saludar", CARA.feliz);
+  g.entra("diego", 26.1, [740, 930], "salto", "aplaudir", CARA.feliz);
+  g.entra("aldrin", 26.2, [1180, 930], "salto", "senalarArriba", CARA.orgullo);
+  g.va("diego", 30.0, null, "celebrar", CARA.feliz);
+  g.va("aldrin", 30.6, null, "aplaudir", CARA.feliz);
+  g.va("yaeko", 32.2, null, "senalarArriba", CARA.orgullo);
+  // Despedida: cada uno a su manera
+  g.va("yaeko", 34.4, null, "saludar", CARA.feliz);
+  g.va("diego", 34.6, null, "triunfo", CARA.orgullo);
+  g.va("aldrin", 34.8, null, "celebrar", CARA.feliz);
 });
 
 const Plan: React.FC = () => {
@@ -701,7 +725,7 @@ const Cierre: React.FC = () => {
   );
 };
 
-export const Escena9: React.FC = () => {
+const Escena9Base: React.FC<{ fijo?: boolean }> = ({ fijo = false }) => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
   const celB = tramo(T, 10.8, 11.3) * (1 - tramo(T, 16.5, 16.9));
@@ -734,7 +758,7 @@ export const Escena9: React.FC = () => {
         </div>
       ) : null}
       <Cierre />
-      <Avatares escena={av9} />
+      {fijo ? null : <Avatares escena={av9} />}
       </>
       <PrimerPlano
         escena={av9}
@@ -748,10 +772,12 @@ export const Escena9: React.FC = () => {
           </>
         }
       />
-      <Subtitulos id="9" />
-      <Voces id="9" />
-      <Sonidos
-        lista={[
+      {fijo ? null : (
+        <>
+          <Subtitulos id="9" />
+          <Voces id="9" />
+          <Sonidos
+            lista={[
           ["pop", 0.3],
           ["pop", 2.1],
           ["pop", 3.1],
@@ -767,9 +793,81 @@ export const Escena9: React.FC = () => {
           ["titulo", 26.1],
           ["ding", 32.2],
         ]}
-      />
+          />
+        </>
+      )}
     </>
   );
 };
+
+// Escena 9 con un tramo nuevo en medio: después de «Bs 20 al mes», Yaeko cuenta el canje (frase 9-5).
+// La escena se corta en CORTE, queda quieta PUENTE segundos con Yaeko hablando y sigue igual que antes.
+const CORTE = 16.85;
+const PUENTE = 4.0;
+const f9 = (t: number) => Math.round(t * FPS);
+
+const avPuente = (() => {
+  const g = new Guion("v9b", "9", "Canje", PUENTE, []);
+  for (const q of ["diego", "yaeko", "aldrin"] as Quien[]) g.empieza(q, FUERA[q], "esperar");
+  const voz = VOCES["9-5"];
+  g.voz("yaeko", voz.texto, 0.35 - voz.desde, durArchivo("9-5"), envDe("9-5"));
+  g.entra("yaeko", 0.05, [560, 930], "puf", "senalarArriba", CARA.feliz);
+  g.va("yaeko", 2.2, null, "celebrar", CARA.feliz);
+  g.sale("yaeko", PUENTE - 0.45, "puf");
+  return { ...g.construir(), dur: PUENTE };
+})();
+
+const Puente9: React.FC = () => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  const e = spring({ frame: frame - f9(0.4), fps: FPS, config: { damping: 14, stiffness: 140 } });
+  const sale = tramo(T, PUENTE - 0.4, PUENTE);
+  return (
+    <AbsoluteFill>
+      <div style={{ position: "absolute", left: 150, top: 230, width: 820, opacity: Math.min(1, e * 1.4) * (1 - sale), transform: `translateY(${(1 - e) * 30}px)` }}>
+        <div style={{ fontFamily: LETRA_TITULO, fontSize: 64, color: C.tinta, lineHeight: 1.1 }}>
+          Canjear yapitas en <span style={{ color: C.naranja }}>negocios del barrio</span>
+        </div>
+        <div style={{ fontFamily: LETRA, fontSize: 30, color: C.apagado, marginTop: 18 }}>Próximo paso · ya probamos un canje en la red de pruebas</div>
+      </div>
+      <Avatares escena={avPuente} />
+      <Sequence from={f9(0.35)} layout="none">
+        <Audio src={staticFile(VOCES["9-5"].archivo)} />
+      </Sequence>
+      {T >= 0.35 && T < 0.35 + 3.24 + 0.2 ? (
+        <div style={{ position: "absolute", left: 0, right: 0, top: 958, display: "flex", justifyContent: "center" }}>
+          <div style={{ fontFamily: LETRA, fontWeight: 600, fontSize: 36, lineHeight: 1.2, color: "#fff", background: "rgba(12,10,9,0.82)", padding: "12px 28px", borderRadius: 16 }}>
+            {VOCES["9-5"].texto}
+          </div>
+        </div>
+      ) : null}
+    </AbsoluteFill>
+  );
+};
+
+export const Escena9: React.FC = () => (
+  <>
+    <Sequence durationInFrames={f9(CORTE)} layout="none">
+      <AbsoluteFill>
+        <Escena9Base />
+      </AbsoluteFill>
+    </Sequence>
+    <Sequence from={f9(CORTE)} durationInFrames={f9(PUENTE)} layout="none">
+      <AbsoluteFill>
+        <Freeze frame={f9(CORTE)}>
+          <Escena9Base fijo />
+        </Freeze>
+        <Puente9 />
+      </AbsoluteFill>
+    </Sequence>
+    <Sequence from={f9(CORTE + PUENTE)} layout="none">
+      <Sequence from={-f9(CORTE)} layout="none">
+        <AbsoluteFill>
+          <Escena9Base />
+        </AbsoluteFill>
+      </Sequence>
+    </Sequence>
+  </>
+);
 
 export const _usar = escenaVideo;
