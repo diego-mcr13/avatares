@@ -97,7 +97,12 @@ const Avatar: React.FC<{ quien: Quien; escena: Escena; frame: number }> = ({ qui
     volumen: volumenDe(escena, quien),
     movimientos: [
       ...(r.apareceEn !== null ? [{ tipo: "aparecer" as const, t: r.apareceEn, dur: 0.7 }] : []),
-      ...(r.eventos ?? []).filter((e) => e.tipo === "puf").map((e) => ({ tipo: e.entra ? ("aparecer" as const) : ("desaparecer" as const), t: e.t, dur: e.entra ? 0.7 : 0.45 })),
+      ...(r.eventos ?? [])
+        .slice()
+        .sort((a, b) => a.t - b.t)
+        // Un «puf» de salida lo deja invisible: si después vuelve de un salto, hay que devolverle el tamaño al instante
+        .filter((e, i, arr) => e.tipo === "puf" || (e.entra && arr.slice(0, i).some((p) => !p.entra && p.tipo === "puf")))
+        .map((e) => ({ tipo: e.entra ? ("aparecer" as const) : ("desaparecer" as const), t: e.t, dur: e.tipo === "puf" ? (e.entra ? 0.7 : 0.45) : 0.01 })),
     ],
     giro: haciaElCentro * (1 - m.w),
     caminata: { fase: m.fase, w: m.w, dir: m.dir, correr: m.correr },
@@ -271,7 +276,7 @@ const Subtitulo: React.FC<{ escena: Escena; T: number }> = ({ escena, T }) => {
 // ---------- La escena ----------
 
 // Los tres avatares sobre fondo transparente (se usa también en las escenas de ejemplo)
-export const CapaAvatares: React.FC<{ escena: Escena; frame: number; camara?: CamaraPlano }> = ({ escena, frame, camara }) => {
+export const CapaAvatares: React.FC<{ escena: Escena; frame: number; camara?: CamaraPlano; solo?: Quien }> = ({ escena, frame, camara, solo }) => {
   const { width, height } = useVideoConfig();
   return (
     <ThreeCanvas
@@ -284,7 +289,7 @@ export const CapaAvatares: React.FC<{ escena: Escena; frame: number; camara?: Ca
     >
       <Mirar mira={camara?.mira} />
       <Escenario>
-        {QUIENES.map((q) => (
+        {QUIENES.filter((q) => !solo || q === solo).map((q) => (
           <Avatar key={q} quien={q} escena={escena} frame={frame} />
         ))}
       </Escenario>

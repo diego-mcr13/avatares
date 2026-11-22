@@ -143,7 +143,7 @@ export class Guion {
 
   // Saca el celular a las `t0` y lo guarda a las `t1` (mientras, mira la pantalla con la cara `expr`)
   usaCelular(quien: Quien, t0: number, t1: number, expr?: Partial<Expresion>, despues: PoseNombre = "esperar") {
-    this.ratosCelular[quien].push([t0, t1]);
+    // Ya no se muestra el celular: el gesto «escribir» saca la laptop
     this.va(quien, t0, null, "escribir", expr);
     this.va(quien, t1, null, despues, expr);
   }

@@ -6,7 +6,8 @@ import {
   Avatares,
   Burbuja,
   CEL,
-  Camara,
+  Confeti,
+  SaleDelCel,
   Fondo,
   PrimerPlano,
   Rotulo,
@@ -37,12 +38,34 @@ const RotuloCuenta: React.FC<{ texto: string; lado?: "izq" | "der"; cx?: number;
   />
 );
 
+// Escribe en el buscador de Hoy letra por letra (tapa el texto de ejemplo de la captura)
+const Tipeo: React.FC<{ texto: string; t0: number; t1: number; hasta: number }> = ({ texto, t0, t1, hasta }) => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  if (T < t0 - 0.1 || T >= hasta) return null;
+  const n = Math.round(texto.length * tramo(T, t0, t1));
+  const cursor = Math.floor(T * 2.4) % 2 === 0;
+  return (
+    <div style={{ position: "absolute", left: 18, top: 182, width: 370, height: 52, borderRadius: 26, border: `2px solid ${C.fucsia}`, background: "#2a2421", display: "flex", alignItems: "center", paddingLeft: 52, fontFamily: LETRA, fontSize: 19, color: C.tinta }}>
+      <svg width={18} height={18} viewBox="0 0 24 24" style={{ position: "absolute", left: 20 }}>
+        <circle cx={10} cy={10} r={7} stroke="#B0A59C" strokeWidth={2.4} fill="none" />
+        <path d="M15 15 L21 21" stroke="#B0A59C" strokeWidth={2.4} />
+      </svg>
+      {texto.slice(0, n)}
+      <span style={{ opacity: cursor ? 1 : 0, color: C.fucsia, marginLeft: 1 }}>|</span>
+    </div>
+  );
+};
+
 // ---------- Escena 3 · Sin cuenta ----------
 const av3 = armarAvatares("3", (g) => {
   g.entra("aldrin", 0.1, junto("izq", 0.1), "salto", "senalarArriba", CARA.atento);
   g.va("aldrin", 3.2, null, "senalar", CARA.feliz);
   g.va("aldrin", 7.6, [330, 930], "esperar", CARA.atento);
   g.entra("yaeko", 6.0, junto("der", 0.2), "puf", "senalarIzq", CARA.atento);
+  // Saca la laptop y escribe «almuerzo» (se ve escribirse en la app)
+  g.va("yaeko", 8.2, null, "escribir", CARA.atento);
+  g.va("yaeko", 10.1, null, "senalarIzq", CARA.feliz);
   g.va("yaeko", 11.8, null, "sorpresa", CARA.sorpresa);
   g.va("yaeko", 12.4, null, "celebrar", CARA.feliz);
 });
@@ -50,27 +73,24 @@ const av3 = armarAvatares("3", (g) => {
 export const Escena3: React.FC = () => (
   <>
     <Fondo />
-    <Camara tomas={[{ t: 12.5, s: 1.06, x: 960, y: 520, dur: 6 }]}>
+    <>
       <Telefono
         tramos={[
-          { t0: 0, t1: 6.4, img: "tomas/c01-hoy.png" },
-          { t0: 6.4, t1: 9.6, img: "tomas/c02-busqueda.png" },
-          { t0: 9.6, t1: 13, img: "tomas/c02b-resultados.png" },
+          { t0: 0, t1: 10.0, img: "tomas/c01-hoy.png" },
+          { t0: 10.0, t1: 11.4, img: "tomas/c02-busqueda.png" },
+          { t0: 11.4, t1: 13, img: "tomas/c02b-resultados.png" },
         ]}
-        toques={[{ t: 6.2, x: 180, y: 183 }]}
-        miras={[
-          { t0: 6.7, t1: 9.4, u: 0.4, v: 0.23, m: 1.6 },
-          { t0: 10.2, t1: 12.9, u: 0.5, v: 0.45, m: 1.4 },
-        ]}
+        toques={[{ t: 8.3, x: 180, y: 206 }]}
+        encima={<Tipeo texto="almuerzo" t0={8.6} t1={9.8} hasta={10.0} />}
       />
       <Rotulo texto="boliviasabe.vercel.app" x={IZQ_CEL} y={70} t={0.4} alinear="der" color={C.fucsiaTexto} tam={30} />
       <Rotulo texto="Sin cuenta · sin registrarte" x={IZQ_CEL} y={140} t={3.4} alinear="der" tam={24} />
       <Rotulo texto="«almuerzo» → 2 letreros" x={DER_CEL} y={140} t={10.4} tam={26} color={C.naranja} />
       <Avatares escena={av3} />
-    </Camara>
+    </>
     <Subtitulos id="3" />
     <Voces id="3" />
-    <Sonidos lista={[["pop", 0.4], ["pop", 3.4], ["blip", 6.25], ["pop", 6.0], ["pop", 10.4], ["ding", 11.9]]} />
+    <Sonidos lista={[["pop", 0.4], ["pop", 3.4], ["blip", 8.3], ["pop", 6.0], ["pop", 10.4], ["ding", 11.9]]} />
   </>
 );
 
@@ -87,7 +107,7 @@ const av4 = armarAvatares("4", (g) => {
 export const Escena4: React.FC = () => (
   <>
     <Fondo />
-    <Camara tomas={[{ t: 9.8, s: 1.22, x: 1180, y: 300, dur: 0.8 }]}>
+    <>
       <Telefono
         tramos={[
           { t0: 0, t1: 1.0, img: "tomas/c03-hoy-sin-sesion.png" },
@@ -104,9 +124,9 @@ export const Escena4: React.FC = () => (
           { t: 6.7, x: 180, y: 764 },
         ]}
         miras={[
-          { t0: 1.2, t1: 2.1, u: 0.5, v: 0.86, m: 1.6 },
           { t0: 4.5, t1: 6.4, u: 0.22, v: 0.52, m: 1.8 },
-          { t0: 8.2, t1: 14.6, u: 0.88, v: 0.045, m: 2.4 },
+          { t0: 8.2, t1: 10.1, u: 0.88, v: 0.045, m: 2.4 },
+          { t0: 12.9, t1: 14.8, u: 0.88, v: 0.045, m: 2.4 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
@@ -114,22 +134,24 @@ export const Escena4: React.FC = () => (
       <Rotulo texto="Cuenta en Stellar lista" x={DER_CEL + 60} y={330} t={9.2} tam={26} color={C.tinta} />
       <Burbuja texto="+5 yapitas · bienvenida" x={DER_CEL + 290} y={250} t={10.3} dur={2.6} />
       <Avatares escena={av4} />
-    </Camara>
+    </>
     <PrimerPlano
       escena={av4}
       quien="diego"
       t0={10.2}
       t1={12.8}
+      solo
       junto={
         <>
-          <Burbuja texto="+5 yapitas de bienvenida" x={1300} y={470} t={10.35} dur={2.4} tam={52} />
-          <Rotulo texto="Su cuenta en Stellar, lista" x={1300} y={640} t={10.6} alinear="centro" tam={34} />
+          <Burbuja texto="+5 yapitas de bienvenida" x={960} y={200} t={10.35} dur={2.4} tam={52} />
+          <Rotulo texto="Su cuenta en Stellar, lista" x={960} y={870} t={10.6} alinear="centro" tam={34} />
         </>
       }
     />
+    <Confeti t={12.8} />
     <Subtitulos id="4" />
     <Voces id="4" />
-    <Sonidos lista={[["blip", 0.5], ["blip", 1.75], ["blip", 5.5], ["blip", 6.7], ["pop", 7.3], ["pop", 9.2], ["campanitas", 10.3]]} />
+    <Sonidos lista={[["blip", 0.5], ["blip", 1.75], ["blip", 5.5], ["blip", 6.7], ["pop", 7.3], ["pop", 9.2], ["campanitas", 10.3], ["chispitas", 12.8]]} />
   </>
 );
 
@@ -147,7 +169,7 @@ const av5 = armarAvatares("5", (g) => {
 export const Escena5: React.FC = () => (
   <>
     <Fondo />
-    <Camara tomas={[{ t: 6.0, s: 1.1, x: 960, y: 720, dur: 1 }, { t: 10.0, s: 1, x: 960, y: 540, dur: 0.8 }]}>
+    <>
       <Telefono
         tramos={[
           { t0: 0, t1: 2.2, img: "tomas/c08-alguien-sabe.png" },
@@ -161,18 +183,28 @@ export const Escena5: React.FC = () => (
           { t: 8.3, x: 180, y: 764 },
         ]}
         miras={[
-          { t0: 2.5, t1: 5.0, u: 0.45, v: 0.19, m: 1.6 },
           { t0: 5.6, t1: 7.5, u: 0.28, v: 0.7, m: 1.9 },
           { t0: 7.8, t1: 8.6, u: 0.5, v: 0.955, m: 1.6 },
           { t0: 9.6, t1: 13.5, u: 0.15, v: 0.385, m: 2.2 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
+      <SaleDelCel
+        t0={2.2}
+        t1={5.5}
+        desde={[960, 210]}
+        x={1500}
+        y={330}
+        ancho={640}
+        etiqueta="¿Qué necesitas?"
+        texto="¿Quién arregla una tubería hoy en Queru Queru? Se está saliendo el agua."
+        dictado={[2.5, 4.9]}
+      />
       <Rotulo texto="Urgente: sale primero 24 h" x={DER_CEL} y={140} t={5.6} hasta={9.4} tam={26} color={C.coral} />
       <Burbuja texto="−5 yapitas" x={DER_CEL + 170} y={330} t={8.05} color={C.coral} dur={2.2} />
       <Rotulo texto="Publicada en Queru Queru" x={DER_CEL} y={420} t={10.2} tam={26} color={C.tinta} />
       <Avatares escena={av5} />
-    </Camara>
+    </>
     <Subtitulos id="5" />
     <Voces id="5" />
     <Sonidos lista={[["blip", 0.6], ["blip", 1.6], ["blip", 5.1], ["pop", 5.6], ["blip", 8.05], ["pop", 10.2]]} />
@@ -197,7 +229,7 @@ const av6 = armarAvatares("6", (g) => {
 export const Escena6: React.FC = () => (
   <>
     <Fondo brillo={[960, 500]} />
-    <Camara tomas={[{ t: 7.2, s: 1.16, x: 1300, y: 470, dur: 0.7 }]}>
+    <>
     <Telefono
       cx={A}
       tramos={[
@@ -233,7 +265,7 @@ export const Escena6: React.FC = () => (
     <Rotulo texto="Aviso: pregunta urgente en su zona" x={A - CEL.ancho / 2 - 24} y={140} t={1.4} hasta={4.2} alinear="der" tam={22} color={C.coral} />
     <Rotulo texto="Sin recargar · 0,7 s" x={B + CEL.ancho / 2 + 24} y={440} t={7.1} tam={26} color={C.verde} />
     <Avatares escena={av6} />
-    </Camara>
+    </>
     <PrimerPlano
       escena={av6}
       quien="yaeko"
@@ -241,10 +273,12 @@ export const Escena6: React.FC = () => (
       t1={9.6}
       lado="der"
       junto={
+        <>
+        <Rotulo texto="Llegó sola · sin recargar" x={480} y={720} t={7.5} alinear="centro" tam={34} color={C.verde} />
         <div style={{ position: "absolute", left: 200, top: 250, width: 560, height: 415, borderRadius: 28, overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,0.5), 0 0 0 4px " + C.verde }}>
           <Img src={staticFile("video/tomas/c12-llega-respuesta.png")} style={{ position: "absolute", width: 560, top: -1560 * (560 / 1080), left: 0 }} />
-          <Rotulo texto="Llegó sola · sin recargar" x={280} y={350} t={7.5} alinear="centro" tam={28} color={C.verde} />
         </div>
+        </>
       }
     />
     <Subtitulos id="6" />
@@ -265,7 +299,7 @@ const av7 = armarAvatares("7", (g) => {
 export const Escena7: React.FC = () => (
   <>
     <Fondo />
-    <Camara tomas={[{ t: 7.2, s: 1.14, x: 1160, y: 470, dur: 0.7 }]}>
+    <>
       <Telefono
         tramos={[
           { t0: 0, t1: 2.1, img: "tomas/c12-llega-respuesta.png" },
@@ -275,25 +309,35 @@ export const Escena7: React.FC = () => (
         miras={[
           { t0: 0.8, t1: 1.9, u: 0.24, v: 0.86, m: 2 },
           { t0: 2.6, t1: 4.0, u: 0.19, v: 0.158, m: 2 },
-          { t0: 4.4, t1: 9.6, u: 0.5, v: 0.54, m: 1.5 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
       <Rotulo texto="Solo quien preguntó" x={IZQ_CEL} y={140} t={0.8} hasta={4.4} alinear="der" tam={26} />
       <Rotulo texto="Solucionada" x={DER_CEL} y={140} t={3.8} hasta={6.2} tam={28} color={C.verde} />
-      <Burbuja texto="+5 yapitas para Ana" x={DER_CEL + 220} y={560} t={7.5} dur={2.4} />
+      <SaleDelCel
+        t0={4.3}
+        t1={6.8}
+        desde={[960, 480]}
+        x={1530}
+        y={360}
+        ancho={600}
+        borde={C.naranja}
+        titulo="¡Gracias, pues!"
+        texto="Ana recibe +5 yapitas por ayudarte. Tu pregunta quedó Solucionada."
+        tam={34}
+      />
       <Avatares escena={av7} />
-    </Camara>
+    </>
     <PrimerPlano
       escena={av7}
       quien="diego"
       t0={6.8}
       t1={9.6}
-      lado="der"
+      solo
       junto={
         <>
-          <Burbuja texto="+5 yapitas para Ana" x={620} y={470} t={7.0} dur={2.6} tam={56} />
-          <Rotulo texto="por ayudar a una vecina" x={620} y={640} t={7.3} alinear="centro" tam={34} />
+          <Burbuja texto="+5 yapitas para Ana" x={960} y={200} t={7.0} dur={2.6} tam={56} />
+          <Rotulo texto="por ayudar a una vecina" x={960} y={870} t={7.3} alinear="centro" tam={34} />
         </>
       }
     />
@@ -413,7 +457,7 @@ export const Escena8: React.FC = () => {
   return (
     <>
       <Fondo brillo={[cx, 500]} />
-      <Camara tomas={[{ t: 7.8, s: 1.12, x: 1240, y: 430, dur: 0.8 }, { t: 11.9, s: 1, x: 960, y: 540, dur: 0.8 }]}>
+      <>
       <Telefono
         cx={cx}
         tramos={[
@@ -421,15 +465,26 @@ export const Escena8: React.FC = () => {
           { t0: 4.8, t1: 18, img: "tomas/a07-explorador.png" },
         ]}
         toques={[{ t: 4.5, x: 136, y: 166 }]}
-        miras={[{ t0: 1.4, t1: 4.3, u: 0.5, v: 0.16, m: 1.6 }]}
         encima={<TapaComision desde={4.8} />}
       />
       <Rotulo texto="Ana · cuenta de ejemplo" x={96} y={70} t={0.2} tam={24} color={C.apagado} />
-      <Rotulo texto="+5 yapitas · Confirmado" x={DER_CEL} y={300} t={2.7} hasta={6.4} tam={26} color={C.verde} />
+      <SaleDelCel
+        t0={1.4}
+        t1={4.5}
+        desde={[960, 210]}
+        x={1520}
+        y={330}
+        ancho={600}
+        borde={C.verde}
+        etiqueta="Movimientos · cuenta de Ana"
+        titulo={<span>Tu respuesta sirvió <span style={{ color: C.naranja, float: "right" }}>+5 yapitas</span></span>}
+        texto="● Confirmado · Registro b80f…eca3"
+        tam={32}
+      />
       <Rotulo texto="Registro público: stellar.expert" x={DER_CEL} y={380} t={5.0} hasta={6.6} tam={24} />
       <TarjetaExplorador />
       <Avatares escena={av8} />
-      </Camara>
+      </>
       <Subtitulos id="8" />
       <Voces id="8" />
       <Sonidos lista={[["blip", 0.5], ["pop", 2.7], ["blip", 4.7], ["pop", 6.9], ["ding", 9.2], ["pop", 12.1]]} />

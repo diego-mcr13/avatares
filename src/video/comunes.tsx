@@ -602,7 +602,9 @@ export const PrimerPlano: React.FC<{
   lado?: "izq" | "der";
   cerca?: number;
   junto?: React.ReactNode;
-}> = ({ escena, quien, t0, t1, lado = "izq", cerca = 170, junto }) => {
+  // Centrado y sin los demás personajes en el cuadro
+  solo?: boolean;
+}> = ({ escena, quien, t0, t1, lado = "izq", cerca = 170, junto, solo = false }) => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
   if (T < t0 || T >= t1) return null;
@@ -611,16 +613,112 @@ export const PrimerPlano: React.FC<{
   // Empuje lento durante el plano
   const q = (T - t0) / Math.max(0.1, t1 - t0);
   const z = cerca * (1 - 0.06 * q);
-  const corre = (lado === "izq" ? 1 : -1) * z * 0.15;
+  const corre = solo ? 0 : (lado === "izq" ? 1 : -1) * z * 0.15;
   return (
     <AbsoluteFill>
-      <Fondo brillo={[lado === "izq" ? 560 : 1360, 520]} />
+      <Fondo brillo={solo ? [960, 520] : [lado === "izq" ? 560 : 1360, 520]} />
       <CapaAvatares
         escena={escena}
         frame={frame}
         camara={{ position: [wx + corre, wy + 22, z], mira: [wx + corre, wy + 17, 0], fov: 18 }}
+        solo={solo ? quien : undefined}
       />
       {junto ? <AbsoluteFill>{junto}</AbsoluteFill> : null}
     </AbsoluteFill>
   );
+};
+
+// Un cuadro que sale de la pantalla del celular hacia un costado, para leer un texto de la app.
+// Con `dictado`, el texto se escribe letra por letra entre esas dos horas.
+export const SaleDelCel: React.FC<{
+  t0: number;
+  t1: number;
+  // Punto de la pantalla de donde sale (px del cuadro 1920×1080)
+  desde: Punto;
+  x: number;
+  y: number;
+  ancho?: number;
+  etiqueta?: string;
+  titulo?: React.ReactNode;
+  texto: string;
+  dictado?: [number, number];
+  borde?: string;
+  tam?: number;
+}> = ({ t0, t1, desde, x, y, ancho = 620, etiqueta, titulo, texto, dictado, borde = C.fucsia, tam = 36 }) => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  if (T < t0 || T > t1) return null;
+  const e = spring({ frame: frame - t2f(t0), fps: FPS, config: { damping: 15, stiffness: 120 } });
+  const sale = tramo(T, t1 - 0.35, t1);
+  const cx = desde[0] + (x - desde[0]) * e;
+  const cy = desde[1] + (y - desde[1]) * e;
+  const n = dictado ? Math.round(texto.length * tramo(T, dictado[0], dictado[1])) : texto.length;
+  const escribiendo = dictado ? T < dictado[1] + 0.3 : false;
+  const cursor = escribiendo && Math.floor(T * 2.4) % 2 === 0;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: cx,
+        top: cy,
+        width: ancho,
+        transform: `translate(-50%, -50%) scale(${(0.3 + 0.7 * e) * (1 - 0.08 * sale)})`,
+        opacity: Math.min(1, e * 2) * (1 - sale),
+        background: "#241e1b",
+        border: `4px solid ${borde}`,
+        borderRadius: 30,
+        padding: "26px 34px",
+        boxShadow: `0 30px 80px rgba(0,0,0,0.6), 0 0 40px ${borde}55`,
+        fontFamily: LETRA,
+        color: C.tinta,
+      }}
+    >
+      {etiqueta ? <div style={{ fontSize: tam * 0.62, color: C.apagado, marginBottom: 10 }}>{etiqueta}</div> : null}
+      {titulo ? <div style={{ fontSize: tam * 1.05, fontWeight: 700, marginBottom: 8 }}>{titulo}</div> : null}
+      <div style={{ fontSize: tam, lineHeight: 1.3 }}>
+        {texto.slice(0, n)}
+        <span style={{ opacity: cursor ? 1 : 0, color: borde }}>|</span>
+      </div>
+    </div>
+  );
+};
+
+// Lluvia de confeti con los colores del aguayo
+export const Confeti: React.FC<{ t: number; dur?: number; n?: number }> = ({ t, dur = 2.4, n = 90 }) => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  if (T < t || T > t + dur) return null;
+  const q = T - t;
+  const colores = ["#C2185B", "#F28C28", "#2E9E5B", "#1E5AA8", "#F2C230"];
+  const piezas: React.ReactNode[] = [];
+  for (let i = 0; i < n; i++) {
+    const r = (k: number) => {
+      const v = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
+      return v - Math.floor(v);
+    };
+    const x0 = 960 + (r(1) - 0.5) * 300;
+    const vx = (r(2) - 0.5) * 1500;
+    const vy = -900 - r(3) * 700;
+    const x = x0 + vx * q * (1 - 0.25 * q);
+    const y = 620 + vy * q + 900 * q * q;
+    const giro = (r(4) - 0.5) * 1440 * q;
+    const o = 1 - tramo(T, t + dur - 0.5, t + dur);
+    piezas.push(
+      <div
+        key={i}
+        style={{
+          position: "absolute",
+          left: x,
+          top: y,
+          width: 14 + r(5) * 10,
+          height: 8 + r(6) * 6,
+          background: colores[i % colores.length],
+          transform: `rotate(${giro}deg) rotateX(${giro * 1.3}deg)`,
+          borderRadius: 2,
+          opacity: o,
+        }}
+      />,
+    );
+  }
+  return <AbsoluteFill style={{ pointerEvents: "none" }}>{piezas}</AbsoluteFill>;
 };

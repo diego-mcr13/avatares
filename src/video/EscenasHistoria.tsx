@@ -2,7 +2,7 @@
 import { Video } from "@remotion/media";
 import React from "react";
 import { AbsoluteFill, Img, Sequence, interpolate, random, spring, staticFile, useCurrentFrame } from "remotion";
-import { Avatares, Camara, Cifra, Fondo, PrimerPlano, Rotulo, Sonidos, Subtitulos, Telefono, Voces, armarAvatares, entrar, tramo } from "./comunes";
+import { Avatares, Cifra, Fondo, PrimerPlano, Rotulo, Sonidos, Subtitulos, Telefono, Voces, armarAvatares, entrar, tramo } from "./comunes";
 import { CARA } from "./caras";
 import { VOCES, escenaVideo } from "./datos";
 import { AGUAYO, C, COLOR_PERSONA, FPS, LETRA, LETRA_TITULO } from "./estilo";
@@ -478,13 +478,13 @@ const Figuritas: React.FC = () => {
 export const Escena2: React.FC = () => (
   <>
     <Fondo />
-    <Camara tomas={[{ t: 11.0, s: 1.05, x: 960, y: 480, dur: 5.5 }, { t: 16.3, s: 1, x: 960, y: 540, dur: 0.5 }, { t: 22.5, s: 1.05, x: 960, y: 520, dur: 5 }]}>
+    <>
     <GrupoFacebook />
     {useCurrentFrame() / FPS < 5.4 ? <Cifra texto={<span style={{ color: C.amarillo }}>209 mil miembros</span>} x={960} y={760} t={3.2} tam={84} /> : null}
     <Burbujas />
     <Figuritas />
     <Avatares escena={av2} />
-    </Camara>
+    </>
     <PreguntaVuela />
     <PrimerPlano
       escena={av2}
@@ -497,18 +497,6 @@ export const Escena2: React.FC = () => (
           <Cifra texto={<span style={{ color: C.amarillo }}>¿Alguien sabe quién arregla tuberías?</span>} x={640} y={380} t={8.7} tam={40} />
           <Cifra texto={<span style={{ color: C.coral }}>¿sigue vigente?</span>} x={640} y={470} t={9.6} tam={52} />
           <Cifra texto="¿y la respuesta?" x={640} y={560} t={10.3} tam={40} color={C.apagado} />
-        </>
-      }
-    />
-    <PrimerPlano
-      escena={av2}
-      quien="aldrin"
-      t0={13.3}
-      t1={15.9}
-      junto={
-        <>
-          <Cifra texto={<span style={{ color: "#8a7f77" }}>+0</span>} x={1300} y={330} t={13.4} tam={180} />
-          <Cifra texto="por ayudar" x={1300} y={560} t={13.8} tam={44} color={C.apagado} />
         </>
       }
     />
@@ -575,34 +563,43 @@ const Plan: React.FC = () => {
   return (
     <AbsoluteFill style={{ opacity: 1 - sale }}>
       <Cifra texto="Plan de 30 días" x={500} y={70} t={0.3} tam={64} alinear="izq" />
-      {/* Mapa simple de Cochabamba */}
-      <svg width={620} height={560} style={{ position: "absolute", left: 500, top: 190, opacity: mapa }} viewBox="0 0 620 560">
-        <path
-          d="M60 210 C 90 120, 220 70, 330 90 C 450 110, 560 170, 570 270 C 580 380, 500 470, 380 500 C 250 530, 120 480, 70 400 C 40 340, 40 270, 60 210 Z"
-          fill="#211b19"
-          stroke="rgba(243,237,232,0.22)"
-          strokeWidth={3}
-        />
-        <path d="M80 300 C 200 280, 330 330, 560 300" stroke="#1E5AA8" strokeWidth={6} fill="none" opacity={0.6} />
-        <ellipse cx={420} cy={420} rx={50} ry={26} fill="#1E5AA8" opacity={0.5} />
-        <text x={420} y={470} fill="#B0A59C" fontSize={20} textAnchor="middle" fontFamily={LETRA}>
-          laguna Alalay
-        </text>
-        <text x={320} y={150} fill="#B0A59C" fontSize={26} textAnchor="middle" fontFamily={LETRA}>
+      {/* Mapa de Cochabamba: calles, el río Rocha, la laguna Alalay y dos pines */}
+      <div style={{ position: "absolute", left: 500, top: 190, width: 620, height: 540, borderRadius: 28, overflow: "hidden", opacity: mapa, background: "#1f2a2c", border: `1.5px solid ${C.linea}`, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}>
+        <svg width={620} height={540} viewBox="0 0 620 540">
+          {/* Manzanas: cuadrícula de calles */}
+          {Array.from({ length: 14 }).map((_, i) => (
+            <line key={`v${i}`} x1={i * 46 + 10} y1={0} x2={i * 46 - 20} y2={540} stroke="rgba(243,237,232,0.07)" strokeWidth={2} />
+          ))}
+          {Array.from({ length: 12 }).map((_, i) => (
+            <line key={`h${i}`} x1={0} y1={i * 46 + 18} x2={620} y2={i * 46 + 30} stroke="rgba(243,237,232,0.07)" strokeWidth={2} />
+          ))}
+          {/* Avenidas */}
+          <path d="M0 330 L620 300" stroke="rgba(243,237,232,0.22)" strokeWidth={7} />
+          <path d="M300 0 L330 540" stroke="rgba(243,237,232,0.22)" strokeWidth={7} />
+          <path d="M40 60 C 200 150, 380 140, 600 90" stroke="rgba(243,237,232,0.16)" strokeWidth={5} fill="none" />
+          {/* Río Rocha */}
+          <path d="M0 200 C 120 180, 220 230, 340 205 C 450 182, 540 215, 620 195" stroke="#3b78c4" strokeWidth={9} fill="none" opacity={0.85} />
+          <text x={560} y={180} fill="#8fb4e0" fontSize={19} textAnchor="middle" fontFamily={LETRA}>río Rocha</text>
+          {/* Laguna Alalay */}
+          <ellipse cx={470} cy={445} rx={74} ry={40} fill="#3b78c4" opacity={0.7} />
+          <text x={470} y={510} fill="#8fb4e0" fontSize={19} textAnchor="middle" fontFamily={LETRA}>laguna Alalay</text>
+        </svg>
+        <div style={{ position: "absolute", left: 22, top: 18, background: "rgba(21,17,16,0.85)", borderRadius: 999, padding: "8px 18px", fontFamily: LETRA, fontWeight: 600, fontSize: 24, color: C.tinta }}>
           Cochabamba
-        </text>
-        {/* Sarco (noroeste) y el Centro */}
-        <circle cx={230} cy={240} r={18 + 26 * sarco} fill={C.fucsia} opacity={0.25 * sarco} />
-        <circle cx={230} cy={240} r={14} fill={C.fucsia} opacity={sarco} />
-        <text x={230} y={205} fill="#F3EDE8" fontSize={30} textAnchor="middle" fontFamily={LETRA} opacity={sarco}>
-          Sarco
-        </text>
-        <circle cx={340} cy={330} r={18 + 26 * centro} fill={C.fucsia} opacity={0.25 * centro} />
-        <circle cx={340} cy={330} r={14} fill={C.fucsia} opacity={centro} />
-        <text x={340} y={378} fill="#F3EDE8" fontSize={30} textAnchor="middle" fontFamily={LETRA} opacity={centro}>
-          Centro
-        </text>
-      </svg>
+        </div>
+        {[
+          { x: 175, y: 290, nombre: "Sarco", e: sarco },
+          { x: 335, y: 360, nombre: "Centro", e: centro },
+        ].map((p) => (
+          <div key={p.nombre} style={{ position: "absolute", left: p.x, top: p.y, opacity: Math.min(1, p.e * 1.5), transform: `translate(-50%, -100%) scale(${0.5 + 0.5 * p.e})`, transformOrigin: "50% 100%", textAlign: "center" }}>
+            <div style={{ fontFamily: LETRA, fontWeight: 700, fontSize: 30, color: C.tinta, background: "rgba(21,17,16,0.85)", borderRadius: 12, padding: "4px 14px", marginBottom: 6 }}>{p.nombre}</div>
+            <svg width={44} height={58} viewBox="0 0 44 58">
+              <path d="M22 56 C 22 56, 2 32, 2 21 A 20 20 0 0 1 42 21 C 42 32, 22 56, 22 56 Z" fill={C.fucsia} stroke="#fff" strokeWidth={2.5} />
+              <circle cx={22} cy={21} r={7} fill="#fff" />
+            </svg>
+          </div>
+        ))}
+      </div>
       <Rotulo texto="cerca de las universidades" x={810} y={760} t={4.2} alinear="centro" tam={28} color={C.fucsiaTexto} />
       <Rotulo texto="estudiantes" x={1180} y={200} t={2.1} tam={28} />
       <Rotulo texto="negocios de barrio" x={1410} y={200} t={3.1} tam={28} />
@@ -712,7 +709,7 @@ export const Escena9: React.FC = () => {
   return (
     <>
       <Fondo brillo={T < 17 ? [960, 500] : [1380, 500]} />
-      <Camara tomas={[{ t: 10.4, s: 1.05, x: 960, y: 480, dur: 9 }, { t: 10.9, s: 1, x: 960, y: 540, dur: 0.4 }, { t: 25.6, s: 1.04, x: 700, y: 480, dur: 8 }, { t: 26.0, s: 1, x: 960, y: 540, dur: 0.3 }]}>
+      <>
       <Plan />
       {celB > 0 ? (
         <div style={{ position: "absolute", inset: 0, opacity: celB }}>
@@ -738,7 +735,7 @@ export const Escena9: React.FC = () => {
       ) : null}
       <Cierre />
       <Avatares escena={av9} />
-      </Camara>
+      </>
       <PrimerPlano
         escena={av9}
         quien="aldrin"
