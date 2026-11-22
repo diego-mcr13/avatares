@@ -270,7 +270,6 @@ export const Escena1: React.FC = () => {
           ...CAIDAS.map((c) => ["golpe", c.t + 0.45] as ["golpe", number]),
           ["pop", T_CAE + 1.4],
           ["titulo", 18.4],
-          ["yei", 21.85],
         ]}
       />
     </>
