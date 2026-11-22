@@ -38,6 +38,8 @@ export type Recorrido = {
   inicio: Punto;
   // Hasta esta hora no se ve (aparece con un destello)
   apareceEn: number | null;
+  // Cae desde arriba a las `t` y se cae hacia `lado` (-1 izquierda, 1 derecha) antes de levantarse
+  caida?: { t: number; lado: -1 | 1 };
   tramos: Tramo[];
   claves: Clave[];
 };
@@ -68,6 +70,7 @@ export class Guion {
   private inicio: Record<Quien, Punto> = { ...ESPERA };
   private poseInicial: Record<Quien, PoseNombre> = { diego: "esperar", yaeko: "esperar", aldrin: "esperar" };
   private aparece: Partial<Record<Quien, number>> = {};
+  private caidas: Partial<Record<Quien, { t: number; lado: -1 | 1 }>> = {};
   private n = 0;
 
   constructor(
@@ -110,6 +113,13 @@ export class Guion {
     this.poseInicial[quien] = pose;
   }
 
+  // Cae desde arriba en `pos` a las `t`, se cae hacia `lado` y se levanta (escena 1 del video final)
+  cae(quien: Quien, t: number, pos: Punto, lado: -1 | 1) {
+    this.caidas[quien] = { t, lado };
+    this.inicio[quien] = pos;
+    this.poseInicial[quien] = "sorpresa";
+  }
+
   // Llega a `pos` a las `t` y toma la pose. Si pos es null, solo cambia de pose donde está.
   va(quien: Quien, t: number, pos: Punto | null, pose: PoseNombre, expr?: Partial<Expresion>) {
     this.paradas[quien].push({ t, pos, pose, expr });
@@ -134,7 +144,7 @@ export class Guion {
       const tramos: Tramo[] = [];
       const claves: Clave[] = [{ t: 0, pose: this.poseInicial[q] }];
       let pos = this.inicio[q];
-      let libreDesde = this.aparece[q] ?? 0;
+      let libreDesde = this.aparece[q] ?? this.caidas[q]?.t ?? 0;
       for (const p of paradas) {
         const dist = p.pos ? Math.hypot(p.pos[0] - pos[0], p.pos[1] - pos[1]) : 0;
         if (!p.pos || dist < 8) {
@@ -159,7 +169,7 @@ export class Guion {
         if (ult && c.t - ult.t < 1 / 30) limpias[limpias.length - 1] = { ...c, t: ult.t };
         else limpias.push(c);
       }
-      personajes[q] = { inicio: this.inicio[q], apareceEn: this.aparece[q] ?? null, tramos, claves: limpias };
+      personajes[q] = { inicio: this.inicio[q], apareceEn: this.aparece[q] ?? null, caida: this.caidas[q], tramos, claves: limpias };
     }
     const fin = Math.max(0, ...this.lineas.map((l) => l.t + l.dur));
     return {

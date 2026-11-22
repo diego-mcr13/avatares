@@ -54,8 +54,8 @@ const TARJETAS: { quien: Quien; cx: number; rol: string; hablaDesde: number }[] 
   { quien: "yaeko", cx: 960, rol: "Yaeko · product owner", hablaDesde: 4.4 },
   { quien: "aldrin", cx: 1400, rol: "Aldrin · desarrollador", hablaDesde: 9.8 },
 ];
-const T_PIXEL = 14.35; // «así»: empiezan a pixelarse las tres
-const T_ARMADO = 15.6; // los avatares aparecen
+const T_PIXEL = 14.8; // justo después de «¡Y ahora nos ven así!»: empiezan a pixelarse las tres
+const T_CAE = 16.0; // los avatares caen desde arriba (uno tras otro)
 const TW = 360;
 const TH = 640;
 const TY = 150;
@@ -82,7 +82,7 @@ const Tarjeta: React.FC<{ quien: Quien; cx: number; rol: string; hablaDesde: num
       <Video src={staticFile(voz.archivo)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
     </Sequence>
   ) : (
-    <Img src={staticFile(`video/img/p-${quien}.png`)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+    <Img src={staticFile(`video/img/p-${quien}${T >= hablaDesde ? "-fin" : ""}.png`)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
   );
   return (
     <div
@@ -135,27 +135,23 @@ const Tarjeta: React.FC<{ quien: Quien; cx: number; rol: string; hablaDesde: num
   );
 };
 
-// Voxels que salen de las tarjetas, suben girando y caen donde aparece cada avatar
+// Voxels que salen de las tarjetas y suben girando hasta salir por arriba (de ahí caen los avatares)
 const Voxels: React.FC = () => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
-  if (T < T_PIXEL + 0.6 || T > T_ARMADO + 0.7) return null;
+  if (T < T_PIXEL + 0.6 || T > T_PIXEL + 1.6) return null;
   const piezas: React.ReactNode[] = [];
   TARJETAS.forEach(({ quien, cx }, n) => {
-    for (let i = 0; i < 26; i++) {
+    for (let i = 0; i < 30; i++) {
       const sx = cx - TW / 2 + random(`x${n}${i}`) * TW;
       const sy = TY + random(`y${n}${i}`) * TH;
-      const ax = sx + (random(`dx${n}${i}`) - 0.5) * 260;
-      const ay = sy - 160 - random(`dy${n}${i}`) * 260;
-      const fx = cx + (random(`fx${n}${i}`) - 0.5) * 90;
-      const fy = 700 + random(`fy${n}${i}`) * 120;
-      const q1 = tramo(T, T_PIXEL + 0.6, T_PIXEL + 1.15);
-      const q2 = tramo(T, T_PIXEL + 1.15, T_ARMADO + 0.15);
-      const x = q2 > 0 ? ax + (fx - ax) * q2 : sx + (ax - sx) * q1;
-      const y = q2 > 0 ? ay + (fy - ay) * q2 : sy + (ay - sy) * q1;
+      const q = tramo(T, T_PIXEL + 0.6, T_PIXEL + 1.5 + random(`v${n}${i}`) * 0.1);
+      // Primero se abren un poco y después suben rápido
+      const abre = Math.min(1, q * 3);
+      const x = sx + (random(`dx${n}${i}`) - 0.5) * 220 * abre + (cx - sx) * q * 0.6;
+      const y = sy - q * q * (sy + 260);
       const lado = 14 + random(`s${n}${i}`) * 22;
       const color = i % 3 === 0 ? COLOR_PERSONA[quien] : AGUAYO[(i + n) % AGUAYO.length];
-      const o = 1 - tramo(T, T_ARMADO, T_ARMADO + 0.6);
       piezas.push(
         <div
           key={`${n}-${i}`}
@@ -166,8 +162,7 @@ const Voxels: React.FC = () => {
             width: lado,
             height: lado,
             background: color,
-            opacity: o,
-            transform: `rotate(${(q1 + q2) * 360 * (random(`r${n}${i}`) - 0.5) * 2}deg)`,
+            transform: `rotate(${q * 540 * (random(`r${n}${i}`) - 0.5) * 2}deg)`,
             boxShadow: `inset -3px -3px 0 rgba(0,0,0,0.25)`,
           }}
         />,
@@ -184,17 +179,26 @@ const Destello: React.FC<{ t: number }> = ({ t }) => {
   return <AbsoluteFill style={{ background: "#fff", opacity: d < 1 ? 0.55 : 0.55 * (1 - (d - 1) / 4) }} />;
 };
 
+// Caen desde arriba, chocan, quedan tirados y se levantan (idea de Diego); después, «Somos CodeBambinos»
+const CAIDAS: { quien: Quien; x: number; lado: -1 | 1; t: number }[] = [
+  { quien: "diego", x: 720, lado: 1, t: T_CAE },
+  { quien: "yaeko", x: 960, lado: -1, t: T_CAE + 0.14 },
+  { quien: "aldrin", x: 1200, lado: -1, t: T_CAE + 0.28 },
+];
 const av1 = armarAvatares("1", (g) => {
-  g.apareceCon("diego", T_ARMADO, [520, 800], "saludar");
-  g.apareceCon("yaeko", T_ARMADO + 0.08, [960, 800], "saludar");
-  g.apareceCon("aldrin", T_ARMADO + 0.16, [1400, 800], "saludar");
-  g.va("diego", T_ARMADO + 0.7, null, "saludar", CARA.feliz);
-  g.va("yaeko", T_ARMADO + 0.7, null, "saludar", CARA.feliz);
-  g.va("aldrin", T_ARMADO + 0.7, null, "saludar", CARA.feliz);
-  g.va("diego", 17.6, [780, 930], "triunfo", CARA.orgullo);
-  g.va("yaeko", 17.5, [960, 930], "hablar", CARA.orgullo);
-  g.va("aldrin", 17.6, [1140, 930], "triunfo", CARA.orgullo);
-  g.va("yaeko", 19.1, null, "triunfo", CARA.orgullo);
+  for (const c of CAIDAS) {
+    g.cae(c.quien, c.t, [c.x, 930], c.lado);
+    g.va(c.quien, c.t, null, "sorpresa", CARA.sorpresa);
+    g.va(c.quien, c.t + 0.5, null, "esperar", CARA.mareado);
+    g.va(c.quien, c.t + 1.3, null, "esperar", CARA.sorpresa);
+    g.va(c.quien, c.t + 1.75, null, "saludar", CARA.feliz);
+  }
+  g.va("yaeko", 18.4, [960, 930], "hablar", CARA.orgullo);
+  g.va("diego", 18.6, [780, 930], "celebrar", CARA.orgullo);
+  g.va("aldrin", 18.6, [1140, 930], "celebrar", CARA.orgullo);
+  g.va("diego", 20.6, null, "triunfo", CARA.orgullo);
+  g.va("aldrin", 20.6, null, "triunfo", CARA.orgullo);
+  g.va("yaeko", 20.8, null, "triunfo", CARA.orgullo);
 });
 
 export const Escena1: React.FC = () => {
@@ -207,12 +211,20 @@ export const Escena1: React.FC = () => {
         <Tarjeta key={x.quien} {...x} />
       ))}
       <Voxels />
-      <Destello t={T_ARMADO} />
-      {T >= 16.8 ? <Logo x={960} y={170} tam={210} t={16.9} sub="por CodeBambinos" /> : null}
+      <Destello t={T_PIXEL + 0.7} />
+      {T >= 18.3 ? <Logo x={960} y={170} tam={210} t={18.4} sub="por CodeBambinos" /> : null}
       <Avatares escena={av1} />
       <Subtitulos id="1" />
       <Voces id="1" />
-      <Sonidos lista={[["chispitas", T_PIXEL], ["giro", T_PIXEL + 0.7], ["chispitas", T_ARMADO], ["titulo", 16.9]]} />
+      <Sonidos
+        lista={[
+          ["chispitas", T_PIXEL],
+          ["giro", T_PIXEL + 0.7],
+          ...CAIDAS.map((c) => ["golpe", c.t + 0.45] as ["golpe", number]),
+          ["pop", T_CAE + 1.4],
+          ["titulo", 18.4],
+        ]}
+      />
     </>
   );
 };

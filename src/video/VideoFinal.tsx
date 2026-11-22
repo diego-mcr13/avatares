@@ -38,7 +38,7 @@ const Completo: React.FC = () => (
 // Miniatura de YouTube: el cierre de la escena 1 (logo y los tres avatares) y la frase del lema
 const Miniatura: React.FC = () => (
   <AbsoluteFill style={{ background: C.fondo }}>
-    <Sequence from={-Math.round(20.6 * FPS)} layout="none">
+    <Sequence from={-Math.round(22.2 * FPS)} layout="none">
       <AbsoluteFill>
         <Escena1 />
       </AbsoluteFill>

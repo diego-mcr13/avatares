@@ -148,20 +148,20 @@ Enlace del pago: <https://stellar.expert/explorer/testnet/tx/acce574fd925033d79a
 
 ## 5. Escenas
 
-Las horas son relativas al inicio de cada escena y salen de la duración real de las voces (§4), con **0,35 s** entre frases. Si una voz cambia, se corren solas (se calculan en `datos.ts`). «Clip a–b ×v» = tramo del clip, a velocidad v. Duración total ≈ **2:44**.
+Las horas son relativas al inicio de cada escena y salen de la duración real de las voces (§4), con **0,35 s** entre frases. Si una voz cambia, se corren solas (se calculan en `datos.ts`). «Clip a–b ×v» = tramo del clip, a velocidad v. Duración total ≈ **2:45**.
 
-### Escena 1 · Somos CodeBambinos y la transformación (≈ 21 s) · *Equipo*
+### Escena 1 · Somos CodeBambinos y la transformación (≈ 22,5 s) · *Equipo*
 
-Tres tarjetas verticales 9:16 (360 × 640; centros x = 520, 960 y 1400; centro y = 470) sobre el fondo, cada una con un borde de 4 px del color de su avatar (Diego `#22D3EE`, Yaeko `#8B5CFF`, Aldrin `#C6F432`). La de quien habla se agranda a 1,06 y las otras quedan al 55 % de brillo, quietas en su primer cuadro. Debajo de cada tarjeta, su rótulo («Diego · líder técnico», «Yaeko · product owner», «Aldrin · desarrollador»), que aparece cuando empieza a hablar. **Sin celular.**
+Tres tarjetas verticales 9:16 (360 × 640; centros x = 520, 960 y 1400) sobre el fondo, cada una con un borde del color de su avatar. La de quien habla se agranda; las otras quedan apagadas en un cuadro fijo (el del principio antes de hablar y el del final después). Debajo, el rol de cada uno. **Sin celular.**
 
 | Hora | Pantalla | Avatares | Audio |
 |---|---|---|---|
-| 0,0–4,1 | Habla Diego (`diego.mp4` desde 0,40 s) | — | 1-1 (del video) |
-| 4,4–9,5 | Habla Yaeko (`yaeko.mp4` desde 0,50 s) | — | 1-2 (del video) |
-| 9,8–14,6 | Habla Aldrin (`aldrin.mp4` desde 0,00 s) | — | 1-3 (del video) |
-| 14,3–16,6 | **La transformación** (la idea de Diego): justo en «así», las **tres tarjetas a la vez** se pixelan (el bloque crece de 1 a 40 px en 0,8 s), los bloques se separan como voxels y suben girando; un destello blanco de 4 cuadros; los voxels caen y **arman a cada avatar** en el lugar de su tarjeta (pies en y = 820), con el `aparecer` del personaje. Los rótulos quedan debajo de cada avatar | Los tres: `aparecer` y, al terminar de armarse, `saludar` con cara **feliz** | sonido `chispitas` + `giro` |
-| 16,9–20,3 | Los avatares se juntan al centro; encima aparece el logo de BoliviaSabe sobre su azulejo claro, grande, y «por CodeBambinos» | Los tres caminan al centro y hacen `triunfo` en «¡Esto es BoliviaSabe!», cara **orgullo** | 1-4 Yaeko + sonido `titulo` |
-| 20,3–21,0 | Barrido de aguayo hacia la escena 2 | — | — |
+| 0,0–4,1 | Habla Diego | — | 1-1 (del video) |
+| 4,4–9,5 | Habla Yaeko | — | 1-2 (del video) |
+| 9,8–14,75 | Habla Aldrin, **completo hasta «¡Y ahora nos ven así!»** | — | 1-3 (del video) |
+| 14,8–16,4 | **Transformación:** las tres tarjetas se pixelan a la vez (desde el último cuadro de cada uno), se deshacen en voxels que suben girando y salen por arriba; destello suave | — | `chispitas`, `giro` |
+| 16,0–17,8 | **Caen al suelo** (idea de Diego): los tres caen desde arriba uno tras otro, chocan (se aplastan un poco), se caen de lado y quedan tirados con cara **mareado**; después se levantan de un saltito con cara de sorpresa y saludan **felices** | Diego (x 720), Yaeko (960) y Aldrin (1200), en el piso | `golpe` en cada caída, `pop` al levantarse |
+| 18,4–22,0 | Logo de BoliviaSabe y «por CodeBambinos» | Se juntan; Yaeko habla con **orgullo**, Diego y Aldrin celebran; `triunfo` en «¡Esto es BoliviaSabe!» | 1-4 Yaeko + `titulo` |
 
 ### Escena 2 · El problema (≈ 23 s) · *Problema y usuario*
 
@@ -270,6 +270,7 @@ Nada de personajes planos. Tres reglas:
 | Expresión | Ojos | Cejas | Boca en reposo | Cuándo |
 |---|---|---|---|---|
 | `atento` | normal | normal | sonrisa | Por defecto: explica, espera su turno |
+| `mareado` | cerrados | triste | O | Tirados en el piso después de caer (1) |
 | `feliz` | feliz | arriba | sonrisa abierta | Cada +5, la transformación, el cierre |
 | `sorpresa` | normal | arriba | O | «ahí está», la respuesta que aparece sola, el memo |
 | `preocupado` | chicos | triste | apretada | El problema, la pregunta urgente |
@@ -300,6 +301,7 @@ Efectos propios, sintetizados con `videos-cc/scripts/sketch_sonidos.py` (sin lic
 | `ding_roto` | El «+0» de quien ayuda (2) |
 | `ding` | «Solucionada» (7), memo traducido a `ayuda:55` (8), cada figurita pintada en grupo (2: un solo ding al terminar) |
 | `chispitas` + `giro` | La transformación (1) |
+| `golpe` | Cada avatar que cae al suelo (1) |
 | `titulo` | El logo (1) y el lema (9) |
 
 ## 6. Subtítulos
@@ -373,14 +375,14 @@ public/video/          # clips, voces e imágenes copiados o convertidos
 BoliviaSabe: los vecinos de Bolivia comparten precios del barrio y responden preguntas, y quien ayuda gana yapitas en Stellar (red de pruebas, sin dinero real).
 
 0:00 Quiénes somos (CodeBambinos)
-0:21 El problema: 209 mil personas en un grupo «¿Alguien sabe?»; a 14 de 24 encuestados les molesta que la pregunta se pierda
-0:44 Abrir la app sin cuenta: Hoy y búsqueda
-0:57 Crear la cuenta y recibir 5 yapitas de bienvenida
-1:12 Preguntar (urgente, 5 yapitas)
-1:26 Otra cuenta responde; la respuesta aparece sin recargar
-1:39 «Me sirvió»: quien ayudó gana 5 yapitas
-1:49 El pago en Stellar con su memo (ayuda:55)
-2:07 Plan de 30 días y cierre
+0:22 El problema: 209 mil personas en un grupo «¿Alguien sabe?»; a 14 de 24 encuestados les molesta que la pregunta se pierda
+0:45 Abrir la app sin cuenta: Hoy y búsqueda
+0:58 Crear la cuenta y recibir 5 yapitas de bienvenida
+1:13 Preguntar (urgente, 5 yapitas)
+1:27 Otra cuenta responde; la respuesta aparece sin recargar
+1:40 «Me sirvió»: quien ayudó gana 5 yapitas
+1:50 El pago en Stellar con su memo (ayuda:55)
+2:08 Plan de 30 días y cierre
 
 App: https://boliviasabe.vercel.app
 Código: https://github.com/codebambinos/boliviasabe

@@ -379,7 +379,7 @@ export const Voces: React.FC<{ id: IdEscena }> = ({ id }) => (
   </>
 );
 
-export type NombreSfx = "blip" | "pop" | "campanitas" | "ding" | "ding_roto" | "chispitas" | "giro" | "titulo";
+export type NombreSfx = "blip" | "pop" | "campanitas" | "ding" | "ding_roto" | "chispitas" | "giro" | "titulo" | "golpe";
 const VOL_SFX: Record<NombreSfx, number> = {
   blip: 0.12,
   pop: 0.1,
@@ -389,6 +389,7 @@ const VOL_SFX: Record<NombreSfx, number> = {
   chispitas: 0.2,
   giro: 0.16,
   titulo: 0.16,
+  golpe: 0.22,
 };
 
 export const Sonidos: React.FC<{ lista: [NombreSfx, number][] }> = ({ lista }) => (

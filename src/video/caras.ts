@@ -8,4 +8,6 @@ export const CARA = {
   preocupado: { ojos: "chicos", cejas: ["triste", "triste"], reposo: "apretada", feliz: false },
   orgullo: { ojos: "feliz", cejas: ["normal", "normal"], reposo: "sonrisa", feliz: true },
   pensativo: { ojos: "normal", cejas: ["arriba", "normal"], reposo: "cerrada", feliz: false },
+  // Tirado en el piso después de caer
+  mareado: { ojos: "cerrados", cejas: ["triste", "triste"], reposo: "O", feliz: false },
 } satisfies Record<string, Partial<Expresion>>;

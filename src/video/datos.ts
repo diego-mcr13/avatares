@@ -28,7 +28,7 @@ export const VOCES: Record<string, Voz> = Object.fromEntries(
   [
     { codigo: "diego", quien: "diego", desde: 0.4, hasta: 4.3, texto: "Hola, soy Diego, el líder técnico, y ahora me verán en mi versión avatar.", archivo: "video/personas/diego.mp4" },
     { codigo: "yaeko", quien: "yaeko", desde: 0.5, hasta: 5.6, texto: "Hola, soy Yaeko, product owner, y también me vuelvo avatar.", archivo: "video/personas/yaeko.mp4" },
-    { codigo: "aldrin", quien: "aldrin", desde: 0.0, hasta: 4.8, texto: "Y yo soy Aldrin, desarrollador. ¡Y ahora nos ven así!", archivo: "video/personas/aldrin.mp4" },
+    { codigo: "aldrin", quien: "aldrin", desde: 0.0, hasta: 4.95, texto: "Y yo soy Aldrin, desarrollador. ¡Y ahora nos ven así!", archivo: "video/personas/aldrin.mp4" },
     v("1-4", "yaeko", 0.0, 3.42, "Somos CodeBambinos. ¡Esto es BoliviaSabe!"),
     v("2-1", "yaeko", 0.0, 4.92, "En Cochabamba preguntamos todo en grupos: este tiene 209 mil miembros."),
     v("2-2", "diego", 0.29, 6.27, "Pero la pregunta se pierde entre cientos de mensajes, nadie sabe si sigue vigente y a veces tarda."),
@@ -72,12 +72,12 @@ export const ESCENAS_VIDEO: { id: IdEscena; titulo: string; dur: number; frases:
   {
     id: "1",
     titulo: "Somos CodeBambinos",
-    dur: 21,
+    dur: 22.5,
     frases: [
       { codigo: "diego", t: 0.15 },
       { codigo: "yaeko", t: 4.4 },
       { codigo: "aldrin", t: 9.8 },
-      { codigo: "1-4", t: 16.9 },
+      { codigo: "1-4", t: 18.4 },
     ],
   },
   {

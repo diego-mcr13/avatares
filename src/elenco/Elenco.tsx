@@ -101,10 +101,32 @@ const Avatar: React.FC<{ quien: Quien; escena: Escena; frame: number }> = ({ qui
   });
   const [wx, wy] = aMundo(m.pos[0], m.pos[1]);
   const Voxel = VOXEL[quien];
+  // Caída (escena 1): no se ve antes de `t`; cae con gravedad, choca, se cae de lado y se levanta
+  let dy = 0;
+  let rot = 0;
+  let aplastar = 1;
+  if (r.caida) {
+    const { t, lado } = r.caida;
+    if (T < t) return null;
+    const CAE = 0.45;
+    const q = Math.min(1, (T - t) / CAE);
+    dy = 120 * (1 - q * q);
+    const choque = T - t - CAE;
+    if (choque >= 0 && choque < 0.18) aplastar = 1 - 0.28 * Math.sin((choque / 0.18) * Math.PI);
+    const tumba = Math.min(1, Math.max(0, (T - t - CAE - 0.05) / 0.22));
+    const vuelve = Math.min(1, Math.max(0, (T - t - 1.25) / 0.4));
+    const ease = (x: number) => 1 - Math.pow(1 - x, 3);
+    rot = lado * 1.45 * ease(tumba) * (1 - ease(vuelve));
+    // Saltito al levantarse
+    if (vuelve > 0 && vuelve < 1) dy += Math.sin(vuelve * Math.PI) * 5;
+  }
+  const estadoFinal = r.caida ? { ...estado, escala: [estado.escala[0] * (2 - aplastar), estado.escala[1] * aplastar, estado.escala[2]] as [number, number, number] } : estado;
   return (
     <group>
-      <SueloSombra position={[wx, wy, 0]} ancho={46} fondo={36} />
-      <Voxel estado={estado} position={[wx, wy, 0]} />
+      {dy < 25 ? <SueloSombra position={[wx, wy, 0]} ancho={46} fondo={36} /> : null}
+      <group position={[wx, wy + dy, 0]} rotation={[0, 0, rot]}>
+        <Voxel estado={estadoFinal} position={[0, 0, 0]} />
+      </group>
     </group>
   );
 };
