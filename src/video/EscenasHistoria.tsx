@@ -738,8 +738,8 @@ const Escena9Base: React.FC<{ fijo?: boolean }> = ({ fijo = false }) => {
           <Cifra texto="Pruébala hoy" x={150} y={200} t={17.3} tam={48} color={C.apagado} alinear="izq" />
           <Cifra texto={<span style={{ color: C.fucsiaTexto }}>boliviasabe.vercel.app</span>} x={150} y={270} t={17.6} tam={76} alinear="izq" />
           {T >= 18.2 ? (
-            <div style={{ position: "absolute", left: 150, top: 400, background: "#fff", borderRadius: 18, padding: 14, opacity: tramo(T, 18.2, 18.6) }}>
-              <Img src={staticFile("video/img/qr.svg")} style={{ width: 220, height: 220, display: "block" }} />
+            <div style={{ position: "absolute", left: 290, top: 370, background: "#fff", borderRadius: 26, padding: 20, opacity: tramo(T, 18.2, 18.6), transform: `scale(${0.9 + 0.1 * tramo(T, 18.2, 18.6)})`, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}>
+              <Img src={staticFile("video/img/qr.svg")} style={{ width: 400, height: 400, display: "block" }} />
             </div>
           ) : null}
           <Cifra texto="Hoy una ciudad," x={150} y={680} t={23.3} tam={44} alinear="izq" />
