@@ -1,5 +1,6 @@
 import { EquipoComposition } from "./Equipo";
 import { ElencoComposition } from "./elenco/Elenco";
+import { VideoFinalComposition } from "./video/VideoFinal";
 import { EjemploComposition } from "./ejemplo/Ejemplo";
 import { PoseAvatarComposition } from "./ejemplo/PoseAvatar";
 import { HojaVideoComposition } from "./elenco/HojaVideo";
@@ -18,6 +19,7 @@ export const RemotionRoot: React.FC = () => {
       <PruebaAldrinComposition />
       <EquipoComposition />
       <ElencoComposition />
+      <VideoFinalComposition />
       <HojaVideoComposition />
       <EjemploComposition />
       <PoseAvatarComposition />

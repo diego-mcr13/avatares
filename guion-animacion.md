@@ -1,164 +1,407 @@
-# Guion para animar el video de BoliviaSabe
+# Guion de animación del video de BoliviaSabe · contrato
 
-Guía para pasar el guion nuevo (9 escenas, códigos 1-1 a 9-4) a `src/elenco/escenas.ts` y animar a los avatares sobre las grabaciones reales.
+**Estado:** contrato (22 nov 2026). Lo que no está aquí no entra en el video; si algo cambia, se cambia primero aquí.
+**Anima:** Diego (con Claude). **Entrega:** enlace de YouTube a Atlas **hasta las 10:45**; la entrega cierra a las **11:59** (hora de Bolivia, Atlas muestra 3:59 PM UTC).
 
-- Guion de voces (qué dice cada uno): <https://claude.ai/artifact/1WfUPrarZX1AcNshLLLidQ>
-- Guion de edición (el mismo contenido, para el montaje): <https://claude.ai/artifact/EykfnkmEpbGyMJ1XjM6pdo>
-- Cómo está armado el elenco (`g.va`, `g.dice`, `junto`, exportar): `personajes/equipo/video.md`
+Reemplaza al guion anterior de 9 escenas pensado para montar en un editor. Las voces ya grabadas se usan tal cual. **Yaeko no anima, pero sí puede volver a grabar** sus frases si hiciera falta (igual que Diego y Aldrin); toda frase nueva se cambia aquí primero.
 
-> **Ojo:** `src/elenco/escenas.ts` todavía tiene el guion viejo de 8 escenas. Hay que reescribirlo con estas 9 y agregar `Escena9` / `Escena9Previa` en `Elenco.tsx` y `src/Root.tsx`.
+---
 
-## Datos generales
+## 1. Qué buscan los jueces y dónde se cumple
+
+El campo **Video** de Atlas pide YouTube (público o no listado), de 2 a 3 minutos y **mostrando el producto funcionando**. La IA de Atlas no ve el video: lee el **título y la descripción** de YouTube; los jueces lo miran.
+
+| Criterio de Atlas | Peso | Dónde lo prueba el video |
+|---|---|---|
+| Problema y usuario | 25 | Escena 2: grupo de 209 mil miembros; encuesta (14 de 24) |
+| Producto | 20 | Escenas 3 a 7: el recorrido completo en la página real |
+| Stellar | 20 | Escenas 4 (+5 de bienvenida), 7 (+5 al que ayudó) y 8 (pago con memo en stellar.expert) |
+| Plan de 30 días | 20 | Escena 9: Sarco y el Centro, 1 semana, 30 cuentas, 5 negocios, Bs 20 como hipótesis |
+| Equipo y compromiso | 15 | Escena 1: los tres en persona, con su rol |
+
+El recorrido que pidió la IA en el primer análisis, **entero y en este orden**: abrir sin cuenta (3) → registrarse (4) → recibir +5 (4) → preguntar (5) → responder desde otra cuenta (6) → «Me sirvió» (7) → pago con memo en stellar.expert (8).
+
+**Es para personas:** además de probar la app, tiene que entretener para que el juez lo vea hasta el final:
+
+- **Algo cambia cada 2 a 3 s** (una lupa, un rótulo, un avatar que se mueve, una cifra que entra); ningún plano quieto más de 3 s.
+- **Los avatares reaccionan, no solo señalan:** se desesperan con las burbujas, se sorprenden con la respuesta que llega sola, celebran cada +5. Sus caras (§5b) cuentan la historia aunque se vea sin sonido.
+- **Momentos para recordar:** la transformación de personas a avatares (1), la pregunta que se hunde entre mensajes (2), el «+0» triste de quien ayuda (2, con `ding_roto`), las campanitas del +5 (4 y 7) y el memo que se traduce solo (8).
+- **Cifras con movimiento:** 209 mil, 14 de 24, 5 yapitas, Bs 20, 30 cuentas y 5 negocios entran grandes y animadas, nunca como texto quieto.
+- **Ritmo:** cortes en la voz, sin silencios largos; las esperas de la app (cargas, escritura) se aceleran o se cortan.
+
+**Regla de oro:** las escenas 3 a 8 (la app funcionando) son la mayor parte del video; las escenas 1, 2 y 9 no se alargan más de lo que dura su voz.
+
+## 2. Formato (YouTube)
 
 | Dato | Valor |
-| --- | --- |
-| Lienzo | 1920 × 1080, 30 fps, fondo transparente |
-| Duración total | unos 2:25 (entre 2:20 y 2:40; nunca más de 3:00) |
-| Celular | marco de 423 × 940 px al centro (`U`). Dos celulares (`A` izquierda, `B` derecha) **solo en la escena 6** |
-| Avatares | Diego, Yaeko y Aldrin, con el outfit de CodeBambinos, de unos 300 px de alto |
-| Quien no habla | espera en `ESPERA` (esquinas de abajo) con la pose `esperar` |
-| Tilcho | **no aparece** en ninguna escena |
-| Clips de la app | `grabaciones/toma-final/` (360 × 800, tema oscuro, círculo amarillo en cada toque). Toques exactos en `grabaciones/toma-final/marcas.json` |
-| Capturas | `grabaciones/toma-final/capturas/` (una por toque) |
-| Audios | uno por frase, con el nombre del código (`4-1.m4a`, …). Cuando lleguen: volumen en `voces.ts` con `scripts/envolvente.py` |
+|---|---|
+| Lienzo | **1920 × 1080, 16:9 horizontal**, 30 fps |
+| Salida | Un solo MP4: H.264 (yuv420p, CRF 18) + AAC 48 kHz 192 kbps |
+| Duración | **2:30 a 2:50**; nunca más de 3:00 ni menos de 2:00 |
+| Volumen | Voces normalizadas a −14 LUFS integrados (lo que usa YouTube), picos ≤ −1 dBTP |
+| Música | **No.** Solo las voces (no hay pista con licencia; si Diego consigue una de la Biblioteca de audio de YouTube, va a −28 LUFS debajo de las voces) |
+| Subtítulos | **Quemados** en todas las frases (mucha gente ve sin sonido) |
+| Miniatura | 1280 × 720 (`Miniatura`, ver §8): la usa YouTube y la ve el juez antes de reproducir |
 
-**Cambio de guion (22 nov):** el 1-4 y el 9-4 los dice **solo Yaeko** (ya no los tres juntos). En esas frases solo se mueve la boca de Yaeko.
+### Zonas del lienzo (en px de 1920 × 1080)
 
-**Reparto de la demo (toma final):** Camila Q. es la cuenta nueva, en Queru Queru: crea la cuenta, pregunta y toca «Me sirvió». Ana es la vecina que responde y recibe las 5 yapitas.
+```
+ 0                     757          1163                  1920
+ ┌──────────────────────┬─────────────┬──────────────────────┐ 0
+ │                      │             │                      │
+ │  ZONA IZQUIERDA      │   CELULAR   │   ZONA DERECHA       │
+ │  avatares, rótulos,  │  405 × 900  │   avatares, rótulos, │
+ │  gráficos chicos     │  tope 40    │   gráficos chicos    │
+ │                      │             │                      │
+ │  pies ≤ 930          │  fondo 940  │   pies ≤ 930         │
+ ├──────────────────────┴─────────────┴──────────────────────┤ 950
+ │            FRANJA DE SUBTÍTULOS (958 a 1040)              │
+ └───────────────────────────────────────────────────────────┘ 1080
+```
 
-**Poses disponibles:** `caminar`, `correr`, `saludar`, `hablar`, `senalar` (hacia la derecha), `senalarIzq`, `senalarArriba`, `senalarAbajo`, `tocar`, `deslizar`, `aplaudir`, `esperar`, `pensar`, `encoger`, `desesperar`, `escribir`, `sorpresa`, `celebrar`, `triunfo`, `apuntar`.
+- **Margen seguro:** 96 px a los costados; nada importante debajo de 1040 (la barra de YouTube tapa el borde de abajo).
+- **Un celular (`U`):** centro x = 960, 405 × 900, tope 40. **Dos celulares (escena 6):** `A` centro x = 650 y `B` centro x = 1270; los avatares solo en x < 420 o x > 1500.
+- **Avatares:** unos 300 px de alto; los pies nunca bajo y = 930 (la franja de subtítulos es solo para los subtítulos).
+- **Rótulos de cuenta** («Ana · cuenta de ejemplo»): al costado del celular, a la altura de su borde de arriba (y ≈ 70), nunca encima de la pantalla.
+- **Escenas sin celular (1, 2 y 9):** el gráfico va al centro, en un área de 1500 × 820 (x 210 a 1710, y 60 a 880).
 
-**Las horas** de cada tramo son relativas al inicio de la escena y están calculadas con la duración ideal de cada frase. Cuando lleguen los audios, se corren a su largo real. En las tablas, «clip» indica qué tramo de la grabación se ve en el celular, para que el avatar toque o señale en el momento justo.
+## 3. Estilo
 
----
+- **Fondo:** `#151110` (el oscuro de la app) con la franja de aguayo de 6 px arriba (`#C2185B`, `#F28C28`, `#2E9E5B`, `#1E5AA8`, `#F2C230`) y un degradado radial muy suave detrás del celular.
+- **Colores (los de la app, `src/styles/tokens.css`):** fucsia `#C2185B` solo para la acción; naranja `#F28C28` para las yapitas; coral `#E4572E` para Urgente; verde `#2E9E5B` para Confirmado y Solucionada; azul `#1E5AA8` para avisos (red de pruebas); texto `#F3EDE8` y apagado `#B0A59C`.
+- **Letras:** Bricolage Grotesque peso 500 (títulos y cifras grandes, nunca negrita) y Figtree (todo lo demás), con `@remotion/google-fonts`.
+- **Celular:** marco redondeado (radio 44 px), borde de 2 px `rgb(243 237 232 / 0.18)`, sombra suave. El video de la app llena la pantalla del marco.
+- **Movimiento:** entradas con `spring` (damping 200, ~0,4 s); nada rebota de más; los cambios de escena son un corte limpio o un barrido de 0,3 s con la franja de aguayo.
+- **Lupa (lo interactivo):** en cada toque importante el contenido del celular se acerca **dentro del marco** (1,0 → 1,7 en 0,5 s, centrado en el botón) y vuelve a 1,0. Así el botón se lee en un celular viendo YouTube. El círculo amarillo del toque ya viene en las grabaciones; la posición de cada botón se mide en su captura (`capturas/`, en fracción de 720 × 1600).
+- **Burbujas de premio:** pastilla naranja «+5 yapitas» que sube desde el saldo y se desvanece (1,2 s).
 
-## Escena 1 · Nos presentamos (≈ 17 s)
+## 4. Material
 
-Los tres en cámara, de frente. Cada uno se pixela (0,5 s) y se vuelve su avatar. Al final quedan los tres juntos al centro con el logo de BoliviaSabe. **Sin celular.**
+Todo vive en `/Users/diego/Documents/avatares/`. Se copia (o convierte) a `public/video/` para Remotion.
 
-| Hora | Qué se ve | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:05 | Video de Diego; en «versión avatar» se pixela y queda el avatar. Rótulo «Diego · líder técnico» | Diego: `saludar` y luego `hablar` | **1-1 Diego:** «¡Hola! Soy Diego, líder técnico. Ahora me verán en mi versión avatar.» |
-| 0:05–0:10 | Video de Yaeko; se pixela al final. Rótulo «Yaeko · product owner» | Yaeko: `saludar`; en «me vuelvo avatar», `senalarIzq` hacia Diego. Diego: `esperar` | **1-2 Yaeko:** «¡Hola! Soy Yaeko, product owner. Yo también me vuelvo avatar.» |
-| 0:10–0:14 | Video de Aldrin; se pixela en «¡Ahora nos ven así!». Rótulo «Aldrin · desarrollador» | Aldrin: `saludar` y luego `celebrar`. Los otros: `esperar` | **1-3 Aldrin:** «Y yo soy Aldrin, desarrollador. ¡Ahora nos ven así!» |
-| 0:14–0:17 | Fondo de la marca, logo de BoliviaSabe y «por CodeBambinos» | Los tres caminan al centro; Yaeko habla y los tres hacen `triunfo` juntos al final | **1-4 Yaeko** (sola): «Somos CodeBambinos. ¡Esto es BoliviaSabe!» |
+### Presentaciones en persona (se conservan)
 
-**Falta:** un video de 5 s de cada uno en cámara (horizontal, de frente, de la cintura para arriba). Si no hay tiempo, se usa una foto con un acercamiento lento antes de pixelarla.
+| Archivo | Orientación real | Habla | Uso |
+|---|---|---|---|
+| `audios y videos/diego/1-1.MOV` | vertical 2160 × 3840, HEVC | 0,60 a 4,27 s | 1-1, con su propio audio |
+| `audios y videos/yaeko/1-2 video_.mp4` | horizontal 1280 × 720 (rotación 90) | 0,65 a 5,52 s | 1-2, con su propio audio |
+| `audios y videos/aldrin/1-3 video.MOV` | vertical 2160 × 3840 (rotación −90), HEVC | 0,00 a 4,75 s | 1-3, con su propio audio |
 
-## Escena 2 · El problema (≈ 22 s)
+Se convierten a H.264 1080 × 1920 (vertical) con la rotación aplicada; el de Yaeko se recorta a 9:16 centrado en su cara.
 
-Cabecera del grupo de Facebook, después mensajes que tapan la pregunta y al final la cifra de la encuesta. **Sin celular:** la imagen y los gráficos van al centro.
+### Voces (una por frase; «habla» = sin el silencio del principio y del final)
 
-| Hora | Qué se ve | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:05 | `e2-grupo-facebook-cabecera.png` con un acercamiento lento a «209,0 mil miembros» (resaltado en amarillo) | Yaeko a la izquierda: `senalar` hacia la cifra | **2-1 Yaeko:** «En Cochabamba preguntamos todo en grupos: este tiene 209 mil miembros.» |
-| 0:05–0:12 | Burbujas grises de mensajes que se apilan; una amarilla «¿Alguien sabe quién arregla tuberías?» se hunde entre ellas | Diego entra por la derecha: `desesperar` en «se pierde», `encoger` al final | **2-2 Diego:** «Pero la pregunta se pierde entre cientos de mensajes, nadie sabe si sigue vigente y a veces tarda.» |
-| 0:12–0:16 | Las burbujas se ponen grises; una mano con un «0» | Aldrin: `pensar` y luego `encoger` en «muchos callan» | **2-3 Aldrin:** «Y quien ayuda no gana nada. Por eso muchos callan.» |
-| 0:16–0:22 | 24 figuritas; 14 se pintan de amarillo una tras otra. Texto «14 de 24 personas» y «se quejan de que la pregunta se pierde» | Yaeko vuelve al centro: `apuntar` hacia las figuritas | **2-4 Yaeko:** «Le preguntamos a 24 personas: a 14 les molesta justo que la pregunta se pierda.» |
+| Código | Quién | Habla (s) | Texto (subtítulo exacto) |
+|---|---|---|---|
+| 1-4 | Yaeko | 0,00–3,42 | Somos CodeBambinos. ¡Esto es BoliviaSabe! |
+| 2-1 | Yaeko | 0,00–4,92 | En Cochabamba preguntamos todo en grupos: este tiene 209 mil miembros. |
+| 2-2 | Diego | 0,29–6,27 | Pero la pregunta se pierde entre cientos de mensajes, nadie sabe si sigue vigente y a veces tarda. |
+| 2-3 | Aldrin | 0,66–4,80 | Y quien ayuda no gana nada. Por eso muchos callan. |
+| 2-4 | Yaeko | 0,00–6,22 | Le preguntamos a 24 personas: a 14 les molesta justo que la pregunta se pierda. |
+| 3-1 | Aldrin | 1,02–6,86 | Abres boliviasabe.vercel.app y entras directo a Hoy, sin registrarte. |
+| 3-2 | Yaeko | 0,00–5,99 | Letreros con foto, precio, zona y fecha. Buscas «almuerzo» y ahí está. |
+| 4-1 | Diego | 0,31–5,38 | Para participar, creas tu cuenta con Google o con tu correo y eliges tu barrio. |
+| 4-2 | Aldrin | 0,95–5,98 | Y al terminar ya tienes tu cuenta en Stellar y cinco yapitas de bienvenida. |
+| 5-1 | Yaeko | 0,00–4,70 | Ahora preguntamos: ¿quién arregla una tubería hoy en Queru Queru? |
+| 5-2 | Aldrin | 0,84–6,86 | La marcamos Urgente: cuesta cinco yapitas y sale primero por 24 horas. |
+| 6-1 | Diego | 0,37–5,94 | En otra cuenta, Ana, que vive en Queru Queru, ve el aviso de la urgente y responde. |
+| 6-2 | Yaeko | 0,00–4,61 | Y quien preguntó ve la respuesta aparecer sola, sin recargar. |
+| 7-1 | Aldrin | 0,56–6,37 | Solo quien preguntó puede marcar Me sirvió, y la pregunta queda Solucionada. |
+| 7-2 | Diego | 0,00–2,75 | Y Ana gana cinco yapitas por ayudar. |
+| 8-1 | Diego | 0,00–6,26 | Cada premio es un pago en Stellar. En Movimientos se ve confirmado, y el enlace abre el registro público. |
+| 8-2 | Aldrin | 0,59–5,06 | Ahí está el pago, con su memo: cualquiera puede verificarlo. |
+| 8-3 | Yaeko | 0,00–5,21 | Todo corre en la red de pruebas, sin dinero real. Hoy la app custodia las cuentas. |
+| 9-1 | Yaeko | 0,00–10,42 | Empezamos en Cochabamba, con estudiantes y negocios cerca de las universidades, en Sarco y el Centro: una semana, 30 cuentas y 5 negocios. |
+| 9-2 | Diego | 0,00–5,71 | Los negocios de barrio pagarían Bs 20 al mes por aparecer primero en su zona. |
+| 9-3 | Aldrin | 0,49–9,11 | Pruébala hoy en boliviasabe.vercel.app. Hoy una ciudad, mañana toda Bolivia. |
+| 9-4 | Yaeko | 0,00–9,05 | ¿Viste algo útil? Súbelo. ¿Necesitas algo ya? Pregunta. En Bolivia, ayudar a tus vecinos tiene premio. |
 
-Las burbujas y las figuritas se dibujan, no se capturan de Facebook. En la imagen del grupo no pueden verse nombres ni caras.
+Archivos: `audios y videos/<quien>/<código>.m4a`. Los tiempos se midieron con `silencedetect` (−35 dB). **Antes de quemar los subtítulos** se transcribe cada audio (`scripts/transcribir.py`) y, si alguien dijo otra cosa, el subtítulo copia lo que se dijo (o se pide de nuevo la frase).
 
-## Escena 3 · Abrimos la app sin cuenta (≈ 11 s)
+### Toma final de la app (se reutiliza: no se vuelve a grabar)
 
-Celular `U` con `e3-hoy.mp4` (13,3 s). Toques: buscador a los **4,23 s**; «almuerzo» escrito a los **8,85 s**.
+`grabaciones/toma-final/`: página real, 720 × 1600 (= 360 × 800 a 2×), tema oscuro, círculo amarillo en cada toque, correo borroso y contraseña oculta. Toques exactos en `marcas.json`; una captura por toque en `capturas/`. Es la misma pregunta (#62), respuesta (#55) y pago (`ayuda:55`) que siguen en producción y en Stellar: el video coincide con lo que un juez puede abrir.
 
-| Hora | Clip | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:05 | 0 a 4,2 s: Hoy con los letreros, sin sesión. Rótulo fijo «boliviasabe.vercel.app» arriba | Aldrin, a la izquierda del celular: `senalarArriba` hacia la barra de direcciones y luego `senalar` | **3-1 Aldrin:** «Abres boliviasabe punto vercel punto app y entras directo a Hoy, sin registrarte.» |
-| 0:05–0:11 | 4,2 a 13,3 s (escritura a 1,5×) | Yaeko, a la derecha (buscador, arriba): `tocar` en 4,2 s, `sorpresa` en «ahí está». Aldrin: `esperar` | **3-2 Yaeko:** «Letreros con foto, precio, zona y fecha. Buscas «almuerzo» y ahí está.» |
+**¿Sirve para mostrar el flujo? Sí.** Se revisaron los 7 clips y sus 27 capturas: cubren los 7 pasos que pidió la IA, sin huecos, con la cuenta nueva, la urgente, la respuesta en vivo, «Me sirvió» y el pago. Tres detalles y cómo se resuelven:
 
-## Escena 4 · Creamos una cuenta (≈ 14 s)
+| Detalle | Solución |
+|---|---|
+| Fluidez: las transiciones van a 8–16 cuadros distintos por segundo y `e7-ana` (Movimientos) a ~3 | Preprocesado con fundido entre cuadros (`mpdecimate,framerate=30`): los saltos se vuelven fundidos suaves. Los tramos lentos se aceleran o se congelan |
+| El encabezado de Ana muestra su saldo (23) en la escena 6 | Pastilla encima |
+| El final de `e7-ana` muestra filas con XLM | No se usa ese tramo; en la escena 8 va el recorte del explorador |
 
-Celular `U` con `e4-registro.mp4` (55,2 s). Se cortan la escritura del correo y la espera del saldo. Toques: Iniciar sesión **1,2 s**, Continuar **20,8 s**, nombre **24,2 s**, zona **29,4 s**, Listo **31,8 s**, saldo de 5 **al final**.
+**Por qué no se vuelve a grabar:** el material cubre todo el recorrido sin huecos, y grabar de nuevo crea otra cuenta y otros pagos en Stellar y obliga a limpiar producción. Lo «más interactivo» se logra en la animación: lupa en cada toque, avatares que tocan y señalan, burbujas de premio y el memo que se traduce en pantalla. **Solo se vuelve a grabar** si al montar un tramo resulta ilegible o falta; en ese caso se graba ese clip con el mismo script y cuentas nuevas, y se limpia después.
 
-| Hora | Clip | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:02 | 0,5 a 3 s: toca «Iniciar sesión» | Diego a la izquierda: `tocar` | **4-1 Diego** (empieza) |
-| 0:02–0:04 | **Corte** de 3 a 18,5 s. Luego 18,5 a 21 s a 2×: Continuar | Diego: `hablar` | 4-1 sigue |
-| 0:04–0:08 | 24,2 a 32,5 s a 2×: «Tu barrio», Camila Q., Queru Queru, Listo. Rótulo «Queru Queru» | Diego: `senalar` hacia el campo de zona | 4-1 termina: «Para participar, creas tu cuenta con Google o con tu correo y eliges tu barrio.» |
-| 0:08–0:14 | **Corte** de 32,5 a 54,5 s. Final del clip y se congela 4 s (o `e4-saldo.png`). Burbuja «+5 yapitas» | Aldrin entra por la derecha: `senalarIzq` hacia el saldo y `aplaudir` en «cinco yapitas». Diego: `aplaudir` | **4-2 Aldrin:** «Y al terminar ya tienes tu cuenta en Stellar y cinco yapitas de bienvenida.» |
+| Clip | Duración | Toques (s) |
+|---|---|---|
+| `e3-hoy.mp4` | 13,3 | buscador 4,23 · «almuerzo» escrito 8,85 |
+| `e4-registro.mp4` | 55,2 | Iniciar sesión 1,20 · Continuar 20,79 · nombre 24,20 · zona 29,44 · Listo 31,84 · espera 36,32 · saldo 5 al final |
+| `e5-pregunta.mp4` | 48,9 | ¿Alguien sabe? 1,20 · Preguntar 4,92 · escribe 8,00 · Urgente 33,80 · Publicar 36,49 · publicada ~48,5 |
+| `e6-ana.mp4` | 34,4 | campana 2,51 · abre el aviso 6,36 · escribe 10,36 · Enviar 32,77 |
+| `e6-camila.mp4` | 34,4 | misma hora que Ana: la respuesta aparece 0,7 s después de Enviar (final del clip) |
+| `e7-camila.mp4` | 3,6 | Me sirvió 1,51 · Solucionada 3,00 |
+| `e7-ana.mp4` | 25,6 | saldo 1,51 · Movimientos «Confirmado» 8,02 · Registro 8,13 · stellar.expert 18,63 |
+| `e2-grupo-facebook-cabecera.png` | imagen | grupo «¿Alguien Sabe? - Cochabamba», 209,0 mil miembros, sin personas |
+| `e7-explorador.png` | imagen | stellar.expert: pago de 5 YAPITA y memo `YXl1ZGE6NTU=` |
 
-El correo queda borroso y la contraseña oculta en todos los cuadros.
+Enlace del pago: <https://stellar.expert/explorer/testnet/tx/acce574fd925033d79a87bc03e3c9b6766ecd43d0be4bc58b102d8309ce89a47>
 
-## Escena 5 · Preguntamos (≈ 14 s)
+## 5. Escenas
 
-Celular `U` con `e5-pregunta.mp4` (48,9 s). Rótulo «Camila (cuenta nueva)» arriba. Toques: ¿Alguien sabe? **1,2 s**, Preguntar **4,9 s**, escribe **8 s**, Urgente **33,8 s**, Publicar **36,5 s**, publicada **49,3 s**.
+Las horas son relativas al inicio de cada escena y salen de la duración real de las voces (§4), con **0,35 s** entre frases. Si una voz cambia, se corren solas (se calculan en `datos.ts`). «Clip a–b ×v» = tramo del clip, a velocidad v. Duración total ≈ **2:44**.
 
-| Hora | Clip | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:04 | 0,5 a 6 s: «¿Alguien sabe?» (menú de abajo) y Preguntar | Yaeko a la izquierda: `senalarAbajo` y `tocar` en cada toque | **5-1 Yaeko** (empieza) |
-| 0:04–0:07 | 8 a 33,8 s a 8× (≈ 3 s): escribe la pregunta | Yaeko: `escribir` | 5-1 termina: «Ahora preguntamos: ¿quién arregla una tubería hoy en Queru Queru?» |
-| 0:07–0:11 | 33,8 a 37 s normal: Urgente y «Publicar y pagar 5 yapitas» (`e5-urgente.png`). Texto «−5 yapitas · primera por 24 h» | Aldrin a la derecha: `senalarIzq` hacia Urgente y `tocar` en Publicar | **5-2 Aldrin:** «La marcamos Urgente: cuesta cinco yapitas y sale primero por 24 horas.» |
-| 0:11–0:14 | **Corte** de 37 a 48 s. Final del clip, se congela 2 s: detalle con «Pregúntale a tus grupos» | Los dos: `esperar` | silencio |
+### Escena 1 · Somos CodeBambinos y la transformación (≈ 21 s) · *Equipo*
 
-## Escena 6 · Otro vecino responde (≈ 13 s)
+Tres tarjetas verticales 9:16 (360 × 640; centros x = 520, 960 y 1400; centro y = 470) sobre el fondo, cada una con un borde de 4 px del color de su avatar (Diego `#22D3EE`, Yaeko `#8B5CFF`, Aldrin `#C6F432`). La de quien habla se agranda a 1,06 y las otras quedan al 55 % de brillo, quietas en su primer cuadro. Debajo de cada tarjeta, su rótulo («Diego · líder técnico», «Yaeko · product owner», «Aldrin · desarrollador»), que aparece cuando empieza a hablar. **Sin celular.**
 
-**Dos celulares:** `A` = Ana (`e6-ana.mp4`, 34,4 s), `B` = Camila (`e6-camila.mp4`, 34,4 s). Se grabaron a la misma hora: **mismos cortes en los dos**. Rótulos «Ana» y «Camila» arriba de cada uno. Toques de Ana: campana **2,5 s**, abre el aviso **6,4 s**, escribe **10,4 s**, Enviar **32,8 s**. En Camila la respuesta aparece al final del clip.
+| Hora | Pantalla | Avatares | Audio |
+|---|---|---|---|
+| 0,0–4,1 | Habla Diego (`diego.mp4` desde 0,40 s) | — | 1-1 (del video) |
+| 4,4–9,5 | Habla Yaeko (`yaeko.mp4` desde 0,50 s) | — | 1-2 (del video) |
+| 9,8–14,6 | Habla Aldrin (`aldrin.mp4` desde 0,00 s) | — | 1-3 (del video) |
+| 14,3–16,6 | **La transformación** (la idea de Diego): justo en «así», las **tres tarjetas a la vez** se pixelan (el bloque crece de 1 a 40 px en 0,8 s), los bloques se separan como voxels y suben girando; un destello blanco de 4 cuadros; los voxels caen y **arman a cada avatar** en el lugar de su tarjeta (pies en y = 820), con el `aparecer` del personaje. Los rótulos quedan debajo de cada avatar | Los tres: `aparecer` y, al terminar de armarse, `saludar` con cara **feliz** | sonido `chispitas` + `giro` |
+| 16,9–20,3 | Los avatares se juntan al centro; encima aparece el logo de BoliviaSabe sobre su azulejo claro, grande, y «por CodeBambinos» | Los tres caminan al centro y hacen `triunfo` en «¡Esto es BoliviaSabe!», cara **orgullo** | 1-4 Yaeko + sonido `titulo` |
+| 20,3–21,0 | Barrido de aguayo hacia la escena 2 | — | — |
 
-| Hora | Clip (A y B iguales) | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:05 | 1,5 a 10,4 s a 2×: campana, aviso «Pregunta urgente en Queru Queru», abre la pregunta | Diego a la izquierda de `A`: `tocar` en la campana (arriba) y luego `senalar` | **6-1 Diego** (empieza) |
-| 0:05–0:08 | 10,4 a 32,8 s a 8× (≈ 3 s): Ana escribe | Diego: `hablar` | 6-1 termina: «En otra cuenta, Ana, que vive en Queru Queru, ve el aviso de la urgente y responde.» |
-| 0:08–0:13 | 32,8 s al final: Enviar en `A`; la respuesta aparece en `B`. Se congelan los dos 3 s. Texto «sin recargar» junto a la respuesta | Yaeko a la derecha de `B`: `sorpresa` y luego `senalarIzq` hacia la respuesta. Diego: `aplaudir` | **6-2 Yaeko:** «Y quien preguntó ve la respuesta aparecer sola, sin recargar.» |
+### Escena 2 · El problema (≈ 23 s) · *Problema y usuario*
 
-Captura de apoyo: `e6-avisos.png`.
+**Sin celular.** El gráfico ocupa el área central.
 
-## Escena 7 · «Me sirvió» (≈ 9 s)
+| Hora | Pantalla | Avatares | Audio |
+|---|---|---|---|
+| 0,0–4,9 | `e2-grupo-facebook-cabecera.png` en una tarjeta de navegador; acercamiento lento a «209,0 mil miembros», que se resalta con un subrayado amarillo | Yaeko a la izquierda: `senalar` hacia la cifra | 2-1 |
+| 5,3–11,2 | Burbujas grises de chat que suben y se apilan; una amarilla «¿Alguien sabe quién arregla tuberías?» se hunde entre ellas. En «vigente», una etiqueta «¿sigue vigente?» sobre una burbuja vieja | Diego entra por la derecha: `desesperar` en «se pierde», `encoger` al final | 2-2 |
+| 11,6–15,7 | Una burbuja de respuesta con «+0» en gris | Aldrin: `pensar` y `encoger` en «muchos callan» | 2-3 |
+| 16,1–22,3 | 24 figuritas en 3 filas de 8; 14 se pintan de fucsia una tras otra. Cifras grandes «14 de 24» y debajo «les molesta que la pregunta se pierda» | Yaeko al centro abajo: `apuntar` hacia las figuritas | 2-4 |
 
-Celular `U` con `e7-camila.mp4` (3,6 s). Toques: Me sirvió **1,5 s**, Solucionada **3 s**.
+Las burbujas y figuritas se dibujan (no se copian de Facebook). No se ven nombres ni caras.
 
-| Hora | Clip | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:02 | 0 a 1,5 s, con un acercamiento al botón «Me sirvió» | Aldrin a la izquierda: `senalar` hacia el botón | **7-1 Aldrin** (empieza) |
-| 0:02–0:05 | 1,5 a 3,6 s: toca y queda Solucionada (sello) | Aldrin: `tocar` en 1,5 s y luego `hablar` | 7-1 termina: «Solo quien preguntó puede marcar Me sirvió, y la pregunta queda Solucionada.» |
-| 0:05–0:09 | Se congela 4 s (`capturas/e7-camila_final.png`): «¡Gracias, pues! Ana recibe +5 yapitas…». Texto «+5 yapitas para Ana» | Diego entra por la derecha: `celebrar`. Aldrin: `aplaudir` | **7-2 Diego:** «Y Ana gana cinco yapitas por ayudar.» |
+### Escena 3 · Sin cuenta (≈ 13 s) · *Producto*
 
-## Escena 8 · El pago en Stellar (≈ 19 s)
+Celular `U` con `e3-hoy.mp4`. Rótulo fijo arriba a la izquierda: «boliviasabe.vercel.app».
 
-Celular `U` con `e7-ana.mp4` (25,6 s). Rótulo «Ana». Toques: saldo **1,5 s**, Confirmado visible **8 s**, Registro **8,1 s**, stellar.expert **18,6 s**.
+| Hora | Clip | Lupa | Avatares | Audio |
+|---|---|---|---|---|
+| 0,0–5,8 | 0–4,2 ×0,75 (Hoy con letreros, sin sesión, botón «Iniciar sesión») | ninguna | Aldrin a la izquierda: `senalarArriba` hacia el rótulo y luego `senalar` a los letreros | 3-1 |
+| 6,2–12,2 | 4,2–13,3 ×1,5 (toca el buscador, escribe «almuerzo», «2 letreros») | 1,7 al buscador en 4,2; vuelve a 1,0 y se acerca a 1,4 sobre los 2 resultados al final | Yaeko a la derecha: `tocar` en el buscador; `sorpresa` en «ahí está». Aldrin: `esperar` | 3-2 |
 
-| Hora | Clip | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:05 | 0,5 a 8,1 s: toca su saldo y se abre Movimientos con «Tu respuesta sirvió +5 yapitas · Confirmado» (`e7-movimientos.png`) | Diego a la izquierda: `tocar` y luego `senalar` hacia «Confirmado» | **8-1 Diego** (empieza) |
-| 0:05–0:08 | Toca Registro. **Corte** de 9 a 18 s. Desde 18 s: se abre stellar.expert. Texto «registro público: stellar.expert» | Diego: `senalarArriba` hacia la barra de direcciones | 8-1 termina: «Cada premio es un pago en Stellar. En Movimientos se ve confirmado, y el enlace abre el registro público.» |
-| 0:08–0:13 | Imagen fija `e7-explorador.png` **recortada** (solo «sent 5 YAPITA to…» y el memo, sin XLM) con acercamiento al memo. Rótulo **«Memo: ayuda:55 → premio por la respuesta n.º 55»** | Aldrin a la derecha: `sorpresa` y luego `senalarIzq` hacia el memo | **8-2 Aldrin:** «Ahí está el pago, con su memo: cualquiera puede verificarlo.» |
-| 0:13–0:19 | La misma imagen con una franja abajo: «Red de pruebas · sin dinero real · la app custodia las cuentas» | Yaeko al centro abajo: `hablar`. Los otros: `esperar` | **8-3 Yaeko:** «Todo corre en la red de pruebas, sin dinero real. Hoy la app custodia las cuentas.» |
+### Escena 4 · Crear la cuenta y +5 (≈ 15 s) · *Producto + Stellar*
 
-stellar.expert muestra el memo codificado (`YXl1ZGE6NTU=` = «ayuda:55»), por eso va el rótulo. No pueden verse ni la palabra XLM ni el saldo de Ana. Si el texto queda chico, usar `e7-explorador-abajo.png`.
+Celular `U` con `e4-registro.mp4`. Rótulo: «Camila · cuenta nueva de demo».
 
-## Escena 9 · Plan y cierre (≈ 28 s)
+| Hora | Clip | Lupa | Avatares | Audio |
+|---|---|---|---|---|
+| 0,0–1,6 | 0,5–3,0 ×1,5 (toca «Iniciar sesión», se abre «Entra a BoliviaSabe») | 1,5 a la hoja | Diego a la izquierda: `tocar` | 4-1 empieza |
+| 1,6–2,9 | **Corte** a 18,5–21,0 ×2 (Continuar) | — | Diego: `hablar` | 4-1 |
+| 2,9–7,0 | 24,2–32,5 ×2 («Tu barrio»: Camila Q., Queru Queru, Listo) | 1,6 al campo de zona en 29,4 | Diego: `senalar` hacia la zona; rótulo «Queru Queru» | 4-1 termina |
+| 7,0–15,0 | **Corte** a 54,4–55,2 y se congela el último cuadro (saldo «★ 5») | 1,9 al saldo, arriba a la derecha | Aldrin entra por la derecha: `senalarIzq` hacia el saldo y `aplaudir` en «cinco yapitas». Diego: `aplaudir`. Burbuja «+5 yapitas · bienvenida» | 4-2 desde 7,3 |
 
-**Sin celular.** Gráficos sobre el fondo de la marca.
+### Escena 5 · Preguntar urgente (≈ 14 s) · *Producto + Stellar*
 
-| Hora | Qué se ve | Avatares | Audio |
-| --- | --- | --- | --- |
-| 0:00–0:09 | Título «Plan de 30 días». Mapa simple de Cochabamba con dos puntos que se encienden, Sarco y el Centro. Después entran tres tarjetas: «1 semana», «30 cuentas», «5 negocios» | Yaeko: `senalarArriba` hacia cada tarjeta cuando aparece | **9-1 Yaeko:** «Empezamos en Cochabamba, con estudiantes y negocios cerca de las universidades, en Sarco y el Centro: una semana, 30 cuentas y 5 negocios.» |
-| 0:09–0:15 | Tarjeta de un negocio de barrio que sube al primer lugar. «Bs 20/mes · aparecer primero en su zona» + nota chica «hipótesis por validar» | Diego: `apuntar` hacia el precio | **9-2 Diego:** «Los negocios de barrio pagarían Bs 20 al mes por aparecer primero en su zona.» |
-| 0:15–0:21 | **boliviasabe.vercel.app** grande al centro, con un código QR que lleva a la app | Aldrin: `senalarArriba` hacia la dirección y `triunfo` en «toda Bolivia» | **9-3 Aldrin:** «Pruébala hoy en boliviasabe punto vercel punto app. Hoy una ciudad, mañana toda Bolivia.» |
-| 0:21–0:28 | Logo de BoliviaSabe y el lema en tres líneas, una por frase; «CodeBambinos» chico abajo | Los tres juntos al centro; Yaeko adelante con `hablar`, Diego y Aldrin `celebrar`; al final los tres `saludar` para despedirse | **9-4 Yaeko** (sola): «¿Viste algo útil? Súbelo. ¿Necesitas algo ya? Pregunta. En Bolivia, ayudar a tus vecinos tiene premio.» |
+Celular `U` con `e5-pregunta.mp4`. Rótulo: «Camila · cuenta nueva de demo».
 
-Los últimos 2 s quedan en silencio con el logo y la dirección.
+| Hora | Clip | Lupa | Avatares | Audio |
+|---|---|---|---|---|
+| 0,0–2,0 | 0,5–6,0 ×2,75 (¿Alguien sabe? y Preguntar) | — | Yaeko a la izquierda: `senalarAbajo` y `tocar` | 5-1 empieza |
+| 2,0–5,1 | 8,0–33,8 ×8,3 (escribe la pregunta) | 1,5 a la caja de texto | Yaeko: `escribir` | 5-1 termina |
+| 5,1–8,6 | 33,8–37,0 ×0,9 (enciende Urgente y toca «Publicar y pagar 5 yapitas») | 1,7 al interruptor «Urgente (−5 yapitas)»; luego al botón Publicar | Aldrin a la derecha: `senalarIzq` hacia Urgente y `tocar` en Publicar. Burbuja «−5 yapitas · sale primero 24 h» | 5-2 desde 5,4 |
+| 8,6–14,0 | **Corte** a 47,5–48,9 y se congela (detalle con «Urgente · Queru Queru») | 1,4 a la etiqueta «Urgente» | Los dos: `esperar` | 5-2 termina |
 
----
+### Escena 6 · Otra cuenta responde (≈ 13 s) · *Producto*
 
-## Pasos para Diego
+**Dos celulares:** `A` = Ana (`e6-ana.mp4`), `B` = Camila (`e6-camila.mp4`), grabados a la misma hora: **mismos cortes en los dos**. Rótulos: «Ana · cuenta de ejemplo» (a la izquierda de A) y «Camila · cuenta nueva de demo» (a la derecha de B). El saldo de Ana en su encabezado se tapa con una pastilla «★ yapitas».
 
-1. Reescribir `src/elenco/escenas.ts` con estas 9 escenas: una llamada `g.va(...)` por cada movimiento de las tablas y `g.dice(...)` con el texto exacto de cada frase.
-2. Mirar en la captura de cada toque (`grabaciones/toma-final/capturas/`) a qué altura está el botón y usar ese `v` en `junto(celular, lado, v)` (0 = arriba, 1 = abajo).
-3. Agregar `Escena9` y `Escena9Previa`, y en la escena 6 usar los celulares `A` y `B`. Las escenas 1, 2 y 9 no llevan celular.
-4. Revisar en Studio (`npm run dev`) con las `EscenaNPrevia`.
-5. Cuando lleguen los audios: correr las horas al largo real, generar el volumen con `scripts/envolvente.py` y registrarlo en `voces.ts` (clave `<escena>-<quien>`, por ejemplo `5-yaeko`).
-6. `npm run lint` y después exportar con `node scripts/renderizar-elenco.mjs mov` (transparentes en `out/elenco/`).
+| Hora | Clip (A y B) | Lupa | Avatares | Audio |
+|---|---|---|---|---|
+| 0,0–3,9 | 1,5–10,4 ×2,3 (campana, Avisos «Pregunta urgente en Queru Queru», abre la pregunta) | Con dos celulares no hay lupa: un anillo fucsia marca la campana y el aviso | Diego a la izquierda de A: `tocar` en la campana y `senalar` | 6-1 empieza |
+| 3,9–6,3 | 10,4–32,8 ×9,3 (Ana escribe) | — | Diego: `hablar` | 6-1 termina |
+| 6,3–13,0 | 32,8–34,4 ×1 y se congelan los dos (Enviar en A; la respuesta aparece en B) | Anillo verde sobre la respuesta en B y etiqueta «sin recargar · 0,7 s» | Yaeko a la derecha de B: `sorpresa` y `senalarIzq` hacia la respuesta. Diego: `aplaudir` | 6-2 desde 6,3 |
 
-## Antes de entregar
+### Escena 7 · «Me sirvió» (≈ 10 s) · *Producto + Stellar*
 
-- [ ] Subtítulos en todo el video, quemados abajo al centro, con el texto exacto
-- [ ] Escena 4: el correo borroso y la contraseña oculta en todos los cuadros
-- [ ] Escena 8: sin líneas de XLM y con el rótulo del memo
-- [ ] No pueden verse correos, teléfonos, contraseñas, datos de prueba ni caras o nombres de Facebook
-- [ ] Sin Tilcho
-- [ ] No se dice ni se escribe cripto, blockchain, tokens, XLM ni puntos
-- [ ] Duración entre 2:20 y 2:40
-- [ ] MP4 H.264, 1920 × 1080, 30 fps; verlo completo en un celular antes de subirlo
+Celular `U` con `e7-camila.mp4`. Rótulo: «Camila · cuenta nueva de demo».
 
-**Hora límite:** domingo 22 a las 11:59, hora de Bolivia (por confirmar).
+| Hora | Clip | Lupa | Avatares | Audio |
+|---|---|---|---|---|
+| 0,0–4,5 | 0–3,6 ×0,8 (toca «Me sirvió», queda «Solucionada») | 1,7 al botón «Me sirvió»; luego 1,4 a la etiqueta «Solucionada» | Aldrin a la izquierda: `senalar` y `tocar` en 1,9 s | 7-1 |
+| 4,5–9,8 | Se congela el último cuadro («¡Gracias, pues! Ana recibe +5 yapitas…») | 1,5 a la tarjeta naranja | Diego entra por la derecha: `celebrar`. Aldrin: `aplaudir`. Burbuja «+5 yapitas para Ana» | 7-1 termina; 7-2 desde 6,6 |
+
+### Escena 8 · El pago en Stellar (≈ 18 s) · *Stellar*
+
+Celular `U` con `e7-ana.mp4`. Rótulo: «Ana · cuenta de ejemplo».
+
+| Hora | Pantalla | Avatares | Audio |
+|---|---|---|---|
+| 0,0–3,6 | Clip 0,5–8,1 ×2,1: toca su saldo y se abre Movimientos. Lupa 1,6 a la fila «Tu respuesta sirvió · +5 yapitas · Confirmado · Registro acce…9a47» | Diego a la izquierda: `tocar` y `senalar` hacia «Confirmado» | 8-1 empieza |
+| 3,6–6,3 | Clip 8,1–9,0 (toca Registro); **corte** a 18,6–20,4 (se abre stellar.expert). Rótulo «registro público: stellar.expert» | Diego: `senalarArriba` | 8-1 termina |
+| 6,6–11,5 | El celular se corre a la izquierda (centro x = 620) y a la derecha entra la **tarjeta del explorador** (recorte de `e7-explorador.png`: solo «sent 5 YAPITA to GBMD…526K» y la fila del memo, **sin las filas de XLM**). El memo `YXl1ZGE6NTU=` se transforma letra a letra en **`ayuda:55`** y debajo aparece «= premio por la respuesta n.º 55». Abajo, chico: «stellar.expert muestra el memo codificado» | Aldrin a la derecha: `sorpresa` y `senalarIzq` hacia el memo | 8-2 |
+| 11,9–18,0 | Franja azul abajo de la tarjeta: «Red de pruebas · sin dinero real · hoy la app custodia las cuentas» | Yaeko entra al centro abajo: `hablar`. Los otros: `esperar` | 8-3 |
+
+### Escena 9 · Plan y cierre (≈ 37 s) · *Plan de 30 días*
+
+| Hora | Pantalla | Avatares | Audio |
+|---|---|---|---|
+| 0,0–10,4 | **Sin celular.** Título «Plan de 30 días». Mapa simple de Cochabamba (contorno y la laguna Alalay como referencia) con dos puntos que se encienden, **Sarco** y **el Centro**, y la etiqueta «cerca de las universidades». Entran tres tarjetas en orden con la voz: «1 semana», «30 cuentas», «5 negocios» | Yaeko a la izquierda: `senalarArriba` hacia cada tarjeta | 9-1 |
+| 10,8–16,5 | Celular `U` con la captura de Hoy (`capturas/e4-registro_07…png`). Un letrero sube al primer lugar con una pastilla «Destacado · próximo». A la derecha: «**Bs 20 al mes** · aparecer primero en su zona» y debajo, chico, «hipótesis por validar · aún no está en la app» | Diego a la derecha: `apuntar` hacia el precio | 9-2 |
+| 16,9–25,5 | **boliviasabe.vercel.app** grande a la izquierda, con un código QR a la app; a la derecha el celular con Hoy | Aldrin: `senalarArriba` hacia la dirección y `triunfo` en «toda Bolivia» | 9-3 |
+| 25,9–35,0 | Logo de BoliviaSabe y el lema en tres líneas que entran con cada frase | Los tres al centro; Yaeko `hablar`, Diego y Aldrin `celebrar`; al final los tres `saludar` | 9-4 |
+| 35,0–37,0 | Cierre en silencio: logo, «boliviasabe.vercel.app», «github.com/codebambinos/boliviasabe» y «CodeBambinos · National Startups Hackathon by Stellar» | — | silencio |
+
+## 5a. Vestuario de los avatares
+
+Cada avatar viste como su persona en el video de presentación, para que la transformación (escena 1) se lea al instante:
+
+| Avatar | Ropa |
+|---|---|
+| Diego | Polera oversize verde militar, jean negro, tenis blancos y **lentes cuadrados de marco fino** |
+| Aldrin | Canguro café claro, jean negro, tenis negros |
+| Yaeko | Polera negra, falda negra, tenis blancos |
+
+En los tres, el logo de CodeBambinos **chico en el pecho derecho**. Código: `src/bambinos/ropa.ts` (`TELA`, `TENIS`, `poleraTorso`, `canguroColor`, `logoPecho`) y los lentes en `src/diegoBambino/modelo.ts` (`lentes`).
+
+## 5b. Expresiones de los avatares
+
+Nada de personajes planos. Tres reglas:
+
+1. **La expresión es independiente de la pose.** Cada `va(...)` acepta una expresión que reemplaza la de la pose (señalar preocupado en el problema, señalar feliz en el premio). Sin expresión, queda la de la pose.
+2. **Parpadeo automático** cada 2,8 a 4,8 s (distinto en cada uno), de 0,12 s, salvo con ojos «feliz».
+3. **Mientras habla,** la boca sigue el volumen de su voz real; la expresión manda en ojos y cejas, y en la boca cuando calla.
+
+| Expresión | Ojos | Cejas | Boca en reposo | Cuándo |
+|---|---|---|---|---|
+| `atento` | normal | normal | sonrisa | Por defecto: explica, espera su turno |
+| `feliz` | feliz | arriba | sonrisa abierta | Cada +5, la transformación, el cierre |
+| `sorpresa` | normal | arriba | O | «ahí está», la respuesta que aparece sola, el memo |
+| `preocupado` | chicos | triste | apretada | El problema, la pregunta urgente |
+| `orgullo` | feliz | normal | sonrisa | «Esto es BoliviaSabe», el plan, «toda Bolivia» |
+| `pensativo` | normal | arriba / normal | cerrada | «quien ayuda no gana nada» |
+
+| Escena | Diego | Yaeko | Aldrin |
+|---|---|---|---|
+| 1 | feliz → orgullo | feliz → orgullo | feliz → orgullo |
+| 2 | preocupado (2-2) | atento (2-1), atento firme (2-4) | pensativo → preocupado (2-3) |
+| 3 | — | atento → sorpresa en «ahí está» → feliz | atento |
+| 4 | atento → feliz en el +5 | — | feliz (4-2) |
+| 5 | — | preocupado (vecina con apuro) | atento → feliz al publicar |
+| 6 | atento | sorpresa → feliz | — |
+| 7 | feliz (7-2) | — | atento → feliz |
+| 8 | atento | atento, tranquila (8-3) | sorpresa → orgullo |
+| 9 | atento seguro (9-2) → feliz | orgullo (9-1) → feliz | orgullo → feliz; los tres feliz al despedirse |
+
+## 5c. Sonidos
+
+Efectos propios, sintetizados con `videos-cc/scripts/sketch_sonidos.py` (sin licencias), muy bajos: nunca tapan una voz (−22 dB respecto de la voz). Sin música.
+
+| Sonido | Dónde |
+|---|---|
+| `blip` | Cada toque con lupa (escenas 3 a 8) |
+| `pop` | Rótulos, burbujas de chat y tarjetas que entran |
+| `campanitas` | Cada «+5 yapitas» (escenas 4 y 7) |
+| `ding_roto` | El «+0» de quien ayuda (2) |
+| `ding` | «Solucionada» (7), memo traducido a `ayuda:55` (8), cada figurita pintada en grupo (2: un solo ding al terminar) |
+| `chispitas` + `giro` | La transformación (1) |
+| `titulo` | El logo (1) y el lema (9) |
+
+## 6. Subtítulos
+
+- El texto exacto de §4 (o el de la transcripción, si difiere), por frase, en la franja de 958 a 1040.
+- Figtree 600, 36 px, blanco sobre una pastilla `rgba(12,10,9,0.82)` con radio 16; ancho máximo 1400 px. Con más de 64 caracteres se parte en dos subtítulos, por la coma o el punto más cercano a la mitad.
+- Sin el nombre de quien habla (la boca del avatar lo dice). Entra con la voz y sale 0,2 s después.
+- En la escena 1 también hay subtítulos, con lo que se dijo en cada video: «Hola, soy Diego, el líder técnico, y ahora me verán en mi versión avatar.» · «Hola, soy Yaeko, product owner, y también me vuelvo avatar.» · «Y yo soy Aldrin, desarrollador. ¡Y ahora nos ven así!»
+
+## 7. Reglas que no se rompen
+
+- **Palabras:** en pantalla y en voz, «yapitas». Nunca cripto, blockchain, tokens, estelares ni «puntos»; «XLM» no se ve en ningún cuadro.
+- **Honestidad:** red de pruebas, sin dinero real (8-3); Ana es una cuenta de ejemplo (rótulo); el «Destacado» de la escena 9 está marcado como próximo y la tarifa como hipótesis.
+- **Privacidad:** no se ven correos, contraseñas, teléfonos ni caras o nombres de Facebook; el saldo de Ana se tapa en la escena 6.
+- **Sin Tilcho.**
+
+## 8. Cómo se arma (Remotion, en este repo)
+
+**Decisión: se construye por partes y se exporta de una sola vez.**
+
+- **Por partes:** cada escena es su propia composición (`V1` … `V9`, 1920 × 1080). Se revisa en el Studio y se exporta sola a media resolución (`--scale=0.5`, ~30 s) para verla entera; se corrige sin tocar las demás.
+- **De una sola vez:** el video final es la composición `BoliviaSabe`, que encadena esos mismos componentes con `<Series>`, y se exporta en un único render. Voces, subtítulos y cortes no se desfasan, y no hay montaje a mano.
+- **Siempre hay un video entero exportable:** desde el paso 2 existe `BoliviaSabe` completo (aunque sea el esqueleto); cada paso lo mejora.
+- **Masterizado:** el audio se exporta aparte (`--codec=wav`), se normaliza en dos pasadas a −14 LUFS y −1,5 dBTP (como `videos-cc/scripts/sketch_master.py`) y se une al video sin volver a comprimirlo.
+
+```
+src/video/
+├── VideoFinal.tsx     # Composition "BoliviaSabe" (1920×1080, 30 fps): las 9 escenas en <Series>
+├── Miniatura.tsx      # Still "Miniatura" (1280×720) para YouTube
+├── datos.ts           # voces (archivo, desde, hasta, texto, quién), tramos de clips, lupas, horas de cada escena
+├── layout.ts          # zonas del §2 (celular 405×900, tope 40; A/B; franja de subtítulos)
+├── estilo.ts          # colores y letras del §3
+├── Telefono.tsx       # marco + tramos de clip (OffthreadVideo con startFrom/playbackRate) + lupa + congelar
+├── Subtitulos.tsx     # §6
+├── Burbuja.tsx, Rotulo.tsx, Anillo.tsx
+├── escenas/Escena1.tsx … Escena9.tsx
+└── graficos/ Burbujas.tsx, Figuritas.tsx, Mapa.tsx, TarjetasPlan.tsx, Memo.tsx, Lema.tsx, Qr.tsx
+public/video/          # clips, voces e imágenes copiados o convertidos
+```
+
+- Los avatares usan el sistema de `src/elenco/` (`Guion`, `va`, `CapaAvatares`): cada escena define su recorrido con las horas de `datos.ts` y el `layout.ts` nuevo.
+- La boca sigue la voz real: `scripts/envolvente.py` genera el volumen de cada frase; si no hay entorno de Python, queda la boca de ejemplo.
+
+### Pasos
+
+1. **Material** *(hecho)*: presentaciones en 1080 × 1920 con la rotación aplicada; clips, voces e imágenes en `public/video/`; voces normalizadas; transcripción con tiempos por palabra (`public/video/palabras.json`); volumen por cuadro de cada voz (`src/video/voces-datos.json`); cuadros congelados (`img/f-*.png`), QR (`img/qr.svg`) y recorte del explorador (`img/explorador-pago.png`). Falta: clips con fundido entre cuadros y los efectos de sonido.
+2. **Esqueleto:** `VideoFinal` con fondo, celular, tramos de clip, voces y subtítulos de las 9 escenas (sin avatares ni gráficos). Exportar y revisar los tiempos.
+3. **Gráficos:** escenas 1, 2, 8 (memo) y 9.
+4. **Lupas, rótulos, burbujas y anillos** de las escenas 3 a 8.
+5. **Avatares** en las 9 escenas, con expresiones (§5b) y parpadeo.
+6. **Exportar:** `npx remotion render BoliviaSabe out/boliviasabe.mp4 --gl=angle --crf=18`, el audio con `--codec=wav`, masterizar y unir; la miniatura con `npx remotion still Miniatura out/miniatura.png --gl=angle`. Revisar la lista del §9.
+
+**Plan B por tiempo:** si a las **9:45** los avatares no están listos en las escenas 3 a 8, se exporta sin ellos ahí (quedan en las escenas 1, 2 y 9). Si a las **10:15** no hay video exportado, se sube el esqueleto del paso 2 con subtítulos.
+
+## 9. Antes de subir
+
+- [ ] Dura entre 2:30 y 2:50; 1920 × 1080; MP4 H.264 + AAC
+- [ ] El recorrido de la IA, completo y en orden (§1)
+- [ ] Subtítulos en todas las frases, iguales a lo que se dice
+- [ ] Ningún cuadro con XLM, correos, contraseñas, teléfonos, el saldo de Ana o caras/nombres de Facebook
+- [ ] Rótulos «cuenta de ejemplo» (Ana) y «cuenta nueva de demo» (Camila); memo traducido a `ayuda:55`
+- [ ] Nada tapado por la franja de subtítulos ni fuera del margen seguro
+- [ ] Visto completo en el celular y en el computador
+
+## 10. YouTube
+
+- **No listado.** Título: «BoliviaSabe · Demo · National Startups Hackathon by Stellar». Miniatura: `out/miniatura.png` (logo, «Ayudar a tus vecinos tiene premio» y los tres avatares).
+- **Descripción** (la lee la IA de Atlas; las horas se copian del video final):
+
+```
+BoliviaSabe: los vecinos de Bolivia comparten precios del barrio y responden preguntas, y quien ayuda gana yapitas en Stellar (red de pruebas, sin dinero real).
+
+0:00 Quiénes somos (CodeBambinos)
+0:21 El problema: 209 mil personas en un grupo «¿Alguien sabe?»; a 14 de 24 encuestados les molesta que la pregunta se pierda
+0:44 Abrir la app sin cuenta: Hoy y búsqueda
+0:57 Crear la cuenta y recibir 5 yapitas de bienvenida
+1:12 Preguntar (urgente, 5 yapitas)
+1:26 Otra cuenta responde; la respuesta aparece sin recargar
+1:39 «Me sirvió»: quien ayudó gana 5 yapitas
+1:49 El pago en Stellar con su memo (ayuda:55)
+2:07 Plan de 30 días y cierre
+
+App: https://boliviasabe.vercel.app
+Código: https://github.com/codebambinos/boliviasabe
+El pago del video en Stellar: https://stellar.expert/explorer/testnet/tx/acce574fd925033d79a87bc03e3c9b6766ecd43d0be4bc58b102d8309ce89a47
+```
+
+- Abrir el enlace en una ventana de incógnito; pasarlo a Atlas (campo Video) y al README; después, el segundo análisis de la IA.
+
+## 11. Huecos
+
+| Hueco | Cómo se cierra | Estado |
+|---|---|---|
+| Orientación distinta de las presentaciones | Convertir a 9:16 con la rotación aplicada (paso 1) | Cerrado en el contrato |
+| Tiempos inventados del guion anterior | Medidos en las voces reales (§4) | Cerrado |
+| 1-4 y 9-4 los dice solo Yaeko | Así quedan; los tres hacen el gesto | Cerrado |
+| Subtítulos distintos a lo que se dijo | Transcrito con Whisper: coincide con el guion salvo las presentaciones, que copian lo dicho (§6) | Cerrado |
+| Fluidez baja de algunos clips | Fundido entre cuadros en el preprocesado (§4) | Cerrado en el contrato |
+| Personajes planos | Expresiones independientes de la pose y parpadeo (§5b) | Cerrado en el contrato |
+| Frases nuevas | Cualquiera de los tres puede regrabar; Yaeko no anima | Cerrado |
+| Memo codificado en stellar.expert | Se traduce en pantalla (escena 8) | Cerrado |
+| XLM y saldo de Ana visibles | Recorte del explorador; pastilla sobre el saldo en la escena 6 | Cerrado |
+| «Destacado» no existe en la app | Marcado «próximo» e «hipótesis» (escena 9) | Cerrado |
+| Música | Sin música | Cerrado |
+| Volver a grabar la app | No hace falta; solo si un tramo no se lee | Cerrado |

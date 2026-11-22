@@ -1,4 +1,4 @@
-import type { Clave, PoseNombre } from "../aldrin/poses";
+import type { Clave, Expresion, PoseNombre } from "../aldrin/poses";
 import vozJson from "../data/voz_ejemplo.json";
 import { ESPERA, junto, type Celular } from "./layout";
 
@@ -28,6 +28,8 @@ export type Linea = {
   texto: string;
   // Habla en cámara (escena 1): sale en los subtítulos pero el avatar todavía no existe
   camara?: boolean;
+  // Volumen real de la voz por cuadro desde `t` (la boca lo sigue)
+  env?: number[];
 };
 
 export type Tramo = { t0: number; t1: number; desde: Punto; hasta: Punto; correr: boolean };
@@ -58,9 +60,9 @@ const VELOCIDAD_CORRER = 330; // si necesita ir más rápido para llegar a tiemp
 const palabras = (s: string) => s.replace(/\*\*/g, "").split(/\s+/).filter(Boolean).length;
 const PALABRAS_POR_SEG = 2.6;
 
-type Parada = { t: number; pos: Punto | null; pose: PoseNombre };
+type Parada = { t: number; pos: Punto | null; pose: PoseNombre; expr?: Partial<Expresion> };
 
-class Guion {
+export class Guion {
   lineas: Linea[] = [];
   private paradas: Record<Quien, Parada[]> = { diego: [], yaeko: [], aldrin: [] };
   private inicio: Record<Quien, Punto> = { ...ESPERA };
@@ -109,8 +111,15 @@ class Guion {
   }
 
   // Llega a `pos` a las `t` y toma la pose. Si pos es null, solo cambia de pose donde está.
-  va(quien: Quien, t: number, pos: Punto | null, pose: PoseNombre) {
-    this.paradas[quien].push({ t, pos, pose });
+  va(quien: Quien, t: number, pos: Punto | null, pose: PoseNombre, expr?: Partial<Expresion>) {
+    this.paradas[quien].push({ t, pos, pose, expr });
+  }
+
+  // Una frase con su hora y su volumen real (video final)
+  voz(quien: Quien | "todos", texto: string, t: number, dur: number, env?: number[], camara = false): Linea {
+    const l: Linea = { clave: `${this.id}-${this.n++}`, quien, t, dur, texto, env, camara: camara || undefined };
+    this.lineas.push(l);
+    return l;
   }
 
   // Vuelve a su esquina a esperar
@@ -129,7 +138,7 @@ class Guion {
       for (const p of paradas) {
         const dist = p.pos ? Math.hypot(p.pos[0] - pos[0], p.pos[1] - pos[1]) : 0;
         if (!p.pos || dist < 8) {
-          claves.push({ t: p.t, pose: p.pose });
+          claves.push({ t: p.t, pose: p.pose, expr: p.expr });
           continue;
         }
         const duracionIdeal = dist / VELOCIDAD;
@@ -137,8 +146,8 @@ class Guion {
         const dur = Math.max(0.35, p.t - salida);
         const correr = dist / dur > VELOCIDAD_CORRER;
         tramos.push({ t0: salida, t1: salida + dur, desde: pos, hasta: p.pos, correr });
-        claves.push({ t: salida, pose: correr ? "correr" : "caminar" });
-        claves.push({ t: salida + dur, pose: p.pose });
+        claves.push({ t: salida, pose: correr ? "correr" : "caminar", expr: p.expr });
+        claves.push({ t: salida + dur, pose: p.pose, expr: p.expr });
         pos = p.pos;
         libreDesde = salida + dur;
       }

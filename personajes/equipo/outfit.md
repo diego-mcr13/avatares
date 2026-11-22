@@ -1,5 +1,7 @@
 # Outfit CodeBambinos
 
+> **Video final (22 nov):** cada uno viste como en su video de presentación. Diego: polera oversize verde militar, jean negro, tenis blancos y lentes cuadrados de marco fino. Aldrin: canguro café claro, jean negro y tenis negros. Yaeko: polera negra, falda negra y tenis blancos. Logo chico en el pecho derecho (`logoPecho`). El canguro negro de abajo queda como el outfit anterior del equipo.
+
 Los tres personajes (Diego, Yaeko y Aldrin) comparten el mismo outfit del equipo:
 
 - **Canguro negro** oversize (`#1B1A1E`) con capucha, bolsillo canguro, puños y cordones.

@@ -67,6 +67,7 @@ const volumenDe = (escena: Escena, quien: Quien) => (frame: number) => {
   for (const l of escena.lineas) {
     if (l.camara || (l.quien !== quien && l.quien !== "todos")) continue;
     if (T >= l.t && T < l.t + l.dur) {
+      if (l.env) return l.env[Math.floor((T - l.t) * FPS)] ?? 0;
       // Voz de ejemplo: la boca sigue el volumen del audio de esa frase
       const datos = VOZ[l.clave];
       if (datos) return datos.env[Math.floor((T - l.t) * FPS)] ?? 0;

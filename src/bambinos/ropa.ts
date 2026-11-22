@@ -155,3 +155,74 @@ export const piernaConTenis = (piel: string): Vox[] => [
   ...caja(-1.5, 1.5, -5, 0, -1.5, 1.5, piel, false),
   ...caja(-2, 2, -7, -5, -2, 3, (_x, y) => (y === -7 ? ROPA.suela : ROPA.zapato)),
 ];
+
+// ---------- Ropa propia de cada uno (video final, 22 nov) ----------
+// Diego: polera oversize verde militar, jean negro y tenis blancos.
+// Aldrin: canguro café claro, jean negro y tenis negros.
+// Yaeko: polera negra, falda negra y tenis blancos.
+// En los tres, el logo de CodeBambinos chico en el pecho derecho (a la izquierda de la pantalla).
+
+export type Tela = { base: string; claro: string; puno: string; cordon?: string };
+export type Tenis = { zapato: string; suela: string };
+
+export const TELA = {
+  verdeMilitar: { base: "#4F5A35", claro: "#5E6A41", puno: "#454E2E" },
+  cafeClaro: { base: "#A88B68", claro: "#B89C79", puno: "#957A59", cordon: "#EDE6DA" },
+  negro: { base: "#1F1C1A", claro: "#2B2725", puno: "#2F2B29" },
+} satisfies Record<string, Tela>;
+
+export const TENIS = {
+  blancos: { zapato: ROPA.zapato, suela: ROPA.suela },
+  negros: { zapato: "#1D1D21", suela: "#55555C" },
+} satisfies Record<string, Tenis>;
+
+// Logo chico en el pecho derecho
+export const logoPecho = (): Vox[] => logoBambinos(6.4, 2.9, 3.06, -2.5);
+
+// Polera oversize: sin capucha ni bolsillo, cuello redondo un poco más claro y el ruedo abajo
+export const poleraTorso = (base: number, tela: Tela): Vox[] => [
+  ...caja(-5, 5, base, 8, -3, 3, (x, y) => {
+    if (y === base) return tela.puno;
+    if (y === 7 && x >= -2 && x <= 1) return tela.claro;
+    return tela.base;
+  }),
+  ...logoPecho(),
+];
+
+// Canguro de otro color, con el logo chico
+export const canguroColor = (base: number, tela: Tela, capucha = true): Vox[] => {
+  const out = caja(-5, 5, base, 8, -3, 3, (x, y, z) => {
+    if (y === base) return tela.puno;
+    if (z === 2 && y >= base + 1 && y <= base + 2 && x >= -3 && x <= 2) {
+      if (y === base + 2 && (x === -3 || x === 2)) return tela.puno;
+      return tela.claro;
+    }
+    if (y === 7) return tela.claro;
+    return tela.base;
+  });
+  if (capucha) out.push(...caja(-4, 4, 3, 8, -6, -3, tela.claro));
+  for (const x of [-4.55, 4.55]) {
+    for (let y = 6.5; y >= 3.5; y -= 0.5) out.push({ x, y, z: 3.06, c: tela.cordon ?? ROPA.cordon, s: 0.35, sz: 0.12, vari: false });
+  }
+  out.push(...logoPecho());
+  return out;
+};
+
+export const mangaColor = (tela: Tela): Vox[] => caja(-2, 2, -3, 0, -2, 2, tela.base, false);
+
+// Antebrazo de canguro (manga larga con puño) del color dado
+export const antebrazoManga = (tela: Tela, piel: string): Vox[] => [
+  ...caja(-2, 2, -3, 0, -2, 2, (_x, y) => (y === -3 ? tela.puno : tela.base), false),
+  ...caja(-1.5, 1.5, -5, -3, -1.5, 1.5, piel, false),
+];
+
+// Antebrazo de polera oversize: la manga baja un poquito del codo y el resto es piel
+export const antebrazoPolera = (tela: Tela, piel: string, pulsera = false): Vox[] => [
+  ...caja(-2, 2, -1, 0, -2, 2, tela.puno, false),
+  ...caja(-1.5, 1.5, -5, -1, -1.5, 1.5, (_x, y) => (pulsera && y === -4 ? ROPA.perla : piel), false),
+];
+
+export const jeansConTenis = (tenis: Tenis): Vox[] => [
+  ...caja(-2, 2, -4, 0, -2, 2, (_x, y) => (y === -4 ? ROPA.jeanClaro : ROPA.jean)),
+  ...caja(-2, 2, -6, -4, -2, 3, (_x, y) => (y === -6 ? tenis.suela : tenis.zapato)),
+];

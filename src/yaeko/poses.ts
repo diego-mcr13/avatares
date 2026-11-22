@@ -406,7 +406,8 @@ const PASO = 5; // largo de un paso: el pie no patina porque la fase sale de la 
 
 // ---------- Estado del personaje en un frame ----------
 
-export type Clave = { t: number; pose: PoseNombre };
+// `expr` reemplaza la expresión de la pose (ojos, cejas y boca en reposo); la boca sigue la voz igual
+export type Clave = { t: number; pose: PoseNombre; expr?: Partial<Expresion> };
 
 export type Estado = {
   pose: Pose;
@@ -477,7 +478,10 @@ export const estadoEn = ({ frame, fps, claves, volumen, movimientos = [], giro =
   const avance: Avance = { cuerpo: resorte(0), brazo: resorte(1), cabeza: resorte(2), antebrazo: resorte(3) };
   const s = avance.cuerpo;
   const pose = mezclar(POSES[previa.pose].pose, POSES[actual.pose].pose, avance);
-  const expr = s > 0.5 || i === 0 ? POSES[actual.pose].expr : POSES[previa.pose].expr;
+  const claveExpr = s > 0.5 || i === 0 ? actual : previa;
+  const expr: Expresion = claveExpr.expr
+    ? { ...POSES[claveExpr.pose].expr, ...claveExpr.expr, boca: "habla" }
+    : POSES[claveExpr.pose].expr;
   const pesoActual = Math.min(1, s);
   const peso = (n: PoseNombre) =>
     (actual.pose === n ? pesoActual : 0) + (previa.pose === n && i > 0 ? 1 - pesoActual : 0);

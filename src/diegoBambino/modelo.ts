@@ -5,7 +5,7 @@
 // Unidades: 1 = un voxel. El personaje mide ~35 voxels de alto (con el pelo).
 // Izq/Der = lado de la pantalla (no del personaje).
 
-import { canguroTorso, jeansPierna, mangaAntebrazo, mangaBrazo } from "../bambinos/ropa";
+import { TELA, TENIS, antebrazoPolera, jeansConTenis, mangaColor, poleraTorso } from "../bambinos/ropa";
 
 export type Vox = {
   x: number;
@@ -290,10 +290,39 @@ export const BOCA_VARIANTES = Object.keys(BOCAS) as BocaVar[];
 // Brillo chico arriba a la izquierda de cada ojo (la luz viene de ese lado en los dos)
 const brilloOjo = (x: number): Vox => ({ x, y: 6.68, z: FRENTE + 0.03, c: PAL.brillo, s: 0.42, sz: 0.12, vari: false });
 
+// Lentes cuadrados de marco fino (como Diego en el video): un rectángulo delgado alrededor de cada ojo,
+// el puente sobre la nariz y las patillas hasta el costado de la cabeza
+const MARCO = "#26262B";
+const GROSOR = 0.26;
+const linea = (x0: number, y0: number, x1: number, y1: number): Vox[] => {
+  const out: Vox[] = [];
+  const largo = Math.hypot(x1 - x0, y1 - y0);
+  const n = Math.max(1, Math.ceil(largo / (GROSOR * 0.9)));
+  for (let i = 0; i <= n; i++) {
+    const q = i / n;
+    out.push({ x: x0 + (x1 - x0) * q, y: y0 + (y1 - y0) * q, z: FRENTE + 0.08, c: MARCO, s: GROSOR, sz: 0.14, vari: false });
+  }
+  return out;
+};
+const aro = (x0: number, x1: number, y0: number, y1: number): Vox[] => [
+  ...linea(x0, y1, x1, y1),
+  ...linea(x0, y0, x1, y0),
+  ...linea(x0, y0, x0, y1),
+  ...linea(x1, y0, x1, y1),
+];
+export const lentes = (): Vox[] => [
+  ...aro(-6.55, -2.45, 4.7, 7.55),
+  ...aro(2.45, 6.55, 4.7, 7.55),
+  ...linea(-2.45, 6.9, 2.45, 6.9),
+  ...linea(-6.55, 7.1, -7.0, 7.1),
+  ...linea(6.55, 7.1, 7.0, 7.1),
+];
+
 export const ojos = (v: OjoVar): Vox[] => [
   ...dibujo(OJOS[v], -6, 6, COLORES_OJO),
   ...dibujo(OJOS[v], 3, 6, COLORES_OJO, true),
   ...(v === "normal" ? [brilloOjo(-4.72), brilloOjo(4.28)] : []),
+  ...lentes(),
 ];
 
 export const ceja = (v: CejaVar, lado: "izq" | "der"): Vox[] =>
@@ -304,13 +333,13 @@ export const boca = (v: BocaVar): Vox[] => dibujo(BOCAS[v], -3, 3, COLORES_BOCA)
 // ---------- Ropa (origen en la cadera / hombro / codo) ----------
 // Canguro negro oversize con el logo de CodeBambinos, jeans negros y tenis blancos.
 
-export const torso = (): Vox[] => canguroTorso(-1);
+export const torso = (): Vox[] => poleraTorso(-1, TELA.verdeMilitar);
 
-export const brazo = (): Vox[] => mangaBrazo();
+export const brazo = (): Vox[] => mangaColor(TELA.verdeMilitar);
 
-export const antebrazo = (): Vox[] => mangaAntebrazo(PAL.piel);
+export const antebrazo = (): Vox[] => antebrazoPolera(TELA.verdeMilitar, PAL.piel);
 
-export const pierna = (): Vox[] => jeansPierna();
+export const pierna = (): Vox[] => jeansConTenis(TENIS.blancos);
 
 // Medidas del esqueleto (dónde va cada articulación)
 export const ESQUELETO = {
