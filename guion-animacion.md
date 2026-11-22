@@ -13,7 +13,7 @@ El campo **Video** de Atlas pide YouTube (público o no listado), de 2 a 3 minut
 
 | Criterio de Atlas | Peso | Dónde lo prueba el video |
 |---|---|---|
-| Problema y usuario | 25 | Escena 2: grupo de 209 mil miembros; encuesta (14 de 24) |
+| Problema y usuario | 25 | Escena 2: grupo de 209 mil miembros; encuesta real (18 de 18 preguntaron en un grupo; a 9 de 18 les molesta que tarden) |
 | Producto | 20 | Escenas 3 a 7: el recorrido completo en la página real |
 | Stellar | 20 | Escenas 4 (+5 de bienvenida), 7 (+5 al que ayudó) y 8 (pago con memo en stellar.expert) |
 | Plan de 30 días | 20 | Escena 9: Sarco y el Centro, 1 semana, 30 cuentas, 5 negocios, Bs 20 como hipótesis |
@@ -26,7 +26,7 @@ El recorrido que pidió la IA en el primer análisis, **entero y en este orden**
 - **Algo cambia cada 2 a 3 s** (una lupa, un rótulo, un avatar que se mueve, una cifra que entra); ningún plano quieto más de 3 s.
 - **Los avatares reaccionan, no solo señalan:** se desesperan con las burbujas, se sorprenden con la respuesta que llega sola, celebran cada +5. Sus caras (§5b) cuentan la historia aunque se vea sin sonido.
 - **Momentos para recordar:** la transformación de personas a avatares (1), la pregunta que se hunde entre mensajes (2), el «+0» triste de quien ayuda (2, con `ding_roto`), las campanitas del +5 (4 y 7) y el memo que se traduce solo (8).
-- **Cifras con movimiento:** 209 mil, 14 de 24, 5 yapitas, Bs 20, 30 cuentas y 5 negocios entran grandes y animadas, nunca como texto quieto.
+- **Cifras con movimiento:** 209 mil, 18 de 18, 5 yapitas, Bs 20, 30 cuentas y 5 negocios entran grandes y animadas, nunca como texto quieto.
 - **Ritmo:** cortes en la voz, sin silencios largos; las esperas de la app (cargas, escritura) se aceleran o se cortan.
 
 **Regla de oro:** las escenas 3 a 8 (la app funcionando) son la mayor parte del video; las escenas 1, 2 y 9 no se alargan más de lo que dura su voz.
@@ -73,7 +73,9 @@ El recorrido que pidió la IA en el primer análisis, **entero y en este orden**
 - **Celular:** marco redondeado (radio 44 px), borde de 2 px `rgb(243 237 232 / 0.18)`, sombra suave. El video de la app llena la pantalla del marco.
 - **Movimiento:** entradas con `spring` (damping 200, ~0,4 s); nada rebota de más; los cambios de escena son un corte limpio o un barrido de 0,3 s con la franja de aguayo.
 - **Lupa de verdad (lo interactivo):** el celular queda quieto y aparece una lupa dibujada (aro claro, vidrio con brillo y mango con una franja fucsia) que se posa sobre el botón y muestra adentro ese punto ampliado (×1,6 a ×2,4). Si la siguiente mirada empieza en menos de 1,2 s, la lupa se desliza hasta ella; si no, se va y vuelve. Diámetro 290 px. (`Telefono` → `miras`).
-- **Cámara:** cada escena puede acercarse (`Camara`, `tomas`): un empuje lento mientras hablan y **planos cerrados** en los momentos clave (+5 de bienvenida, la respuesta que llega sola, el +5 para Ana, el memo). Los subtítulos quedan fuera de la cámara, siempre en su franja.
+- **Cámara:** **sin zoom de escena** (descolocaba a los personajes). Los momentos clave van en **primer plano** con la cámara 3D (`PrimerPlano`): +5 de bienvenida y +5 para Ana con Diego **solo y centrado** (`solo`), la respuesta que llega sola con Yaeko y «Hoy una ciudad» con Aldrin. Los subtítulos quedan siempre en su franja.
+- **Laptop, no celular:** cuando un personaje escribe (`escribir`, `usaCelular`), saca la laptop; el celular en la mano no se entendía.
+- **Cuadro que sale del celular** (`SaleDelCel`): en lugar de la lupa, el texto importante sale de la pantalla en un cuadro grande a un costado: la pregunta dictada letra por letra (escena 5), «¡Gracias, pues!» (7) y el movimiento «+5 yapitas · Confirmado» (8). En la escena 3, «almuerzo» se escribe letra por letra en el buscador (`Tipeo`) después del toque, y los resultados entran con un fundido de 0,6 s.
 - **Entradas y salidas de los avatares:** nunca corren ni cruzan la pantalla caminando. Entran **de un salto desde abajo** o con un **«puf»** (destello) y salen igual (`entra`, `sale`); caminan solo para moverse un poco dentro de la escena.
 - **Burbujas de premio:** pastilla naranja «+5 yapitas» que sube desde el saldo y se desvanece (1,2 s).
 
@@ -99,7 +101,8 @@ Se convierten a H.264 1080 × 1920 (vertical) con la rotación aplicada; el de Y
 | 2-1 | Yaeko | 0,00–4,92 | En Cochabamba preguntamos todo en grupos: este tiene 209 mil miembros. |
 | 2-2 | Diego | 0,29–6,27 | Pero la pregunta se pierde entre cientos de mensajes, nadie sabe si sigue vigente y a veces tarda. |
 | 2-3 | Aldrin | 0,66–4,80 | Y quien ayuda no gana nada. Por eso muchos callan. |
-| 2-4 | Yaeko | 0,00–6,22 | Le preguntamos a 24 personas: a 14 les molesta justo que la pregunta se pierda. |
+| 2-4 | Yaeko | **pendiente** | Encuestamos a 18 personas: las 18 preguntaron en un grupo este mes, y a 9 les molesta que tarden en responder. *(Reemplaza «Le preguntamos a 24 personas…»: esos 24 eran perfiles simulados. Mientras no llegue, el tramo va sin voz y con las cifras en pantalla.)* |
+| 2-5 | Yaeko | 0,00–5,54 | Por eso hicimos BoliviaSabe: lo que pasa hoy en tu barrio, ordenado, y vecinos que responden. |
 | 3-1 | Aldrin | 1,02–6,86 | Abres boliviasabe.vercel.app y entras directo a Hoy, sin registrarte. |
 | 3-2 | Yaeko | 0,00–5,99 | Letreros con foto, precio, zona y fecha. Buscas «almuerzo» y ahí está. |
 | 4-1 | Diego | 0,31–5,38 | Para participar, creas tu cuenta con Google o con tu correo y eliges tu barrio. |
@@ -115,6 +118,8 @@ Se convierten a H.264 1080 × 1920 (vertical) con la rotación aplicada; el de Y
 | 8-3 | Yaeko | 0,00–5,21 | Todo corre en la red de pruebas, sin dinero real. Hoy la app custodia las cuentas. |
 | 9-1 | Yaeko | 0,00–10,42 | Empezamos en Cochabamba, con estudiantes y negocios cerca de las universidades, en Sarco y el Centro: una semana, 30 cuentas y 5 negocios. |
 | 9-2 | Diego | 0,00–5,71 | Los negocios de barrio pagarían Bs 20 al mes por aparecer primero en su zona. |
+| 9-5 | Yaeko | 0,00–3,24 | Y pronto se podrán canjear en negocios del barrio. |
+| 4-3 | Aldrin | **pendiente, opcional** | Las yapitas son el premio por ayudar, y quedan registradas en Stellar. *(Iría en la escena 4 después de 4-2; si no llega, no se usa.)* |
 | 9-3 | Aldrin | 0,49–9,11 | Pruébala hoy en boliviasabe.vercel.app. Hoy una ciudad, mañana toda Bolivia. |
 | 9-4 | Yaeko | 0,00–9,05 | ¿Viste algo útil? Súbelo. ¿Necesitas algo ya? Pregunta. En Bolivia, ayudar a tus vecinos tiene premio. |
 
@@ -122,7 +127,7 @@ Archivos: `audios y videos/<quien>/<código>.m4a`. Los tiempos se midieron con `
 
 ### Toma final de la app (se reutiliza: no se vuelve a grabar)
 
-`grabaciones/toma-final/`: página real, 720 × 1600 (= 360 × 800 a 2×), tema oscuro, círculo amarillo en cada toque, correo borroso y contraseña oculta. Toques exactos en `marcas.json`; una captura por toque en `capturas/`. Es la misma pregunta (#62), respuesta (#55) y pago (`ayuda:55`) que siguen en producción y en Stellar: el video coincide con lo que un juez puede abrir.
+`grabaciones/toma-final/`: página real, 720 × 1600 (= 360 × 800 a 2×), tema oscuro, círculo amarillo en cada toque, correo borroso y contraseña oculta. Toques exactos en `marcas.json`; una captura por toque en `capturas/`. *(Toma anterior: la nueva toma nítida usa la respuesta #56 y el pago `ayuda:56`.)* Era la pregunta (#62), respuesta (#55) y pago (`ayuda:55`) que siguen en producción y en Stellar: el video coincide con lo que un juez puede abrir.
 
 **¿Sirve para mostrar el flujo? Sí.** Se revisaron los 7 clips y sus 27 capturas: cubren los 7 pasos que pidió la IA, sin huecos, con la cuenta nueva, la urgente, la respuesta en vivo, «Me sirvió» y el pago. Tres detalles y cómo se resuelven:
 
@@ -146,7 +151,7 @@ Archivos: `audios y videos/<quien>/<código>.m4a`. Los tiempos se midieron con `
 | `e2-grupo-facebook-cabecera.png` | imagen | grupo «¿Alguien Sabe? - Cochabamba», 209,0 mil miembros, sin personas |
 | `e7-explorador.png` | imagen | stellar.expert: pago de 5 YAPITA y memo `YXl1ZGE6NTU=` |
 
-Enlace del pago: <https://stellar.expert/explorer/testnet/tx/acce574fd925033d79a87bc03e3c9b6766ecd43d0be4bc58b102d8309ce89a47>
+Enlace del pago: <https://stellar.expert/explorer/testnet/tx/b80fecb1727ce232c0ed889563c54cd7d833ee4a152c4a8846e5af54aa80eca3>
 
 ## 5. Escenas
 
@@ -165,7 +170,7 @@ Tres tarjetas verticales 9:16 (360 × 640; centros x = 520, 960 y 1400) sobre el
 | 16,0–17,8 | **Caen al suelo** (idea de Diego): los tres caen desde arriba uno tras otro, chocan (se aplastan un poco), se caen de lado y quedan tirados con cara **mareado**; después se levantan de un saltito con cara de sorpresa y saludan **felices** | Diego (x 720), Yaeko (960) y Aldrin (1200), en el piso | `golpe` en cada caída, `pop` al levantarse |
 | 18,4–22,0 | Logo de BoliviaSabe y «por CodeBambinos» | Se juntan; Yaeko habla con **orgullo**, Diego y Aldrin celebran; `triunfo` en «¡Esto es BoliviaSabe!» | 1-4 Yaeko + `titulo` |
 
-### Escena 2 · El problema (≈ 23 s) · *Problema y usuario*
+### Escena 2 · El problema (≈ 29,2 s) · *Problema y usuario*
 
 **Sin celular.** El gráfico ocupa el área central.
 
@@ -174,7 +179,8 @@ Tres tarjetas verticales 9:16 (360 × 640; centros x = 520, 960 y 1400) sobre el
 | 0,0–4,9 | `e2-grupo-facebook-cabecera.png` en una tarjeta de navegador; acercamiento lento a «209,0 mil miembros», que se resalta con un subrayado amarillo | Yaeko a la izquierda: `senalar` hacia la cifra | 2-1 |
 | 5,3–11,2 | Burbujas grises de chat que suben y se apilan; una amarilla «¿Alguien sabe quién arregla tuberías?» se hunde entre ellas. En «vigente», una etiqueta «¿sigue vigente?» sobre una burbuja vieja | Diego entra por la derecha: `desesperar` en «se pierde», `encoger` al final | 2-2 |
 | 11,6–15,7 | Una burbuja de respuesta con «+0» en gris | Aldrin: `pensar` y `encoger` en «muchos callan» | 2-3 |
-| 16,1–22,3 | 24 figuritas en 3 filas de 8; 14 se pintan de fucsia una tras otra. Cifras grandes «14 de 24» y debajo «les molesta que la pregunta se pierda» | Yaeko al centro abajo: `apuntar` hacia las figuritas | 2-4 |
+| 16,1–22,9 | 18 figuritas en 3 filas de 6 que se encienden una tras otra; 9 se pintan de naranja. «18 de 18 preguntaron en un grupo este mes», «9 de 18: «tardan en responder»» y, chico, «Encuesta anónima a vecinos, estudiantes y dueños · 22 nov 2026» | Yaeko a la izquierda: `apuntar` y `senalar` | 2-4 (pendiente) |
+| 23,0–29,2 | Logo de BoliviaSabe; «Lo que pasa hoy en tu barrio, **ordenado**» y «y vecinos que **responden**» | Yaeko: `senalarArriba` y `celebrar` | 2-5 |
 
 Las burbujas y figuritas se dibujan (no se copian de Facebook). No se ven nombres ni caras.
 
@@ -236,17 +242,18 @@ Celular `U` con `e7-ana.mp4`. Rótulo: «Ana · cuenta de ejemplo».
 |---|---|---|---|
 | 0,0–3,6 | Clip 0,5–8,1 ×2,1: toca su saldo y se abre Movimientos. Lupa 1,6 a la fila «Tu respuesta sirvió · +5 yapitas · Confirmado · Registro acce…9a47» | Diego a la izquierda: `tocar` y `senalar` hacia «Confirmado» | 8-1 empieza |
 | 3,6–6,3 | Clip 8,1–9,0 (toca Registro); **corte** a 18,6–20,4 (se abre stellar.expert). Rótulo «registro público: stellar.expert» | Diego: `senalarArriba` | 8-1 termina |
-| 6,6–11,5 | El celular se corre a la izquierda (centro x = 620) y a la derecha entra la **tarjeta del explorador** (recorte de `e7-explorador.png`: solo «sent 5 YAPITA to GBMD…526K» y la fila del memo, **sin las filas de XLM**). El memo `YXl1ZGE6NTU=` se transforma letra a letra en **`ayuda:55`** y debajo aparece «= premio por la respuesta n.º 55». Abajo, chico: «stellar.expert muestra el memo codificado» | Aldrin a la derecha: `sorpresa` y `senalarIzq` hacia el memo | 8-2 |
+| 6,6–11,5 | El celular se corre a la izquierda (centro x = 620) y a la derecha entra la **tarjeta del explorador** (recorte de `e7-explorador.png`: solo «sent 5 YAPITA to GBMD…526K» y la fila del memo, **sin las filas de XLM**). El memo `YXl1ZGE6NTU=` se transforma letra a letra en **`ayuda:56`** y debajo aparece «= premio por la respuesta n.º 55». Abajo, chico: «stellar.expert muestra el memo codificado» | Aldrin a la derecha: `sorpresa` y `senalarIzq` hacia el memo | 8-2 |
 | 11,9–18,0 | Franja azul abajo de la tarjeta: «Red de pruebas · sin dinero real · hoy la app custodia las cuentas» | Yaeko entra al centro abajo: `hablar`. Los otros: `esperar` | 8-3 |
 
-### Escena 9 · Plan y cierre (≈ 37 s) · *Plan de 30 días*
+### Escena 9 · Plan y cierre (≈ 41 s) · *Plan de 30 días*
 
 | Hora | Pantalla | Avatares | Audio |
 |---|---|---|---|
-| 0,0–10,4 | **Sin celular.** Título «Plan de 30 días». Mapa simple de Cochabamba (contorno y la laguna Alalay como referencia) con dos puntos que se encienden, **Sarco** y **el Centro**, y la etiqueta «cerca de las universidades». Entran tres tarjetas en orden con la voz: «1 semana», «30 cuentas», «5 negocios» | Yaeko a la izquierda: `senalarArriba` hacia cada tarjeta | 9-1 |
+| 0,0–10,4 | **Sin celular.** Título «Plan de 30 días». Mapa de Cochabamba (calles, río Rocha y laguna Alalay; pendiente cambiarlo por una captura de OpenStreetMap) con dos puntos que se encienden, **Sarco** y **el Centro**, y la etiqueta «cerca de las universidades». Entran tres tarjetas en orden con la voz: «1 semana», «30 cuentas», «5 negocios» | Yaeko a la izquierda: `senalarArriba` hacia cada tarjeta | 9-1 |
 | 10,8–16,5 | Celular `U` con la captura de Hoy (`capturas/e4-registro_07…png`). Un letrero sube al primer lugar con una pastilla «Destacado · próximo». A la derecha: «**Bs 20 al mes** · aparecer primero en su zona» y debajo, chico, «hipótesis por validar · aún no está en la app» | Diego a la derecha: `apuntar` hacia el precio | 9-2 |
-| 16,9–25,5 | **boliviasabe.vercel.app** grande a la izquierda, con un código QR a la app; a la derecha el celular con Hoy | Aldrin: `senalarArriba` hacia la dirección y `triunfo` en «toda Bolivia» | 9-3 |
-| 25,9–35,0 | Logo de BoliviaSabe y el lema en tres líneas que entran con cada frase | Los tres al centro; Yaeko `hablar`, Diego y Aldrin `celebrar`; al final los tres `saludar` | 9-4 |
+| 16,85–20,85 | **Tramo nuevo (9-5):** la escena se congela y Yaeko aparece con «Canjear yapitas en **negocios del barrio**» y «Próximo paso · ya probamos un canje en la red de pruebas». Después la escena sigue igual, corrida 4 s | Yaeko: `senalarArriba` y `celebrar`; Diego se va antes con un «puf» | 9-5 |
+| 16,9–25,5 (+4) | **boliviasabe.vercel.app** grande a la izquierda, con un código QR a la app; a la derecha el celular con Hoy | Aldrin: `senalarArriba` hacia la dirección y `triunfo` en «toda Bolivia» | 9-3 |
+| 25,9–35,0 | Logo de BoliviaSabe y el lema en tres líneas que entran con cada frase | Los tres al centro, cada uno con su gesto: Yaeko `hablar` y `saludar`, Diego `aplaudir`, `celebrar` y `triunfo`, Aldrin `senalarArriba`, `aplaudir` y `celebrar` | 9-4 |
 | 35,0–37,0 | Cierre en silencio: logo, «boliviasabe.vercel.app», «github.com/codebambinos/boliviasabe» y «CodeBambinos · National Startups Hackathon by Stellar» | — | silencio |
 
 ## 5a. Vestuario de los avatares
@@ -301,7 +308,7 @@ Efectos propios, sintetizados con `videos-cc/scripts/sketch_sonidos.py` (sin lic
 | `pop` | Rótulos, burbujas de chat y tarjetas que entran |
 | `campanitas` | Cada «+5 yapitas» (escenas 4 y 7) |
 | `ding_roto` | El «+0» de quien ayuda (2) |
-| `ding` | «Solucionada» (7), memo traducido a `ayuda:55` (8), cada figurita pintada en grupo (2: un solo ding al terminar) |
+| `ding` | «Solucionada» (7), memo traducido a `ayuda:56` (8), cada figurita pintada en grupo (2: un solo ding al terminar) |
 | `chispitas` + `giro` | La transformación (1) |
 | `golpe` | Cada avatar que cae al suelo (1) |
 | `titulo` | El logo (1) y el lema (9) |
@@ -364,7 +371,7 @@ public/video/          # clips, voces e imágenes copiados o convertidos
 - [ ] El recorrido de la IA, completo y en orden (§1)
 - [ ] Subtítulos en todas las frases, iguales a lo que se dice
 - [ ] Ningún cuadro con XLM, correos, contraseñas, teléfonos, el saldo de Ana o caras/nombres de Facebook
-- [ ] Rótulos «cuenta de ejemplo» (Ana) y «cuenta nueva de demo» (Camila); memo traducido a `ayuda:55`
+- [ ] Rótulos «cuenta de ejemplo» (Ana) y «cuenta nueva de demo» (Camila); memo traducido a `ayuda:56`
 - [ ] Nada tapado por la franja de subtítulos ni fuera del margen seguro
 - [ ] Visto completo en el celular y en el computador
 
@@ -377,18 +384,18 @@ public/video/          # clips, voces e imágenes copiados o convertidos
 BoliviaSabe: los vecinos de Bolivia comparten precios del barrio y responden preguntas, y quien ayuda gana yapitas en Stellar (red de pruebas, sin dinero real).
 
 0:00 Quiénes somos (CodeBambinos)
-0:22 El problema: 209 mil personas en un grupo «¿Alguien sabe?»; a 14 de 24 encuestados les molesta que la pregunta se pierda
-0:45 Abrir la app sin cuenta: Hoy y búsqueda
-0:58 Crear la cuenta y recibir 5 yapitas de bienvenida
-1:13 Preguntar (urgente, 5 yapitas)
-1:27 Otra cuenta responde; la respuesta aparece sin recargar
-1:40 «Me sirvió»: quien ayudó gana 5 yapitas
-1:50 El pago en Stellar con su memo (ayuda:55)
-2:08 Plan de 30 días y cierre
+0:22 El problema: 209 mil personas en un grupo «¿Alguien sabe?»; en nuestra encuesta, las 18 personas preguntaron en un grupo el último mes
+0:51 Abrir la app sin cuenta: Hoy y búsqueda
+1:04 Crear la cuenta y recibir 5 yapitas de bienvenida
+1:19 Preguntar (urgente, 5 yapitas)
+1:31 Otra cuenta responde; la respuesta aparece sin recargar
+1:44 «Me sirvió»: quien ayudó gana 5 yapitas
+1:54 El pago en Stellar con su memo (ayuda:56)
+2:12 Plan de 30 días, canje y cierre
 
 App: https://boliviasabe.vercel.app
 Código: https://github.com/codebambinos/boliviasabe
-El pago del video en Stellar: https://stellar.expert/explorer/testnet/tx/acce574fd925033d79a87bc03e3c9b6766ecd43d0be4bc58b102d8309ce89a47
+El pago del video en Stellar: https://stellar.expert/explorer/testnet/tx/b80fecb1727ce232c0ed889563c54cd7d833ee4a152c4a8846e5af54aa80eca3
 ```
 
 - Abrir el enlace en una ventana de incógnito; pasarlo a Atlas (campo Video) y al README; después, el segundo análisis de la IA.
@@ -408,4 +415,7 @@ El pago del video en Stellar: https://stellar.expert/explorer/testnet/tx/acce574
 | XLM y saldo de Ana visibles | Recorte del explorador; pastilla sobre el saldo en la escena 6 | Cerrado |
 | «Destacado» no existe en la app | Marcado «próximo» e «hipótesis» (escena 9) | Cerrado |
 | Música | Sin música | Cerrado |
-| Volver a grabar la app | No hace falta; solo si un tramo no se lee | Cerrado |
+| Volver a grabar la app | Se hizo una toma nítida nueva (capturas a 3×, `tomas/`, pago `ayuda:56`) | Cerrado |
+| Encuesta simulada en 2-4 | Reemplazada por la encuesta real (22 nov); falta la voz nueva de Yaeko | Abierto: audio |
+| Mapa de Cochabamba poco claro | Captura de OpenStreetMap con pines y atribución, o quitar el mapa | Abierto |
+| 4-3 (qué son las yapitas) | Opcional; Aldrin la graba si hay tiempo | Abierto |
