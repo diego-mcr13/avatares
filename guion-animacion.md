@@ -384,14 +384,14 @@ public/video/          # clips, voces e imágenes copiados o convertidos
 BoliviaSabe: los vecinos de Bolivia comparten precios del barrio y responden preguntas, y quien ayuda gana yapitas en Stellar (red de pruebas, sin dinero real).
 
 0:00 Quiénes somos (CodeBambinos)
-0:22 El problema: 209 mil personas en un grupo «¿Alguien sabe?»; en nuestra encuesta, las 18 personas preguntaron en un grupo el último mes
-0:54 Abrir la app sin cuenta: Hoy y búsqueda
-1:07 Crear la cuenta y recibir 5 yapitas de bienvenida
-1:22 Preguntar (urgente, 5 yapitas)
-1:35 Otra cuenta responde; la respuesta aparece sin recargar
-1:48 «Me sirvió»: quien ayudó gana 5 yapitas
-1:58 El pago en Stellar con su memo (ayuda:56)
-2:16 Plan de 30 días, canje y cierre
+0:23 El problema: 209 mil personas en un grupo «¿Alguien sabe?»; en nuestra encuesta, las 18 personas preguntaron en un grupo el último mes
+0:55 Abrir la app sin cuenta: Hoy y búsqueda
+1:08 Crear la cuenta y recibir 5 yapitas de bienvenida
+1:23 Preguntar (urgente, 5 yapitas)
+1:36 Otra cuenta responde; la respuesta aparece sin recargar
+1:49 «Me sirvió»: quien ayudó gana 5 yapitas
+1:59 El pago en Stellar con su memo (ayuda:56)
+2:17 Plan de 30 días, canje y cierre
 
 App: https://boliviasabe.vercel.app
 Código: https://github.com/codebambinos/boliviasabe
