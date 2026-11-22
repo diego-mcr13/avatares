@@ -1,6 +1,6 @@
 // Escenas 3 a 8: la app funcionando (contrato §5). Horas en segundos desde el inicio de cada escena.
 import React from "react";
-import { Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { Img, interpolate, spring, staticFile, useCurrentFrame } from "remotion";
 import {
   Anillo,
   Avatares,
@@ -64,7 +64,8 @@ const Tipeo: React.FC<{ texto: string; t0: number; t1: number; hasta: number }> 
 const av3 = armarAvatares("3", (g) => {
   g.entra("aldrin", 0.1, junto("izq", 0.1), "salto", "senalarArriba", CARA.atento);
   g.va("aldrin", 3.2, null, "senalar", CARA.feliz);
-  g.va("aldrin", 7.6, [330, 930], "esperar", CARA.atento);
+  // Se queda en su lugar mientras Yaeko busca (no camina)
+  g.va("aldrin", 7.6, null, "esperar", CARA.atento);
   g.entra("yaeko", 6.0, junto("der", 0.2), "puf", "senalarIzq", CARA.atento);
   // Saca la laptop y escribe «almuerzo» (se ve escribirse en la app)
   g.va("yaeko", 8.2, null, "escribir", CARA.atento);
@@ -128,7 +129,6 @@ export const Escena4: React.FC = () => (
         miras={[
           { t0: 4.5, t1: 6.4, u: 0.22, v: 0.52, m: 1.8 },
           { t0: 8.2, t1: 10.1, u: 0.88, v: 0.045, m: 2.4 },
-          { t0: 12.9, t1: 14.8, u: 0.88, v: 0.045, m: 2.4 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
@@ -213,6 +213,31 @@ export const Escena5: React.FC = () => (
   </>
 );
 
+// Recorte de la respuesta que llegó a Camila: entra subiendo y creciendo, no de golpe
+const LlegaSola: React.FC<{ t: number }> = ({ t }) => {
+  const frame = useCurrentFrame();
+  if (frame < Math.round(t * FPS)) return null;
+  const e = spring({ frame: frame - Math.round(t * FPS), fps: FPS, config: { damping: 16, stiffness: 120 } });
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: 200,
+        top: 250,
+        width: 560,
+        height: 415,
+        borderRadius: 28,
+        overflow: "hidden",
+        opacity: Math.min(1, e * 1.4),
+        transform: `translateY(${(1 - e) * 40}px) scale(${0.9 + 0.1 * e})`,
+        boxShadow: `0 24px 60px rgba(0,0,0,0.5), 0 0 0 4px ${C.verde}`,
+      }}
+    >
+      <Img src={staticFile("video/tomas/c12-llega-respuesta.png")} style={{ position: "absolute", width: 560, top: -1560 * (560 / 1080), left: 0 }} />
+    </div>
+  );
+};
+
 // ---------- Escena 6 · Otra cuenta responde (dos celulares) ----------
 const A = 650;
 const B = 1270;
@@ -274,12 +299,11 @@ export const Escena6: React.FC = () => (
       t0={7.3}
       t1={9.6}
       lado="der"
+      fundido={0.35}
       junto={
         <>
-        <Rotulo texto="Llegó sola · sin recargar" x={480} y={720} t={7.5} alinear="centro" tam={34} color={C.verde} />
-        <div style={{ position: "absolute", left: 200, top: 250, width: 560, height: 415, borderRadius: 28, overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,0.5), 0 0 0 4px " + C.verde }}>
-          <Img src={staticFile("video/tomas/c12-llega-respuesta.png")} style={{ position: "absolute", width: 560, top: -1560 * (560 / 1080), left: 0 }} />
-        </div>
+        <Rotulo texto="Llegó sola · sin recargar" x={480} y={720} t={7.8} alinear="centro" tam={34} color={C.verde} />
+        <LlegaSola t={7.45} />
         </>
       }
     />

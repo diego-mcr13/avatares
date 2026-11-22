@@ -537,17 +537,8 @@ const av9 = armarAvatares("9", (g) => {
   g.va("diego", 15.5, null, "esperar", CARA.feliz);
   g.sale("diego", 16.2, "puf");
   g.entra("aldrin", 17.0, [1000, 930], "salto", "senalarIzq", CARA.orgullo);
-  // Diego y Yaeko acompañan a Aldrin: Diego señala el QR y Yaeko el celular
-  g.entra("diego", 18.3, [560, 930], "salto", "senalarIzq", CARA.feliz);
-  g.va("diego", 20.6, null, "esperar", CARA.feliz);
-  g.entra("yaeko", 19.2, [1790, 930], "puf", "senalarIzq", CARA.atento);
-  g.va("yaeko", 21.4, null, "esperar", CARA.feliz);
-  g.va("diego", 24.4, null, "aplaudir", CARA.feliz);
-  g.va("yaeko", 24.4, null, "celebrar", CARA.feliz);
   g.va("aldrin", 25.0, null, "triunfo", CARA.orgullo);
   g.sale("aldrin", 25.6, "puf");
-  g.sale("diego", 25.6, "puf");
-  g.sale("yaeko", 25.6, "puf");
   // Cierre: los tres de un salto, juntos
   g.entra("yaeko", 26.0, [960, 930], "salto", "hablar", CARA.feliz);
   g.entra("diego", 26.1, [740, 930], "salto", "aplaudir", CARA.feliz);

@@ -604,10 +604,13 @@ export const PrimerPlano: React.FC<{
   junto?: React.ReactNode;
   // Centrado y sin los demás personajes en el cuadro
   solo?: boolean;
-}> = ({ escena, quien, t0, t1, lado = "izq", cerca = 170, junto, solo = false }) => {
+  // Segundos de fundido al entrar y al salir del plano (0 = corte seco)
+  fundido?: number;
+}> = ({ escena, quien, t0, t1, lado = "izq", cerca = 170, junto, solo = false, fundido = 0 }) => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
   if (T < t0 || T >= t1) return null;
+  const opacidad = fundido > 0 ? tramo(T, t0, t0 + fundido) * (1 - tramo(T, t1 - fundido, t1)) : 1;
   const m = marcha(escena.personajes[quien], T);
   const [wx, wy] = aMundo(m.pos[0], m.pos[1]);
   // Empuje lento durante el plano
@@ -615,7 +618,7 @@ export const PrimerPlano: React.FC<{
   const z = cerca * (1 - 0.06 * q);
   const corre = solo ? 0 : (lado === "izq" ? 1 : -1) * z * 0.15;
   return (
-    <AbsoluteFill>
+    <AbsoluteFill style={{ opacity: opacidad }}>
       <Fondo brillo={solo ? [960, 520] : [lado === "izq" ? 560 : 1360, 520]} />
       <CapaAvatares
         escena={escena}
