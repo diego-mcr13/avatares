@@ -1,0 +1,206 @@
+/* BoliviaSabe · mismo estilo que el video: noche cálida, franja de aguayo, Bricolage Grotesque + Figtree, un solo botón fucsia por pantalla */
+:root {
+  --bg: #151110;
+  --card: #1f1a18;
+  --line: #3a322d;
+  --ink: #f5f2ef;
+  --mut: #b9ada5;
+  --fu: #c2185b;
+  --ro: #f8a8c6;
+  --na: #f28c28;
+  --ve: #2e9e5b;
+  --ve-t: #5fd39a;
+  --az: #1e5aa8;
+  --az-t: #8db8f0;
+  --am: #f2c230;
+  --co: #e4572e;
+  --co-t: #ff9a7a;
+}
+
+body {
+  font-family: 'Figtree', Arial, sans-serif;
+}
+
+section {
+  background: #151110;
+  color: #f5f2ef;
+  padding: 128px 128px 160px;
+  font-family: 'Figtree', Arial, sans-serif;
+}
+
+/* Franja de aguayo (5 tiras) fija arriba */
+.franja {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 16px;
+  display: flex;
+}
+.franja div {
+  width: 384px;
+  height: 16px;
+}
+.f1 { background: #c2185b; }
+.f2 { background: #f28c28; }
+.f3 { background: #2e9e5b; }
+.f4 { background: #1e5aa8; }
+.f5 { background: #f2c230; }
+
+/* Pie: marca y número */
+.pie {
+  position: absolute;
+  left: 128px;
+  top: 992px;
+  width: 1664px;
+  font-size: 24px;
+  color: #b9ada5;
+}
+
+/* Fondo tejido (portada y cierre) */
+.tejido {
+  background: repeating-linear-gradient(90deg, #2e1520 0px, #2e1520 64px, #33210f 64px, #33210f 128px, #12261b 128px, #12261b 192px, #12223a 192px, #12223a 256px, #332b0e 256px, #332b0e 320px);
+}
+
+/* Tipos */
+.eyebrow {
+  font-size: 30px;
+  font-weight: 600;
+  color: #f8a8c6;
+  letter-spacing: 3px;
+}
+.tit {
+  font-family: 'Bricolage Grotesque', 'Figtree', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 84px;
+  line-height: 1.04;
+  letter-spacing: -2px;
+  color: #f5f2ef;
+}
+.gigante {
+  font-family: 'Bricolage Grotesque', 'Figtree', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 200px;
+  line-height: 1;
+  letter-spacing: -6px;
+  color: #f5f2ef;
+}
+.lema {
+  font-family: 'Bricolage Grotesque', 'Figtree', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 1.1;
+  color: #f2c230;
+}
+.txt {
+  font-size: 36px;
+  line-height: 1.32;
+  color: #ebe4df;
+}
+.chico {
+  font-size: 28px;
+  line-height: 1.3;
+  color: #b9ada5;
+}
+.num {
+  font-family: 'Bricolage Grotesque', 'Figtree', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 96px;
+  line-height: 1;
+  letter-spacing: -3px;
+}
+.h3 {
+  font-family: 'Bricolage Grotesque', 'Figtree', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1.1;
+}
+
+/* Colores de texto */
+.c-ro { color: #f8a8c6; }
+.c-na { color: #f28c28; }
+.c-ve { color: #5fd39a; }
+.c-az { color: #8db8f0; }
+.c-am { color: #f2c230; }
+.c-co { color: #ff9a7a; }
+
+/* Tarjetas con borde fino */
+.card {
+  background: #1f1a18;
+  border: 1px solid #3a322d;
+  border-radius: 28px;
+  padding: 32px 36px;
+}
+.card-fu { border-left: 10px solid #c2185b; }
+.card-na { border-left: 10px solid #f28c28; }
+.card-ve { border-left: 10px solid #2e9e5b; }
+.card-az { border-left: 10px solid #1e5aa8; }
+.card-am { border-left: 10px solid #f2c230; }
+.card-co { border-left: 10px solid #e4572e; }
+
+.fila {
+  display: flex;
+  gap: 32px;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Celular con captura real */
+.cel {
+  width: 340px;
+  height: 756px;
+  border: 10px solid #2b2420;
+  border-radius: 52px;
+  overflow: hidden;
+  background: #000000;
+  box-sizing: border-box;
+}
+.cel img {
+  width: 320px;
+  height: 736px;
+  object-fit: cover;
+}
+
+/* Pantalla de computador */
+.pc {
+  width: 900px;
+  height: 562px;
+  border: 8px solid #2b2420;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #000000;
+  box-sizing: border-box;
+}
+.pc img {
+  width: 884px;
+  height: 546px;
+  object-fit: cover;
+}
+
+/* Avisos y pastillas */
+.aviso {
+  background: #12223a;
+  border: 1px solid #1e5aa8;
+  border-radius: 20px;
+  padding: 20px 28px;
+  font-size: 32px;
+  color: #8db8f0;
+}
+.pill {
+  display: inline-block;
+  font-size: 28px;
+  font-weight: 600;
+  padding: 8px 22px;
+  border-radius: 999px;
+  background: #c2185b;
+  color: #ffffff;
+}
+.avatar {
+  position: absolute;
+  width: 320px;
+  height: 400px;
+  object-fit: contain;
+}

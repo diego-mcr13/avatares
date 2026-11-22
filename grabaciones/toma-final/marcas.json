@@ -1,0 +1,153 @@
+{
+ "e3-hoy": {
+  "eventos": [
+   {
+    "t": 4.23,
+    "evento": "toca el buscador"
+   },
+   {
+    "t": 8.85,
+    "evento": "escribió almuerzo"
+   }
+  ],
+  "duracion": 13.26,
+  "cuadros": 219
+ },
+ "e4-registro": {
+  "eventos": [
+   {
+    "t": 1.2,
+    "evento": "toca Iniciar sesión"
+   },
+   {
+    "t": 20.79,
+    "evento": "toca Continuar"
+   },
+   {
+    "t": 24.2,
+    "evento": "Tu barrio: nombre"
+   },
+   {
+    "t": 29.44,
+    "evento": "Tu barrio: zona"
+   },
+   {
+    "t": 31.84,
+    "evento": "toca Listo"
+   },
+   {
+    "t": 36.32,
+    "evento": "espera el saldo"
+   },
+   {
+    "t": 55.43,
+    "evento": "aparece el saldo de 5"
+   }
+  ],
+  "duracion": 55.24,
+  "cuadros": 1678
+ },
+ "e5-pregunta": {
+  "eventos": [
+   {
+    "t": 1.2,
+    "evento": "toca ¿Alguien sabe?"
+   },
+   {
+    "t": 4.92,
+    "evento": "toca Preguntar"
+   },
+   {
+    "t": 8,
+    "evento": "escribe la pregunta"
+   },
+   {
+    "t": 33.8,
+    "evento": "enciende Urgente"
+   },
+   {
+    "t": 36.49,
+    "evento": "toca Publicar"
+   },
+   {
+    "t": 49.29,
+    "evento": "pregunta publicada"
+   }
+  ],
+  "duracion": 48.89,
+  "cuadros": 1010
+ },
+ "e6-ana": {
+  "eventos": [
+   {
+    "t": 2.51,
+    "evento": "toca la campana"
+   },
+   {
+    "t": 6.36,
+    "evento": "abre el aviso"
+   },
+   {
+    "t": 10.36,
+    "evento": "escribe la respuesta"
+   },
+   {
+    "t": 32.77,
+    "evento": "toca Enviar"
+   }
+  ],
+  "duracion": 34.41,
+  "cuadros": 227
+ },
+ "e6-camila": {
+  "eventos": [
+   {
+    "t": 34.99,
+    "evento": "aparece la respuesta (0.7 s después de Enviar)"
+   }
+  ],
+  "duracion": 34.38,
+  "cuadros": 2
+ },
+ "e7-camila": {
+  "eventos": [
+   {
+    "t": 1.51,
+    "evento": "toca Me sirvió"
+   },
+   {
+    "t": 3,
+    "evento": "pregunta Solucionada"
+   }
+  ],
+  "duracion": 3.61,
+  "cuadros": 112
+ },
+ "e7-ana-espera": {
+  "duracion": 3.59,
+  "cuadros": 38
+ },
+ "e7-ana": {
+  "eventos": [
+   {
+    "t": 1.51,
+    "evento": "toca su saldo (abre Movimientos)"
+   },
+   {
+    "t": 8.02,
+    "evento": "se ve Tu respuesta sirvió +5 Confirmado"
+   },
+   {
+    "t": 8.13,
+    "evento": "toca Registro"
+   },
+   {
+    "t": 18.63,
+    "evento": "se abre stellar.expert"
+   }
+  ],
+  "enlace": "https://stellar.expert/explorer/testnet/tx/acce574fd925033d79a87bc03e3c9b6766ecd43d0be4bc58b102d8309ce89a47",
+  "duracion": 25.64,
+  "cuadros": 160
+ }
+}

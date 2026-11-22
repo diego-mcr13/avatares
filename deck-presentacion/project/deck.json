@@ -1,0 +1,65 @@
+{
+  "v": 5,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-22T05:20:00Z"
+  },
+  "lists": "css",
+  "format": {
+    "v": 1,
+    "shared": [
+      "project/deck.css"
+    ]
+  },
+  "title": "BoliviaSabe · Presentación",
+  "order": [
+    "cover",
+    "problema",
+    "duele",
+    "encuesta",
+    "solucion",
+    "pantallas",
+    "respuestas",
+    "yapitas",
+    "funciona",
+    "mercado",
+    "negocio",
+    "usuarios",
+    "plan",
+    "equipo",
+    "cierre"
+  ],
+  "sections": {
+    "s1": {
+      "description": "BoliviaSabe y el problema que resuelve.",
+      "start": "cover"
+    },
+    "s2": {
+      "description": "Qué hace la app y cómo se ve.",
+      "start": "solucion"
+    },
+    "s3": {
+      "description": "Cómo funcionan las yapitas y Stellar, y la prueba de que funciona hoy.",
+      "start": "yapitas"
+    },
+    "s4": {
+      "description": "Mercado, cómo se sostiene y cómo llegamos a los primeros usuarios.",
+      "start": "mercado"
+    },
+    "s5": {
+      "description": "Plan de 30 días, equipo y cierre.",
+      "start": "plan"
+    }
+  },
+  "faces": {
+    "bricolage-grotesque": {
+      "family": "Bricolage Grotesque",
+      "href": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400..800&display=swap"
+    },
+    "figtree": {
+      "family": "Figtree",
+      "href": "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap"
+    }
+  },
+  "designSystems": []
+}

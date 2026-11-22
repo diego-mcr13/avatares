@@ -44,3 +44,7 @@ npx remotion render PruebaAldrin out/prueba-aldrin.mp4 --gl=angle
 ## Pendiente
 
 - El video `PruebaAldrin` todavía usa la voz de ejemplo de Diego (`voz_corta.wav`). Falta grabar la voz de Aldrin y generar su envolvente y sus palabras.
+
+## Poses del video
+
+También tiene las poses del video de BoliviaSabe (caminar, correr, señalar a los lados, arriba y abajo, tocar, deslizar, aplaudir y esperar). La hoja está en `poses-video.png` y la explicación en `../equipo/video.md`.

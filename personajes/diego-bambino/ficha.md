@@ -22,3 +22,7 @@ Volver a exportar (desde la raíz del repo):
 npx remotion still DiegoBambinoPoses personajes/diego-bambino/boceto-poses.png --gl=angle
 npx remotion render PruebaDiegoBambino personajes/diego-bambino/prueba-animacion.mp4 --gl=angle
 ```
+
+## Poses del video
+
+También tiene las poses del video de BoliviaSabe (caminar, correr, señalar a los lados, arriba y abajo, tocar, deslizar, aplaudir y esperar). La hoja está en `poses-video.png` y la explicación en `../equipo/video.md`.

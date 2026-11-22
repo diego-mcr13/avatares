@@ -18,3 +18,4 @@ Personajes voxel 3D animados con Remotion (React + three.js). Diego (`src/person
 - Cada `<Composition>` necesita un `id` único y se registra en `src/Root.tsx`.
 - Las skills de Remotion están en `.claude/skills/`; úsalas para dudas de la API de Remotion.
 - Los renders van a `out/` (ignorado por git). Solo se versionan los bocetos y videos de prueba en `personajes/<nombre>/`.
+- Video de BoliviaSabe: el elenco (Diego, Yaeko y Aldrin caminando sobre la app) está en `src/elenco/`; la explicación está en `personajes/equipo/video.md`. Exportar con `node scripts/renderizar-elenco.mjs`.

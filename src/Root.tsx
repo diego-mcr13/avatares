@@ -1,4 +1,8 @@
 import { EquipoComposition } from "./Equipo";
+import { ElencoComposition } from "./elenco/Elenco";
+import { EjemploComposition } from "./ejemplo/Ejemplo";
+import { PoseAvatarComposition } from "./ejemplo/PoseAvatar";
+import { HojaVideoComposition } from "./elenco/HojaVideo";
 import { PruebaAldrinComposition } from "./PruebaAldrin";
 import { PruebaDiegoBambinoComposition } from "./PruebaDiegoBambino";
 import { PruebaPersonajeComposition } from "./PruebaPersonaje";
@@ -13,6 +17,10 @@ export const RemotionRoot: React.FC = () => {
       <PruebaDiegoBambinoComposition />
       <PruebaAldrinComposition />
       <EquipoComposition />
+      <ElencoComposition />
+      <HojaVideoComposition />
+      <EjemploComposition />
+      <PoseAvatarComposition />
     </>
   );
 };
