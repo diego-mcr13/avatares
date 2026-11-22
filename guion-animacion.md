@@ -72,7 +72,9 @@ El recorrido que pidió la IA en el primer análisis, **entero y en este orden**
 - **Letras:** Bricolage Grotesque peso 500 (títulos y cifras grandes, nunca negrita) y Figtree (todo lo demás), con `@remotion/google-fonts`.
 - **Celular:** marco redondeado (radio 44 px), borde de 2 px `rgb(243 237 232 / 0.18)`, sombra suave. El video de la app llena la pantalla del marco.
 - **Movimiento:** entradas con `spring` (damping 200, ~0,4 s); nada rebota de más; los cambios de escena son un corte limpio o un barrido de 0,3 s con la franja de aguayo.
-- **Lupa (lo interactivo):** en cada toque importante el contenido del celular se acerca **dentro del marco** (1,0 → 1,7 en 0,5 s, centrado en el botón) y vuelve a 1,0. Así el botón se lee en un celular viendo YouTube. El círculo amarillo del toque ya viene en las grabaciones; la posición de cada botón se mide en su captura (`capturas/`, en fracción de 720 × 1600).
+- **Lupa de verdad (lo interactivo):** el celular queda quieto y aparece una lupa dibujada (aro claro, vidrio con brillo y mango con una franja fucsia) que se posa sobre el botón y muestra adentro ese punto ampliado (×1,6 a ×2,4). Si la siguiente mirada empieza en menos de 1,2 s, la lupa se desliza hasta ella; si no, se va y vuelve. Diámetro 290 px. (`Telefono` → `miras`).
+- **Cámara:** cada escena puede acercarse (`Camara`, `tomas`): un empuje lento mientras hablan y **planos cerrados** en los momentos clave (+5 de bienvenida, la respuesta que llega sola, el +5 para Ana, el memo). Los subtítulos quedan fuera de la cámara, siempre en su franja.
+- **Entradas y salidas de los avatares:** nunca corren ni cruzan la pantalla caminando. Entran **de un salto desde abajo** o con un **«puf»** (destello) y salen igual (`entra`, `sale`); caminan solo para moverse un poco dentro de la escena.
 - **Burbujas de premio:** pastilla naranja «+5 yapitas» que sube desde el saldo y se desvanece (1,2 s).
 
 ## 4. Material

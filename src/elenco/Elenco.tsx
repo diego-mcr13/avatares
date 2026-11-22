@@ -95,7 +95,10 @@ const Avatar: React.FC<{ quien: Quien; escena: Escena; frame: number }> = ({ qui
     fps: FPS,
     claves: r.claves,
     volumen: volumenDe(escena, quien),
-    movimientos: r.apareceEn !== null ? [{ tipo: "aparecer", t: r.apareceEn, dur: 0.7 }] : [],
+    movimientos: [
+      ...(r.apareceEn !== null ? [{ tipo: "aparecer" as const, t: r.apareceEn, dur: 0.7 }] : []),
+      ...(r.eventos ?? []).filter((e) => e.tipo === "puf").map((e) => ({ tipo: e.entra ? ("aparecer" as const) : ("desaparecer" as const), t: e.t, dur: e.entra ? 0.7 : 0.45 })),
+    ],
     giro: haciaElCentro * (1 - m.w),
     caminata: { fase: m.fase, w: m.w, dir: m.dir, correr: m.correr },
   });
@@ -120,10 +123,32 @@ const Avatar: React.FC<{ quien: Quien; escena: Escena; frame: number }> = ({ qui
     // Saltito al levantarse
     if (vuelve > 0 && vuelve < 1) dy += Math.sin(vuelve * Math.PI) * 5;
   }
-  const estadoFinal = r.caida ? { ...estado, escala: [estado.escala[0] * (2 - aplastar), estado.escala[1] * aplastar, estado.escala[2]] as [number, number, number] } : estado;
+  // Entradas (salto desde abajo o «puf») y salidas (salto hacia abajo o «puf»)
+  const evs = r.eventos ?? [];
+  if (evs.length) {
+    const previos = evs.filter((e) => e.t <= T);
+    const ultimo = previos[previos.length - 1];
+    if (!ultimo) {
+      if (evs[0].entra) return null;
+    } else if (ultimo.entra) {
+      if (ultimo.tipo === "salto") {
+        const q = Math.min(1, (T - ultimo.t) / 0.6);
+        if (q < 1) dy += -70 * Math.pow(1 - q, 2) + 22 * Math.sin(q * Math.PI);
+        const choque = T - ultimo.t - 0.6;
+        if (choque >= 0 && choque < 0.16) aplastar = 1 - 0.22 * Math.sin((choque / 0.16) * Math.PI);
+      }
+    } else {
+      if (ultimo.tipo === "salto") {
+        const q = (T - ultimo.t) / 0.55;
+        if (q >= 1) return null;
+        dy += 16 * Math.sin(Math.min(1, q * 1.6) * Math.PI) - 360 * Math.max(0, q - 0.35) * Math.max(0, q - 0.35);
+      } else if (T > ultimo.t + 0.5) return null;
+    }
+  }
+  const estadoFinal = r.caida || evs.length ? { ...estado, escala: [estado.escala[0] * (2 - aplastar), estado.escala[1] * aplastar, estado.escala[2]] as [number, number, number] } : estado;
   return (
     <group>
-      {dy < 25 ? <SueloSombra position={[wx, wy, 0]} ancho={46} fondo={36} /> : null}
+      {Math.abs(dy) < 25 ? <SueloSombra position={[wx, wy, 0]} ancho={46} fondo={36} /> : null}
       <group position={[wx, wy + dy, 0]} rotation={[0, 0, rot]}>
         <Voxel estado={estadoFinal} position={[0, 0, 0]} />
       </group>

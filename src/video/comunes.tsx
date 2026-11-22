@@ -89,20 +89,123 @@ const lupaEn = (lupas: Lupa[], T: number) => {
 const ENTRECORTADOS = ["e4-registro", "e6-ana", "e7-ana"];
 const usarSuave = (clip: string, vel: number) => ENTRECORTADOS.includes(clip) && vel <= 2.5;
 
+// Lo que se ve en la pantalla del celular (los tramos de clip e imágenes)
+const Pantalla: React.FC<{ tramos: Tramo[] }> = ({ tramos }) => (
+  <>
+    {tramos.map((tr, i) => (
+      <Sequence key={i} from={t2f(tr.t0)} durationInFrames={Math.max(1, t2f(tr.t1) - t2f(tr.t0))} layout="none">
+        {"clip" in tr ? (
+          <Video
+            src={staticFile(`video/${usarSuave(tr.clip, tr.vel ?? 1) ? "suave" : "clips"}/${tr.clip}.mp4`)}
+            trimBefore={Math.round(tr.desde * FPS)}
+            playbackRate={tr.vel ?? 1}
+            muted
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : (
+          <Img src={staticFile(`video/img/${tr.img}`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+        )}
+      </Sequence>
+    ))}
+  </>
+);
+
+// Lupa de verdad: entre t0 y t1 se posa sobre (u, v) de la pantalla y muestra eso ampliado `m` veces.
+// Si la siguiente mirada empieza poco después, la lupa se desliza hasta ella en vez de irse.
+export type Mira = { t0: number; t1: number; u: number; v: number; m?: number };
+
+const D_LUPA = 290;
+
+const lupaEnT = (miras: Mira[], T: number) => {
+  const ms = [...miras].sort((a, b) => a.t0 - b.t0);
+  for (let i = 0; i < ms.length; i++) {
+    const a = ms[i];
+    const b = ms[i + 1];
+    const llega = i > 0 && a.t0 - ms[i - 1].t1 <= 1.2 ? null : a.t0 - 0.35;
+    if (llega !== null && T >= llega && T < a.t0) {
+      return { u: a.u, v: a.v, m: a.m ?? 2, e: tramo(T, llega, a.t0) };
+    }
+    if (T >= a.t0 && T <= a.t1) return { u: a.u, v: a.v, m: a.m ?? 2, e: 1 };
+    if (b && T > a.t1 && T < b.t0 && b.t0 - a.t1 <= 1.2) {
+      const q = tramo(T, a.t1, b.t0);
+      return { u: a.u + (b.u - a.u) * q, v: a.v + (b.v - a.v) * q, m: (a.m ?? 2) + ((b.m ?? 2) - (a.m ?? 2)) * q, e: 1 };
+    }
+    if ((!b || b.t0 - a.t1 > 1.2) && T > a.t1 && T < a.t1 + 0.3) {
+      return { u: a.u, v: a.v, m: a.m ?? 2, e: 1 - tramo(T, a.t1, a.t1 + 0.3) };
+    }
+  }
+  return null;
+};
+
+const LupaDibujo: React.FC<{ tramos: Tramo[]; miras: Mira[]; cx: number; escala: number }> = ({ tramos, miras, cx, escala }) => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  const l = lupaEnT(miras, T);
+  if (!l || l.e <= 0.001) return null;
+  const izq = cx - (CEL.ancho * escala) / 2;
+  const tope = CEL.tope + (CEL.alto * (1 - escala)) / 2;
+  // Centro de la lupa sobre el punto mirado (en px del lienzo)
+  const px = izq + l.u * CEL.ancho * escala;
+  const py = tope + l.v * CEL.alto * escala;
+  const m = l.m * escala;
+  const e = l.e;
+  return (
+    <div style={{ position: "absolute", left: px - D_LUPA / 2, top: py - D_LUPA / 2, width: D_LUPA, height: D_LUPA, transform: `scale(${0.4 + 0.6 * e}) rotate(${(1 - e) * -20}deg)`, opacity: Math.min(1, e * 1.5), zIndex: 5 }}>
+      {/* Mango */}
+      <div
+        style={{
+          position: "absolute",
+          left: D_LUPA * 0.82,
+          top: D_LUPA * 0.82,
+          width: 34,
+          height: 120,
+          borderRadius: 17,
+          background: "linear-gradient(90deg, #3a2f2b, #241d1b)",
+          transform: "rotate(-45deg)",
+          transformOrigin: "50% 0",
+          boxShadow: "0 10px 24px rgba(0,0,0,0.5)",
+        }}
+      >
+        <div style={{ position: "absolute", left: 0, right: 0, top: 18, height: 12, background: C.fucsia }} />
+      </div>
+      {/* Vidrio con el contenido ampliado */}
+      <div style={{ position: "absolute", inset: 0, borderRadius: "50%", overflow: "hidden", background: "#0d0b0a", boxShadow: "0 18px 40px rgba(0,0,0,0.55)" }}>
+        <div
+          style={{
+            position: "absolute",
+            width: CEL.ancho,
+            height: CEL.alto,
+            left: D_LUPA / 2 - l.u * CEL.ancho * m,
+            top: D_LUPA / 2 - l.v * CEL.alto * m,
+            transform: `scale(${m})`,
+            transformOrigin: "0 0",
+          }}
+        >
+          <Pantalla tramos={tramos} />
+        </div>
+        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.18), rgba(255,255,255,0) 45%)" }} />
+      </div>
+      {/* Aro */}
+      <div style={{ position: "absolute", inset: -9, borderRadius: "50%", border: "11px solid #EDE6DF", boxShadow: "inset 0 0 0 2px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,0,0,0.35)" }} />
+    </div>
+  );
+};
+
 export const Telefono: React.FC<{
   tramos: Tramo[];
+  // Lupa de verdad (recomendada)
+  miras?: Mira[];
+  // Acercamiento dentro del marco (anterior; ya no se usa en el video)
   lupas?: Lupa[];
   cx?: number;
   escala?: number;
-  // Lo que va encima de la pantalla y se mueve con la lupa (pastillas, anillos), en px de la pantalla 405×900
+  // Lo que va encima de la pantalla (pastillas, anillos), en px de la pantalla 405×900
   encima?: React.ReactNode;
-  // Lo que va encima sin lupa
   arriba?: React.ReactNode;
-}> = ({ tramos, lupas = [], cx = 960, escala = 1, encima, arriba }) => {
+}> = ({ tramos, miras = [], lupas = [], cx = 960, escala = 1, encima, arriba }) => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
   const l = lupaEn(lupas, T);
-  // Con lupa, el punto (u, v) se acerca al centro de la pantalla para que el botón quede a la vista
   const tx = (0.5 - l.u) * CEL.ancho * (l.s - 1);
   const ty = (0.5 - l.v) * CEL.alto * (l.s - 1);
   const maxX = (CEL.ancho * (l.s - 1)) / 2;
@@ -110,41 +213,60 @@ export const Telefono: React.FC<{
   const x = Math.max(-maxX, Math.min(maxX, tx));
   const y = Math.max(-maxY, Math.min(maxY, ty));
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: cx - CEL.ancho / 2,
-        top: CEL.tope,
-        width: CEL.ancho,
-        height: CEL.alto,
-        borderRadius: 44,
-        overflow: "hidden",
-        background: "#0d0b0a",
-        boxShadow: "0 30px 80px rgba(0,0,0,0.55), 0 0 0 2px rgba(243,237,232,0.18)",
-        transform: `scale(${escala})`,
-        transformOrigin: "50% 50%",
-      }}
-    >
-      <div style={{ position: "absolute", inset: 0, transform: `translate(${x}px, ${y}px) scale(${l.s})`, transformOrigin: "50% 50%" }}>
-        {tramos.map((tr, i) => (
-          <Sequence key={i} from={t2f(tr.t0)} durationInFrames={Math.max(1, t2f(tr.t1) - t2f(tr.t0))} layout="none">
-            {"clip" in tr ? (
-              <Video
-                src={staticFile(`video/${usarSuave(tr.clip, tr.vel ?? 1) ? "suave" : "clips"}/${tr.clip}.mp4`)}
-                trimBefore={Math.round(tr.desde * FPS)}
-                playbackRate={tr.vel ?? 1}
-                muted
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            ) : (
-              <Img src={staticFile(`video/img/${tr.img}`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-            )}
-          </Sequence>
-        ))}
-        {encima}
+    <>
+      <div
+        style={{
+          position: "absolute",
+          left: cx - CEL.ancho / 2,
+          top: CEL.tope,
+          width: CEL.ancho,
+          height: CEL.alto,
+          borderRadius: 44,
+          overflow: "hidden",
+          background: "#0d0b0a",
+          boxShadow: "0 30px 80px rgba(0,0,0,0.55), 0 0 0 2px rgba(243,237,232,0.18)",
+          transform: `scale(${escala})`,
+          transformOrigin: "50% 50%",
+        }}
+      >
+        <div style={{ position: "absolute", inset: 0, transform: `translate(${x}px, ${y}px) scale(${l.s})`, transformOrigin: "50% 50%" }}>
+          <Pantalla tramos={tramos} />
+          {encima}
+        </div>
+        {arriba}
       </div>
-      {arriba}
-    </div>
+      <LupaDibujo tramos={tramos} miras={miras} cx={cx} escala={escala} />
+    </>
+  );
+};
+
+// ---------- Cámara: acercamientos de toda la escena (los subtítulos quedan fuera) ----------
+// En `t` la cámara llega a escala `s` mirando el punto (x, y) del lienzo. Cada cambio dura `dur` (0,8 s por defecto).
+export type Toma = { t: number; s: number; x: number; y: number; dur?: number };
+
+export const Camara: React.FC<{ tomas: Toma[]; children: React.ReactNode }> = ({ tomas, children }) => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  const ts = [{ t: 0, s: 1, x: 960, y: 540, dur: 0.01 }, ...tomas].sort((a, b) => a.t - b.t);
+  let cur = ts[0];
+  let prev = ts[0];
+  for (const k of ts) {
+    if (k.t - (k.dur ?? 0.8) <= T) {
+      prev = cur;
+      cur = k;
+    }
+  }
+  const q = tramo(T, cur.t - (cur.dur ?? 0.8), cur.t);
+  const s = prev.s + (cur.s - prev.s) * q;
+  const fx = prev.x + (cur.x - prev.x) * q;
+  const fy = prev.y + (cur.y - prev.y) * q;
+  // El punto (fx, fy) queda en el centro del cuadro, sin mostrar bordes vacíos
+  let tx = 960 - fx * s;
+  let ty = 540 - fy * s;
+  tx = Math.min(0, Math.max(1920 - 1920 * s, tx));
+  ty = Math.min(0, Math.max(1080 - 1080 * s, ty));
+  return (
+    <AbsoluteFill style={{ transform: `translate(${tx}px, ${ty}px) scale(${s})`, transformOrigin: "0 0" }}>{children}</AbsoluteFill>
   );
 };
 

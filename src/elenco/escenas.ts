@@ -40,6 +40,9 @@ export type Recorrido = {
   apareceEn: number | null;
   // Cae desde arriba a las `t` y se cae hacia `lado` (-1 izquierda, 1 derecha) antes de levantarse
   caida?: { t: number; lado: -1 | 1 };
+  // Entra (salto desde abajo o «puf») y sale (salto hacia abajo o «puf»): no se ve antes de entrar ni después de salir
+  // Entradas y salidas en orden (puede salir y volver a entrar)
+  eventos?: { t: number; tipo: "salto" | "puf"; entra: boolean }[];
   tramos: Tramo[];
   claves: Clave[];
 };
@@ -62,7 +65,7 @@ const VELOCIDAD_CORRER = 330; // si necesita ir más rápido para llegar a tiemp
 const palabras = (s: string) => s.replace(/\*\*/g, "").split(/\s+/).filter(Boolean).length;
 const PALABRAS_POR_SEG = 2.6;
 
-type Parada = { t: number; pos: Punto | null; pose: PoseNombre; expr?: Partial<Expresion> };
+type Parada = { t: number; pos: Punto | null; pose: PoseNombre; expr?: Partial<Expresion>; salto?: boolean };
 
 export class Guion {
   lineas: Linea[] = [];
@@ -71,6 +74,7 @@ export class Guion {
   private poseInicial: Record<Quien, PoseNombre> = { diego: "esperar", yaeko: "esperar", aldrin: "esperar" };
   private aparece: Partial<Record<Quien, number>> = {};
   private caidas: Partial<Record<Quien, { t: number; lado: -1 | 1 }>> = {};
+  private eventos: Record<Quien, { t: number; tipo: "salto" | "puf"; entra: boolean }[]> = { diego: [], yaeko: [], aldrin: [] };
   private n = 0;
 
   constructor(
@@ -120,6 +124,25 @@ export class Guion {
     this.poseInicial[quien] = "sorpresa";
   }
 
+  // Entra a las `t` en `pos`: de un salto desde abajo del cuadro o con un «puf» (sin caminar desde afuera)
+  entra(quien: Quien, t: number, pos: Punto, tipo: "salto" | "puf" = "salto", pose: PoseNombre = "esperar", expr?: Partial<Expresion>) {
+    const primera = !this.eventos[quien].some((e) => e.entra);
+    this.eventos[quien].push({ t, tipo, entra: true });
+    if (primera) {
+      this.inicio[quien] = pos;
+      this.poseInicial[quien] = pose;
+      this.paradas[quien].push({ t, pos: null, pose, expr });
+    } else {
+      // Vuelve a entrar en otro lugar: aparece ahí sin caminar
+      this.paradas[quien].push({ t, pos, pose, expr, salto: true });
+    }
+  }
+
+  // Sale a las `t`: salta hacia abajo del cuadro o se va con un «puf»
+  sale(quien: Quien, t: number, tipo: "salto" | "puf" = "salto") {
+    this.eventos[quien].push({ t, tipo, entra: false });
+  }
+
   // Llega a `pos` a las `t` y toma la pose. Si pos es null, solo cambia de pose donde está.
   va(quien: Quien, t: number, pos: Punto | null, pose: PoseNombre, expr?: Partial<Expresion>) {
     this.paradas[quien].push({ t, pos, pose, expr });
@@ -144,9 +167,18 @@ export class Guion {
       const tramos: Tramo[] = [];
       const claves: Clave[] = [{ t: 0, pose: this.poseInicial[q] }];
       let pos = this.inicio[q];
-      let libreDesde = this.aparece[q] ?? this.caidas[q]?.t ?? 0;
+      const primeraEntrada = this.eventos[q].find((e) => e.entra);
+      let libreDesde = this.aparece[q] ?? this.caidas[q]?.t ?? (primeraEntrada ? primeraEntrada.t + 0.6 : 0);
       for (const p of paradas) {
         const dist = p.pos ? Math.hypot(p.pos[0] - pos[0], p.pos[1] - pos[1]) : 0;
+        if (p.salto && p.pos) {
+          // Cambio de lugar instantáneo (mientras está fuera de cuadro)
+          tramos.push({ t0: p.t - 0.001, t1: p.t, desde: pos, hasta: p.pos, correr: false });
+          claves.push({ t: p.t, pose: p.pose, expr: p.expr });
+          pos = p.pos;
+          libreDesde = p.t + 0.6;
+          continue;
+        }
         if (!p.pos || dist < 8) {
           claves.push({ t: p.t, pose: p.pose, expr: p.expr });
           continue;
@@ -154,7 +186,8 @@ export class Guion {
         const duracionIdeal = dist / VELOCIDAD;
         const salida = Math.max(libreDesde, p.t - Math.max(duracionIdeal, 0.35));
         const dur = Math.max(0.35, p.t - salida);
-        const correr = dist / dur > VELOCIDAD_CORRER;
+        // Nunca corren (se ve apurado): caminan, aunque sea un poco más rápido
+        const correr = false && dist / dur > VELOCIDAD_CORRER;
         tramos.push({ t0: salida, t1: salida + dur, desde: pos, hasta: p.pos, correr });
         claves.push({ t: salida, pose: correr ? "correr" : "caminar", expr: p.expr });
         claves.push({ t: salida + dur, pose: p.pose, expr: p.expr });
@@ -169,7 +202,14 @@ export class Guion {
         if (ult && c.t - ult.t < 1 / 30) limpias[limpias.length - 1] = { ...c, t: ult.t };
         else limpias.push(c);
       }
-      personajes[q] = { inicio: this.inicio[q], apareceEn: this.aparece[q] ?? null, caida: this.caidas[q], tramos, claves: limpias };
+      personajes[q] = {
+        inicio: this.inicio[q],
+        apareceEn: this.aparece[q] ?? null,
+        caida: this.caidas[q],
+        eventos: [...this.eventos[q]].sort((a, b) => a.t - b.t),
+        tramos,
+        claves: limpias,
+      };
     }
     const fin = Math.max(0, ...this.lineas.map((l) => l.t + l.dur));
     return {

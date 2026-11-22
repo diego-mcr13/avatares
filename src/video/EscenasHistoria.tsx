@@ -2,7 +2,7 @@
 import { Video } from "@remotion/media";
 import React from "react";
 import { AbsoluteFill, Img, Sequence, interpolate, random, spring, staticFile, useCurrentFrame } from "remotion";
-import { Avatares, Cifra, Fondo, Rotulo, Sonidos, Subtitulos, Telefono, Voces, armarAvatares, entrar, tramo } from "./comunes";
+import { Avatares, Camara, Cifra, Fondo, Rotulo, Sonidos, Subtitulos, Telefono, Voces, armarAvatares, entrar, tramo } from "./comunes";
 import { CARA } from "./caras";
 import { VOCES, escenaVideo } from "./datos";
 import { AGUAYO, C, COLOR_PERSONA, FPS, LETRA, LETRA_TITULO } from "./estilo";
@@ -231,19 +231,16 @@ export const Escena1: React.FC = () => {
 
 // ---------- Escena 2 · El problema ----------
 const av2 = armarAvatares("2", (g) => {
-  g.empieza("yaeko", [-260, 930]);
-  g.empieza("aldrin", [-260, 930]);
-  g.empieza("diego", [2180, 930]);
-  g.va("yaeko", 0.7, [250, 930], "senalar", CARA.atento);
-  g.va("yaeko", 5.4, [-260, 930], "caminar", CARA.atento);
-  g.va("diego", 5.9, [1680, 930], "senalarIzq", CARA.preocupado);
+  g.entra("yaeko", 0.2, [250, 930], "salto", "senalar", CARA.atento);
+  g.sale("yaeko", 5.1, "salto");
+  g.entra("diego", 5.4, [1680, 930], "puf", "senalarIzq", CARA.preocupado);
   g.va("diego", 6.6, null, "desesperar", CARA.preocupado);
   g.va("diego", 10.4, null, "encoger", CARA.preocupado);
-  g.va("diego", 12.0, [2180, 930], "caminar", CARA.preocupado);
-  g.va("aldrin", 12.1, [250, 930], "pensar", CARA.pensativo);
+  g.sale("diego", 11.7, "puf");
+  g.entra("aldrin", 11.6, [250, 930], "salto", "pensar", CARA.pensativo);
   g.va("aldrin", 13.5, null, "encoger", CARA.preocupado);
-  g.va("aldrin", 16.0, [-260, 930], "caminar", CARA.atento);
-  g.va("yaeko", 16.6, [250, 930], "apuntar", CARA.atento);
+  g.sale("aldrin", 15.9, "salto");
+  g.entra("yaeko", 16.2, [250, 930], "puf", "apuntar", CARA.atento);
   g.va("yaeko", 20.8, null, "senalar", CARA.atento);
 });
 
@@ -422,11 +419,13 @@ const Figuritas: React.FC = () => {
 export const Escena2: React.FC = () => (
   <>
     <Fondo />
+    <Camara tomas={[{ t: 11.0, s: 1.05, x: 960, y: 480, dur: 5.5 }, { t: 16.3, s: 1, x: 960, y: 540, dur: 0.5 }, { t: 22.5, s: 1.05, x: 960, y: 520, dur: 5 }]}>
     <GrupoFacebook />
     {useCurrentFrame() / FPS < 5.4 ? <Cifra texto={<span style={{ color: C.amarillo }}>209 mil miembros</span>} x={960} y={760} t={3.2} tam={84} /> : null}
     <Burbujas />
     <Figuritas />
     <Avatares escena={av2} />
+    </Camara>
     <Subtitulos id="2" />
     <Voces id="2" />
     <Sonidos lista={[["pop", 0.3], ["ding", 3.2], ["pop", 6.0], ["pop", 9.7], ["pop", 12.4], ["ding_roto", 13.4], ["pop", 16.5], ["ding", 20.6]]} />
@@ -435,20 +434,20 @@ export const Escena2: React.FC = () => (
 
 // ---------- Escena 9 · Plan y cierre ----------
 const av9 = armarAvatares("9", (g) => {
-  g.empieza("yaeko", [-260, 930]);
-  g.empieza("diego", [-260, 930]);
-  g.empieza("aldrin", [2180, 930]);
-  g.va("yaeko", 0.8, [230, 930], "senalarArriba", CARA.orgullo);
+  g.entra("yaeko", 0.3, [230, 930], "salto", "senalarArriba", CARA.orgullo);
   g.va("yaeko", 7.5, null, "senalar", CARA.orgullo);
-  g.va("yaeko", 10.3, null, "celebrar", CARA.feliz);
-  g.va("yaeko", 11.0, [-260, 930], "caminar", CARA.feliz);
-  g.va("diego", 11.6, [560, 930], "apuntar", CARA.atento);
-  g.va("diego", 16.6, [-260, 930], "caminar", CARA.feliz);
-  g.va("aldrin", 17.6, [1000, 930], "senalarIzq", CARA.orgullo);
+  g.va("yaeko", 10.2, null, "celebrar", CARA.feliz);
+  g.sale("yaeko", 10.8, "puf");
+  g.entra("diego", 10.9, [560, 930], "puf", "apuntar", CARA.atento);
+  g.va("diego", 15.5, null, "esperar", CARA.feliz);
+  g.sale("diego", 16.6, "salto");
+  g.entra("aldrin", 17.0, [1000, 930], "salto", "senalarIzq", CARA.orgullo);
   g.va("aldrin", 25.0, null, "triunfo", CARA.orgullo);
-  g.va("yaeko", 26.4, [960, 930], "hablar", CARA.feliz);
-  g.va("diego", 26.6, [740, 930], "celebrar", CARA.feliz);
-  g.va("aldrin", 26.6, [1180, 930], "celebrar", CARA.feliz);
+  g.sale("aldrin", 25.6, "puf");
+  // Cierre: los tres de un salto, juntos
+  g.entra("yaeko", 26.0, [960, 930], "salto", "hablar", CARA.feliz);
+  g.entra("diego", 26.1, [740, 930], "salto", "celebrar", CARA.feliz);
+  g.entra("aldrin", 26.2, [1180, 930], "salto", "celebrar", CARA.feliz);
   for (const q of ["yaeko", "diego", "aldrin"] as Quien[]) g.va(q, 34.4, null, "saludar", CARA.feliz);
 });
 
@@ -622,11 +621,12 @@ const Cierre: React.FC = () => {
 export const Escena9: React.FC = () => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
-  const celB = tramo(T, 10.8, 11.3) * (1 - tramo(T, 16.6, 17.0));
-  const celC = tramo(T, 17.0, 17.4) * (1 - tramo(T, 25.6, 26.0));
+  const celB = tramo(T, 10.8, 11.3) * (1 - tramo(T, 16.5, 16.9));
+  const celC = tramo(T, 16.5, 16.9) * (1 - tramo(T, 25.6, 26.0));
   return (
     <>
       <Fondo brillo={T < 17 ? [960, 500] : [1380, 500]} />
+      <Camara tomas={[{ t: 10.4, s: 1.05, x: 960, y: 480, dur: 9 }, { t: 10.9, s: 1, x: 960, y: 540, dur: 0.4 }, { t: 25.6, s: 1.04, x: 700, y: 480, dur: 8 }, { t: 26.0, s: 1, x: 960, y: 540, dur: 0.3 }]}>
       <Plan />
       {celB > 0 ? (
         <div style={{ position: "absolute", inset: 0, opacity: celB }}>
@@ -652,6 +652,7 @@ export const Escena9: React.FC = () => {
       ) : null}
       <Cierre />
       <Avatares escena={av9} />
+      </Camara>
       <Subtitulos id="9" />
       <Voces id="9" />
       <Sonidos
