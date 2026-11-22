@@ -1,0 +1,274 @@
+{
+ "c01-hoy": {
+  "archivo": "video/tomas/c01-hoy.png",
+  "cajas": {
+   "buscador": {
+    "x": 16,
+    "y": 159,
+    "w": 328,
+    "h": 48
+   },
+   "iniciar": {
+    "x": 236,
+    "y": 9,
+    "w": 116,
+    "h": 44
+   }
+  }
+ },
+ "c02-busqueda": {
+  "archivo": "video/tomas/c02-busqueda.png",
+  "cajas": {
+   "buscador": {
+    "x": 16,
+    "y": 159,
+    "w": 328,
+    "h": 48
+   }
+  }
+ },
+ "c02b-resultados": {
+  "archivo": "video/tomas/c02b-resultados.png",
+  "cajas": {}
+ },
+ "c03-hoy-sin-sesion": {
+  "archivo": "video/tomas/c03-hoy-sin-sesion.png",
+  "cajas": {
+   "iniciar": {
+    "x": 236,
+    "y": 9,
+    "w": 116,
+    "h": 44
+   }
+  }
+ },
+ "c04-hoja-entrar": {
+  "archivo": "video/tomas/c04-hoja-entrar.png",
+  "cajas": {
+   "correo": {
+    "x": 16,
+    "y": 695,
+    "w": 328,
+    "h": 44
+   },
+   "google": {
+    "x": 16,
+    "y": 639,
+    "w": 328,
+    "h": 44
+   }
+  }
+ },
+ "c05-correo": {
+  "archivo": "video/tomas/c05-correo.png",
+  "cajas": {
+   "continuar": {
+    "x": 16,
+    "y": 639,
+    "w": 328,
+    "h": 44
+   }
+  }
+ },
+ "c06-tu-barrio": {
+  "archivo": "video/tomas/c06-tu-barrio.png",
+  "cajas": {
+   "zona": {
+    "x": 16,
+    "y": 395,
+    "w": 116,
+    "h": 44
+   },
+   "listo": {
+    "x": 16,
+    "y": 740,
+    "w": 328,
+    "h": 48
+   }
+  }
+ },
+ "c07-hoy-saldo-5": {
+  "archivo": "video/tomas/c07-hoy-saldo-5.png",
+  "cajas": {
+   "saldo": {
+    "x": 292,
+    "y": 9,
+    "w": 60,
+    "h": 44
+   }
+  }
+ },
+ "c08-alguien-sabe": {
+  "archivo": "video/tomas/c08-alguien-sabe.png",
+  "cajas": {
+   "preguntar": {
+    "x": 195,
+    "y": 668,
+    "w": 149,
+    "h": 52
+   }
+  }
+ },
+ "c09-pregunta-escrita": {
+  "archivo": "video/tomas/c09-pregunta-escrita.png",
+  "cajas": {
+   "texto": {
+    "x": 16,
+    "y": 96,
+    "w": 328,
+    "h": 116
+   },
+   "urgente": {
+    "x": 33,
+    "y": 591,
+    "w": 294,
+    "h": 65
+   }
+  }
+ },
+ "c10-urgente": {
+  "archivo": "video/tomas/c10-urgente.png",
+  "cajas": {
+   "urgente": {
+    "x": 33,
+    "y": 533,
+    "w": 294,
+    "h": 65
+   },
+   "publicar": {
+    "x": 16,
+    "y": 740,
+    "w": 328,
+    "h": 48
+   }
+  }
+ },
+ "c11-publicada": {
+  "archivo": "video/tomas/c11-publicada.png",
+  "cajas": {
+   "urgente": {
+    "x": 16,
+    "y": 297,
+    "w": 64,
+    "h": 23
+   }
+  }
+ },
+ "a01-hoy-aviso": {
+  "archivo": "video/tomas/a01-hoy-aviso.png",
+  "cajas": {
+   "campana": {
+    "x": 244,
+    "y": 9,
+    "w": 44,
+    "h": 44
+   }
+  }
+ },
+ "a02-avisos": {
+  "archivo": "video/tomas/a02-avisos.png",
+  "cajas": {
+   "aviso": {
+    "x": 8,
+    "y": 669,
+    "w": 344,
+    "h": 107
+   }
+  }
+ },
+ "a03-pregunta": {
+  "archivo": "video/tomas/a03-pregunta.png",
+  "cajas": {
+   "cuadro": {
+    "x": 16,
+    "y": 551,
+    "w": 328,
+    "h": 93
+   }
+  }
+ },
+ "a04-respuesta-escrita": {
+  "archivo": "video/tomas/a04-respuesta-escrita.png",
+  "cajas": {
+   "enviar": {
+    "x": 16,
+    "y": 628,
+    "w": 94,
+    "h": 44
+   }
+  }
+ },
+ "c11b-sin-respuesta": {
+  "archivo": "video/tomas/c11b-sin-respuesta.png",
+  "cajas": {}
+ },
+ "llegada": {
+  "segundos": 0
+ },
+ "c12-llega-respuesta": {
+  "archivo": "video/tomas/c12-llega-respuesta.png",
+  "cajas": {
+   "respuesta": {
+    "x": 16,
+    "y": 529,
+    "w": 328,
+    "h": 257
+   },
+   "sirvio": {
+    "x": 33,
+    "y": 668,
+    "w": 105,
+    "h": 36
+   }
+  }
+ },
+ "a05-respondida": {
+  "archivo": "video/tomas/a05-respondida.png",
+  "cajas": {}
+ },
+ "c13-solucionada": {
+  "archivo": "video/tomas/c13-solucionada.png",
+  "cajas": {
+   "gracias": {
+    "x": 16,
+    "y": 377,
+    "w": 328,
+    "h": 110
+   },
+   "solucionada": {
+    "x": 16,
+    "y": 115,
+    "w": 106,
+    "h": 23
+   }
+  }
+ },
+ "c13b-solucionada-arriba": {
+  "archivo": "video/tomas/c13b-solucionada-arriba.png",
+  "cajas": {
+   "solucionada": {
+    "x": 16,
+    "y": 297,
+    "w": 106,
+    "h": 23
+   }
+  }
+ },
+ "a06-movimientos": {
+  "archivo": "video/tomas/a06-movimientos.png",
+  "cajas": {
+   "fila": null,
+   "registro": {
+    "x": 65,
+    "y": 144,
+    "w": 142,
+    "h": 44
+   }
+  }
+ },
+ "enlace": "https://stellar.expert/explorer/testnet/tx/b80fecb1727ce232c0ed889563c54cd7d833ee4a152c4a8846e5af54aa80eca3",
+ "a07-explorador": {
+  "archivo": "video/tomas/a07-explorador.png",
+  "cajas": {}
+ }
+}

@@ -52,12 +52,14 @@ export const Escena3: React.FC = () => (
     <Camara tomas={[{ t: 12.5, s: 1.06, x: 960, y: 520, dur: 6 }]}>
       <Telefono
         tramos={[
-          { t0: 0, t1: 6.2, clip: "e3-hoy", desde: 0, vel: 0.68 },
-          { t0: 6.2, t1: 13, clip: "e3-hoy", desde: 4.2, vel: 1.35 },
+          { t0: 0, t1: 6.4, img: "tomas/c01-hoy.png" },
+          { t0: 6.4, t1: 9.6, img: "tomas/c02-busqueda.png" },
+          { t0: 9.6, t1: 13, img: "tomas/c02b-resultados.png" },
         ]}
+        toques={[{ t: 6.2, x: 180, y: 183 }]}
         miras={[
-          { t0: 6.6, t1: 9.6, u: 0.45, v: 0.23, m: 1.8 },
-          { t0: 10.4, t1: 12.9, u: 0.5, v: 0.6, m: 1.5 },
+          { t0: 6.7, t1: 9.4, u: 0.4, v: 0.23, m: 1.6 },
+          { t0: 10.2, t1: 12.9, u: 0.5, v: 0.45, m: 1.4 },
         ]}
       />
       <Rotulo texto="boliviasabe.vercel.app" x={IZQ_CEL} y={70} t={0.4} alinear="der" color={C.fucsiaTexto} tam={30} />
@@ -89,16 +91,23 @@ export const Escena4: React.FC = () => (
     <Camara tomas={[{ t: 9.8, s: 1.22, x: 1180, y: 300, dur: 0.8 }]}>
       <Telefono
         tramos={[
-          { t0: 0, t1: 1.7, clip: "e4-registro", desde: 0.5, vel: 1.5 },
-          { t0: 1.7, t1: 3.0, clip: "e4-registro", desde: 18.5, vel: 2 },
-          { t0: 3.0, t1: 7.0, clip: "e4-registro", desde: 24.2, vel: 2.08 },
-          { t0: 7.0, t1: 7.8, clip: "e4-registro", desde: 54.6, vel: 1 },
-          { t0: 7.8, t1: 15, img: "f-e4-saldo.png" },
+          { t0: 0, t1: 1.0, img: "tomas/c03-hoy-sin-sesion.png" },
+          { t0: 1.0, t1: 2.3, img: "tomas/c04-hoja-entrar.png" },
+          { t0: 2.3, t1: 3.4, img: "tomas/c05-correo.png" },
+          { t0: 3.4, t1: 7.0, img: "tomas/c06-tu-barrio.png" },
+          { t0: 7.0, t1: 15, img: "tomas/c07-hoy-saldo-5.png" },
+        ]}
+        toques={[
+          { t: 0.75, x: 294, y: 31 },
+          { t: 2.0, x: 180, y: 717 },
+          { t: 3.1, x: 180, y: 661 },
+          { t: 4.9, x: 74, y: 417 },
+          { t: 6.7, x: 180, y: 764 },
         ]}
         miras={[
-          { t0: 0.9, t1: 2.8, u: 0.5, v: 0.8, m: 1.6 },
-          { t0: 4.6, t1: 6.6, u: 0.3, v: 0.5, m: 1.8 },
-          { t0: 8.2, t1: 14.6, u: 0.86, v: 0.05, m: 2.4 },
+          { t0: 1.2, t1: 2.1, u: 0.5, v: 0.86, m: 1.6 },
+          { t0: 4.5, t1: 6.4, u: 0.22, v: 0.52, m: 1.8 },
+          { t0: 8.2, t1: 14.6, u: 0.88, v: 0.045, m: 2.4 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
@@ -131,17 +140,21 @@ export const Escena5: React.FC = () => (
     <Camara tomas={[{ t: 6.0, s: 1.1, x: 960, y: 720, dur: 1 }, { t: 10.0, s: 1, x: 960, y: 540, dur: 0.8 }]}>
       <Telefono
         tramos={[
-          { t0: 0, t1: 2.0, clip: "e5-pregunta", desde: 0.5, vel: 2.75 },
-          { t0: 2.0, t1: 5.1, clip: "e5-pregunta", desde: 8.0, vel: 8.3 },
-          { t0: 5.1, t1: 8.6, clip: "e5-pregunta", desde: 33.8, vel: 0.91 },
-          { t0: 8.6, t1: 9.6, clip: "e5-pregunta", desde: 47.5, vel: 1.4 },
-          { t0: 9.6, t1: 14, img: "f-e5-detalle.png" },
+          { t0: 0, t1: 2.2, img: "tomas/c08-alguien-sabe.png" },
+          { t0: 2.2, t1: 5.4, img: "tomas/c09-pregunta-escrita.png" },
+          { t0: 5.4, t1: 8.6, img: "tomas/c10-urgente.png" },
+          { t0: 8.6, t1: 14, img: "tomas/c11-publicada.png" },
+        ]}
+        toques={[
+          { t: 1.9, x: 269, y: 694 },
+          { t: 5.5, x: 180, y: 565 },
+          { t: 8.3, x: 180, y: 764 },
         ]}
         miras={[
-          { t0: 2.4, t1: 4.9, u: 0.45, v: 0.08, m: 1.7 },
-          { t0: 5.3, t1: 7.2, u: 0.3, v: 0.69, m: 1.9 },
-          { t0: 7.5, t1: 8.6, u: 0.5, v: 0.95, m: 1.7 },
-          { t0: 10.0, t1: 13.6, u: 0.25, v: 0.38, m: 2 },
+          { t0: 2.5, t1: 5.0, u: 0.45, v: 0.19, m: 1.6 },
+          { t0: 5.6, t1: 7.5, u: 0.28, v: 0.7, m: 1.9 },
+          { t0: 7.8, t1: 8.6, u: 0.5, v: 0.955, m: 1.6 },
+          { t0: 9.6, t1: 13.5, u: 0.15, v: 0.385, m: 2.2 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
@@ -169,34 +182,6 @@ const av6 = armarAvatares("6", (g) => {
   g.va("yaeko", 11.0, null, "celebrar", CARA.feliz);
 });
 
-// Tapa el saldo de Ana en su encabezado (contrato §7)
-const TapaSaldo: React.FC<{ hasta: number }> = ({ hasta }) => {
-  const frame = useCurrentFrame();
-  if (frame / FPS > hasta) return null;
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: 342,
-        top: 14,
-        width: 58,
-        height: 36,
-        borderRadius: 999,
-        background: "#221c1a",
-        border: "1px solid rgba(243,237,232,0.14)",
-        color: C.naranja,
-        fontSize: 18,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: LETRA,
-      }}
-    >
-      ★
-    </div>
-  );
-};
-
 export const Escena6: React.FC = () => (
   <>
     <Fondo brillo={[960, 500]} />
@@ -204,28 +189,32 @@ export const Escena6: React.FC = () => (
     <Telefono
       cx={A}
       tramos={[
-        { t0: 0, t1: 3.9, clip: "e6-ana", desde: 1.5, vel: 2.28 },
-        { t0: 3.9, t1: 6.3, clip: "e6-ana", desde: 10.4, vel: 9.33 },
-        { t0: 6.3, t1: 7.0, clip: "e6-ana", desde: 32.8, vel: 1 },
-        { t0: 7.0, t1: 13, img: "f-e6-ana.png" },
+        { t0: 0, t1: 1.6, img: "tomas/a01-hoy-aviso.png" },
+        { t0: 1.6, t1: 3.1, img: "tomas/a02-avisos.png" },
+        { t0: 3.1, t1: 4.4, img: "tomas/a03-pregunta.png" },
+        { t0: 4.4, t1: 7.0, img: "tomas/a04-respuesta-escrita.png" },
+        { t0: 7.0, t1: 13, img: "tomas/a05-respondida.png" },
+      ]}
+      toques={[
+        { t: 1.3, x: 266, y: 31 },
+        { t: 2.8, x: 180, y: 722 },
+        { t: 4.2, x: 180, y: 597 },
+        { t: 6.4, x: 63, y: 650 },
       ]}
       encima={
         <>
-          <TapaSaldo hasta={2.3} />
-          <Anillo x={296} y={4} w={60} h={56} t0={0.2} t1={1.5} radio={30} />
-          <Anillo x={8} y={385} w={389} h={120} t0={1.5} t1={2.7} />
+          <Anillo x={274} y={10} w={50} h={50} t0={0.2} t1={1.5} radio={25} />
+          <Anillo x={9} y={750} w={387} h={121} t0={1.7} t1={2.9} />
         </>
       }
     />
     <Telefono
       cx={B}
       tramos={[
-        { t0: 0, t1: 3.9, clip: "e6-camila", desde: 1.5, vel: 2.28 },
-        { t0: 3.9, t1: 6.3, clip: "e6-camila", desde: 10.4, vel: 9.33 },
-        { t0: 6.3, t1: 7.0, clip: "e6-camila", desde: 32.8, vel: 1 },
-        { t0: 7.0, t1: 13, img: "f-e6-camila.png" },
+        { t0: 0, t1: 7.0, img: "tomas/c11b-sin-respuesta.png" },
+        { t0: 7.0, t1: 13, img: "tomas/c12-llega-respuesta.png" },
       ]}
-      encima={<Anillo x={12} y={408} w={381} h={220} t0={7.0} t1={12.6} color={C.verde} />}
+      encima={<Anillo x={18} y={592} w={369} h={292} t0={7.0} t1={12.6} color={C.verde} />}
     />
     <Rotulo texto="Ana · cuenta de ejemplo" x={A - CEL.ancho / 2 - 24} y={70} t={0.2} alinear="der" tam={24} color={C.apagado} />
     <Rotulo texto="Camila · cuenta nueva de demo" x={B + CEL.ancho / 2 + 24} y={70} t={0.2} tam={24} color={C.apagado} />
@@ -254,13 +243,14 @@ export const Escena7: React.FC = () => (
     <Camara tomas={[{ t: 7.2, s: 1.14, x: 1160, y: 470, dur: 0.7 }]}>
       <Telefono
         tramos={[
-          { t0: 0, t1: 4.5, clip: "e7-camila", desde: 0, vel: 0.8 },
-          { t0: 4.5, t1: 10, img: "f-e7-camila.png" },
+          { t0: 0, t1: 2.1, img: "tomas/c12-llega-respuesta.png" },
+          { t0: 2.1, t1: 10, img: "tomas/c13-solucionada.png" },
         ]}
+        toques={[{ t: 1.9, x: 85, y: 686 }]}
         miras={[
-          { t0: 1.0, t1: 2.6, u: 0.24, v: 0.856, m: 2 },
-          { t0: 3.6, t1: 4.9, u: 0.22, v: 0.157, m: 2 },
-          { t0: 5.4, t1: 9.6, u: 0.5, v: 0.53, m: 1.6 },
+          { t0: 0.8, t1: 1.9, u: 0.24, v: 0.86, m: 2 },
+          { t0: 2.6, t1: 4.0, u: 0.19, v: 0.158, m: 2 },
+          { t0: 4.4, t1: 9.6, u: 0.5, v: 0.54, m: 1.5 },
         ]}
       />
       <RotuloCuenta texto="Camila · cuenta nueva de demo" />
@@ -288,8 +278,8 @@ const av8 = armarAvatares("8", (g) => {
 });
 
 // Memo: «YXl1ZGE6NTU=» se transforma letra a letra en «ayuda:55»
-const MEMO_B64 = "YXl1ZGE6NTU=";
-const MEMO = "ayuda:55";
+const MEMO_B64 = "YXl1ZGE6NTY=";
+const MEMO = "ayuda:56";
 const LETRAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:";
 const memoEn = (T: number) => {
   const q = tramo(T, 8.0, 9.2);
@@ -316,7 +306,7 @@ const TarjetaExplorador: React.FC = () => {
     <div style={{ position: "absolute", left: 880, top: 200, width: 720, opacity: e, transform: `translateX(${(1 - e) * 80}px)` }}>
       <div style={{ fontFamily: LETRA, color: C.apagado, fontSize: 24, marginBottom: 12 }}>stellar.expert · registro público</div>
       <div style={{ background: "#1c3a46", borderRadius: 24, overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,0.5)" }}>
-        <Img src={staticFile("video/img/explorador-pago.png")} style={{ width: 720, display: "block" }} />
+        <Img src={staticFile("video/img/explorador-pago2.png")} style={{ width: 720, display: "block" }} />
         <div style={{ padding: "22px 34px 28px", borderTop: "1px solid rgba(255,255,255,0.1)", fontFamily: LETRA }}>
           <div style={{ fontSize: 30, color: "#b9c7cc" }}>
             Memo (TEXT):{" "}
@@ -332,7 +322,7 @@ const TarjetaExplorador: React.FC = () => {
             </span>
           </div>
           <div style={{ fontSize: 26, color: C.tinta, marginTop: 14, opacity: tramo(T, 9.3, 9.7) }}>
-            = premio por la respuesta n.º 55
+            = premio por la respuesta n.º 56
           </div>
         </div>
       </div>
@@ -389,13 +379,12 @@ export const Escena8: React.FC = () => {
       <Telefono
         cx={cx}
         tramos={[
-          { t0: 0, t1: 2.0, clip: "e7-ana", desde: 0.5, vel: 3.0 },
-          { t0: 2.0, t1: 4.6, img: "e7-movimientos.png" },
-          { t0: 4.6, t1: 5.0, clip: "e7-ana", desde: 8.1, vel: 2.25 },
-          { t0: 5.0, t1: 18, img: "e7-explorador.png" },
+          { t0: 0, t1: 4.8, img: "tomas/a06-movimientos.png" },
+          { t0: 4.8, t1: 18, img: "tomas/a07-explorador.png" },
         ]}
-        miras={[{ t0: 2.4, t1: 4.5, u: 0.55, v: 0.18, m: 1.7 }]}
-        encima={<TapaComision desde={5.0} />}
+        toques={[{ t: 4.5, x: 136, y: 166 }]}
+        miras={[{ t0: 1.4, t1: 4.3, u: 0.5, v: 0.16, m: 1.6 }]}
+        encima={<TapaComision desde={4.8} />}
       />
       <Rotulo texto="Ana · cuenta de ejemplo" x={96} y={70} t={0.2} tam={24} color={C.apagado} />
       <Rotulo texto="+5 yapitas · Confirmado" x={DER_CEL} y={300} t={2.7} hasta={6.4} tam={26} color={C.verde} />

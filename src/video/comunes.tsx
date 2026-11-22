@@ -93,7 +93,7 @@ const usarSuave = (clip: string, vel: number) => ENTRECORTADOS.includes(clip) &&
 const Pantalla: React.FC<{ tramos: Tramo[] }> = ({ tramos }) => (
   <>
     {tramos.map((tr, i) => (
-      <Sequence key={i} from={t2f(tr.t0)} durationInFrames={Math.max(1, t2f(tr.t1) - t2f(tr.t0))} layout="none">
+      <Sequence key={i} from={t2f(tr.t0)} durationInFrames={Math.max(1, t2f(tr.t1) - t2f(tr.t0)) + ("img" in tr ? 6 : 0)} layout="none">
         {"clip" in tr ? (
           <Video
             src={staticFile(`video/${usarSuave(tr.clip, tr.vel ?? 1) ? "suave" : "clips"}/${tr.clip}.mp4`)}
@@ -103,12 +103,44 @@ const Pantalla: React.FC<{ tramos: Tramo[] }> = ({ tramos }) => (
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
-          <Img src={staticFile(`video/img/${tr.img}`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          <Fundido>
+            <Img src={staticFile(tr.img.startsWith("tomas/") ? `video/${tr.img}` : `video/img/${tr.img}`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          </Fundido>
         )}
       </Sequence>
     ))}
   </>
 );
+
+// Cada captura entra con un fundido corto sobre la anterior
+const Fundido: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const f = useCurrentFrame();
+  return <AbsoluteFill style={{ opacity: Math.min(1, f / 5) }}>{children}</AbsoluteFill>;
+};
+
+// Toque: un círculo amarillo que se expande donde se toca (x, y en px de la pantalla de 360 × 800)
+export type Toque = { t: number; x: number; y: number };
+const Toques: React.FC<{ toques: Toque[] }> = ({ toques }) => {
+  const frame = useCurrentFrame();
+  const T = frame / FPS;
+  const k = CEL.ancho / 360;
+  return (
+    <>
+      {toques.map((q, i) => {
+        const d = T - q.t;
+        if (d < -0.15 || d > 0.6) return null;
+        const apoyo = d < 0 ? 1 + d / 0.15 : 1;
+        const onda = Math.max(0, d) / 0.6;
+        return (
+          <div key={i} style={{ position: "absolute", left: q.x * k, top: q.y * k, width: 0, height: 0 }}>
+            <div style={{ position: "absolute", left: -22, top: -22, width: 44, height: 44, borderRadius: 22, background: "rgba(242,194,48,0.45)", border: "3px solid #F2C230", opacity: apoyo * (1 - onda), transform: `scale(${0.8 + onda * 0.6})` }} />
+            <div style={{ position: "absolute", left: -22, top: -22, width: 44, height: 44, borderRadius: 22, border: "3px solid #F2C230", opacity: (1 - onda) * 0.8, transform: `scale(${1 + onda * 1.4})` }} />
+          </div>
+        );
+      })}
+    </>
+  );
+};
 
 // Lupa de verdad: entre t0 y t1 se posa sobre (u, v) de la pantalla y muestra eso ampliado `m` veces.
 // Si la siguiente mirada empieza poco después, la lupa se desliza hasta ella en vez de irse.
@@ -195,6 +227,8 @@ export const Telefono: React.FC<{
   tramos: Tramo[];
   // Lupa de verdad (recomendada)
   miras?: Mira[];
+  // Toques animados sobre las capturas
+  toques?: Toque[];
   // Acercamiento dentro del marco (anterior; ya no se usa en el video)
   lupas?: Lupa[];
   cx?: number;
@@ -202,7 +236,7 @@ export const Telefono: React.FC<{
   // Lo que va encima de la pantalla (pastillas, anillos), en px de la pantalla 405×900
   encima?: React.ReactNode;
   arriba?: React.ReactNode;
-}> = ({ tramos, miras = [], lupas = [], cx = 960, escala = 1, encima, arriba }) => {
+}> = ({ tramos, miras = [], toques = [], lupas = [], cx = 960, escala = 1, encima, arriba }) => {
   const frame = useCurrentFrame();
   const T = frame / FPS;
   const l = lupaEn(lupas, T);
@@ -231,6 +265,7 @@ export const Telefono: React.FC<{
       >
         <div style={{ position: "absolute", inset: 0, transform: `translate(${x}px, ${y}px) scale(${l.s})`, transformOrigin: "50% 50%" }}>
           <Pantalla tramos={tramos} />
+          <Toques toques={toques} />
           {encima}
         </div>
         {arriba}

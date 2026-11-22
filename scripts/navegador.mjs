@@ -5,7 +5,11 @@ import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const CHROME = "node_modules/.remotion/chrome-headless-shell/win64/chrome-headless-shell-win64/chrome-headless-shell.exe";
+// El Chrome sin ventana que trae Remotion, según el sistema
+const CHROME =
+  process.platform === "win32"
+    ? "node_modules/.remotion/chrome-headless-shell/win64/chrome-headless-shell-win64/chrome-headless-shell.exe"
+    : `node_modules/.remotion/chrome-headless-shell/mac-${process.arch === "arm64" ? "arm64" : "x64"}/chrome-headless-shell-mac-${process.arch === "arm64" ? "arm64" : "x64"}/chrome-headless-shell`;
 const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export const abrir = async ({ ancho = 360, alto = 800, escala = 2, oscuro = true, movil = true, puerto = 9333 } = {}) => {

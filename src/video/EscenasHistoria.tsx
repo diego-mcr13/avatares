@@ -630,7 +630,7 @@ export const Escena9: React.FC = () => {
       <Plan />
       {celB > 0 ? (
         <div style={{ position: "absolute", inset: 0, opacity: celB }}>
-          <Telefono tramos={[{ t0: 0, t1: 37, img: "hoy.png" }]} encima={<Destacado />} />
+          <Telefono tramos={[{ t0: 0, t1: 37, img: "tomas/c07-hoy-saldo-5.png" }]} encima={<Destacado />} />
           <Cifra texto={<span style={{ color: C.naranja }}>Bs 20 al mes</span>} x={1210} y={330} t={13.3} tam={84} alinear="izq" />
           <Cifra texto="aparecer primero en su zona" x={1210} y={445} t={14.4} tam={38} alinear="izq" />
           <Cifra texto="hipótesis por validar · aún no está en la app" x={1210} y={510} t={15.0} tam={24} color={C.apagado} alinear="izq" />
@@ -638,7 +638,7 @@ export const Escena9: React.FC = () => {
       ) : null}
       {celC > 0 ? (
         <div style={{ position: "absolute", inset: 0, opacity: celC }}>
-          <Telefono cx={1440} tramos={[{ t0: 0, t1: 37, img: "hoy.png" }]} />
+          <Telefono cx={1440} tramos={[{ t0: 0, t1: 37, img: "tomas/c07-hoy-saldo-5.png" }]} />
           <Cifra texto="Pruébala hoy" x={150} y={200} t={17.3} tam={48} color={C.apagado} alinear="izq" />
           <Cifra texto={<span style={{ color: C.fucsiaTexto }}>boliviasabe.vercel.app</span>} x={150} y={270} t={17.6} tam={76} alinear="izq" />
           {T >= 18.2 ? (
