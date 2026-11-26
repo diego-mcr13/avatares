@@ -100,6 +100,10 @@ export const logoBambinos = (arriba = 7.3, ancho = 7.6, z = 3.06, x0 = 0): Vox[]
 };
 
 // ---------- Estampado de las poleras del evento (25 nov) ----------
+// DEMODAY = true: los tres con la polera negra del evento (Demo Day, 27 nov).
+// DEMODAY = false: el outfit del video final (Diego polera verde, Aldrin canguro café, Yaeko polera negra con el logo chico).
+export const DEMODAY = true;
+
 // Polera negra con el logo horizontal de BoliviaSabe y la franja de aguayo, como la ficha técnica del estampador
 // (`frente-talla-L.png`). Cuadrícula de 120 × 31 sacada de ese PNG; cada letra es un color.
 export const ESTAMPADO_FILAS = [
