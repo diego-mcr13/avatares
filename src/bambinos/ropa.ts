@@ -99,6 +99,67 @@ export const logoBambinos = (arriba = 7.3, ancho = 7.6, z = 3.06, x0 = 0): Vox[]
   return out;
 };
 
+// ---------- Estampado de las poleras del evento (25 nov) ----------
+// Polera negra con el logo horizontal de BoliviaSabe y la franja de aguayo, como la ficha técnica del estampador
+// (`frente-talla-L.png`). Cuadrícula de 120 × 31 sacada de ese PNG; cada letra es un color.
+export const ESTAMPADO_FILAS = [
+  "...............ffffff...................................................................................................",
+  ".pppppppppppp..fffffff..................................................................................................",
+  ".pppppppppppppfffppfff..................................................................................................",
+  ".ppppppppppppppfffffff..................................................................................................",
+  ".ppppppppppppppffffff...................................................................................................",
+  ".pppp.......pppf........................................................................................................",
+  ".pppp........ppp....................................pp............pp....................................................",
+  ".pppp........ppp..........ppppppppp............pppppppp..........pppp............tttttt..............ttt................",
+  ".pppp......pppp...........pppppppppp...........pppp.pp............pp............ttttttttt............ttt................",
+  ".pppppppppppppp...........pppp...ppp....pppp...pppp....ppp....pp...p...ppp..ppp.ttt...ttt....tt...tt.ttt..tt......ttt...",
+  ".ppppppppppppppp...........ppp...ppp..pppppppp.ppppppppppp...ppppppp..ppppppppp.ttt........ttttttttt.ttttttttt..ttttttt.",
+  ".pppppppppppppppp..........pppppppp...pppppppp.pppppppp.ppp..ppp.ppp.pppppppppp.tttttttt...ttttttttt.ttttttttt.tttt.ttt.",
+  ".pppppppoppppppppp.........ppppppppp.ppp....ppppppppppp.ppp..ppp.ppp.ppp...pppp..tttttttttttt....ttt.ttt...ttttttttttttt",
+  ".pppppoooppppppppp.........ppp....pppppp....ppppppppppp..pppppp..ppp.ppp....ppp.......ttttttt....ttt.ttt....tttttttttttt",
+  ".ppppppoooopppppppp.......ppp....pppppppp..pppppppppppp..pppppp..ppp.pppp..pppp.ttt...tttttttt..tttt.tttt..tttttttt.....",
+  ".pppppooooooppppppp.......ppppppppppp.pppppppp.pppppppp..ppppp...ppp.pppppppppp.ttttttttt..ttttttttt.ttttttttt..tttttttt",
+  ".pppppooooooopppppp.......pppppppppp...pppppp..pppppppp...pppp...ppp..ppppp.ppp..ttttttt....tttt.ttt.ttt.tttt....tttttt.",
+  ".pppppoooooooopppp......................................................................................................",
+  ".ppppppooooooppppp......................................................................................................",
+  ".ppppppoooopppppp.......................................................................................................",
+  ".ppppppooopppppp........................................................................................................",
+  ".ppppp..................................................................................................................",
+  ".ppp....................................................................................................................",
+  ".p......................................................................................................................",
+  "........................................................................................................................",
+  "........................................................................................................................",
+  "........................................................................................................................",
+  "........................................................................................................................",
+  "........................................................................................................................",
+  "........fffffffffffffffffffffooooooooooooooooooooovvvvvvvvvvvvvvvvvvvvvaaaaaaaaaaaaaaaaaaaayyyyyyyyyyyyyyyyyyyyy........",
+  "........fffffffffffffffffffffooooooooooooooooooooovvvvvvvvvvvvvvvvvvvvvaaaaaaaaaaaaaaaaaaaayyyyyyyyyyyyyyyyyyyyy........",
+];
+const COLOR_ESTAMPADO: Record<string, string> = {
+  p: "#F5F2EF", // papel (letras «Bolivia» y la B)
+  t: "#E0A96A", // arena («Sabe»)
+  o: "#F28C28", // naranja (el mapa)
+  f: "#C2185B", // fucsia
+  v: "#2E9E5B", // verde
+  a: "#1E5AA8", // azul
+  y: "#F2C230", // amarillo
+};
+
+// `arriba` = altura del borde de arriba del diseño; `ancho` = ancho en voxels (el torso mide 10)
+export const estampadoFrente = (arriba = 6.5, ancho = 8.4, z = 3.06): Vox[] => {
+  const columnas = ESTAMPADO_FILAS[0].length;
+  const pix = ancho / columnas;
+  const out: Vox[] = [];
+  ESTAMPADO_FILAS.forEach((fila, i) => {
+    for (let j = 0; j < columnas; j++) {
+      const c = COLOR_ESTAMPADO[fila[j]];
+      if (!c) continue;
+      out.push({ x: -ancho / 2 + (j + 0.5) * pix, y: arriba - (i + 0.5) * pix, z, c, s: pix * 1.02, sz: 0.12, vari: false });
+    }
+  });
+  return out;
+};
+
 // ---------- Canguro (origen en la cadera) ----------
 
 // Cuerpo del canguro oversize: puño abajo, bolsillo canguro, cuello de la capucha, capucha caída
@@ -180,13 +241,13 @@ export const TENIS = {
 export const logoPecho = (): Vox[] => logoBambinos(6.4, 2.9, 3.06, -2.5);
 
 // Polera oversize: sin capucha ni bolsillo, cuello redondo un poco más claro y el ruedo abajo
-export const poleraTorso = (base: number, tela: Tela): Vox[] => [
+export const poleraTorso = (base: number, tela: Tela, logo: Vox[] = logoPecho()): Vox[] => [
   ...caja(-5, 5, base, 8, -3, 3, (x, y) => {
     if (y === base) return tela.puno;
     if (y === 7 && x >= -2 && x <= 1) return tela.claro;
     return tela.base;
   }),
-  ...logoPecho(),
+  ...logo,
 ];
 
 // Canguro de otro color, con el logo chico

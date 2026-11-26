@@ -5,7 +5,7 @@
 // Unidades: 1 = un voxel. El personaje mide ~35 voxels de alto (con el pelo).
 // Izq/Der = lado de la pantalla (no del personaje).
 
-import { TELA, TENIS, antebrazoManga, canguroColor, jeansConTenis, mangaColor } from "../bambinos/ropa";
+import { TELA, TENIS, antebrazoPolera, estampadoFrente, jeansConTenis, mangaColor, poleraTorso } from "../bambinos/ropa";
 
 export type Vox = {
   x: number;
@@ -277,11 +277,11 @@ export const boca = (v: BocaVar): Vox[] => dibujo(BOCAS[v], -3, 3, COLORES_BOCA)
 // ---------- Ropa (origen en la cadera / hombro / codo) ----------
 // Canguro negro oversize con el logo de CodeBambinos, jeans negros y tenis blancos.
 
-export const torso = (): Vox[] => canguroColor(-1, TELA.cafeClaro);
+export const torso = (): Vox[] => poleraTorso(-1, TELA.negro, estampadoFrente());
 
-export const brazo = (): Vox[] => mangaColor(TELA.cafeClaro);
+export const brazo = (): Vox[] => mangaColor(TELA.negro);
 
-export const antebrazo = (): Vox[] => antebrazoManga(TELA.cafeClaro, PAL.piel);
+export const antebrazo = (): Vox[] => antebrazoPolera(TELA.negro, PAL.piel);
 
 export const pierna = (): Vox[] => jeansConTenis(TENIS.negros);
 
